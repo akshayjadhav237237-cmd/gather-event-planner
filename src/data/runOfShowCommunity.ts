@@ -1,0 +1,88 @@
+import type { RunOfShowSlot } from '../types/event';
+
+export const COMMUNITY_EVENT_DAY_TEMPLATE: readonly RunOfShowSlot[] = [
+  {
+    startTime: '07:30',
+    durationMin: 60,
+    activity: 'Site access and vendor load-in begins',
+    owner: 'Venue Manager',
+    bufferMin: 15,
+  },
+  {
+    startTime: '09:00',
+    durationMin: 45,
+    activity: 'Staging setup, sound check, and booth placement',
+    owner: 'Coordinator',
+    bufferMin: 15,
+  },
+  {
+    startTime: '10:15',
+    durationMin: 30,
+    activity: 'Site safety inspection and volunteer briefing',
+    owner: 'Safety Lead',
+    bufferMin: 15,
+  },
+  {
+    startTime: '11:15',
+    durationMin: 30,
+    activity: 'Public gates open and attendee arrival',
+    owner: 'Volunteer Lead',
+    bufferMin: 15,
+  },
+  {
+    startTime: '12:15',
+    durationMin: 45,
+    activity: 'Main stage opening ceremony and welcome remarks',
+    owner: 'Host',
+    bufferMin: 15,
+  },
+  {
+    startTime: '13:30',
+    durationMin: 75,
+    activity: 'Community performances and food stations open',
+    owner: 'Entertainer',
+    bufferMin: 15,
+  },
+  {
+    startTime: '15:15',
+    durationMin: 75,
+    activity: 'Interactive community activities and cultural exhibitions',
+    owner: 'Volunteer Lead',
+    bufferMin: 15,
+  },
+  {
+    startTime: '17:00',
+    durationMin: 45,
+    activity: 'Feature showcase and community announcements',
+    owner: 'Entertainer',
+    bufferMin: 15,
+  },
+  {
+    startTime: '18:15',
+    durationMin: 30,
+    activity: 'Closing ceremony and acknowledgment of contributors',
+    owner: 'Host',
+    bufferMin: 15,
+  },
+  {
+    startTime: '19:15',
+    durationMin: 30,
+    activity: 'Public egress and facility closure',
+    owner: 'Safety Lead',
+    bufferMin: 15,
+  },
+  {
+    startTime: '20:15',
+    durationMin: 45,
+    activity: 'Volunteer breakdown and site cleanup',
+    owner: 'Volunteer Lead',
+    bufferMin: 15,
+  },
+  {
+    startTime: '21:30',
+    durationMin: 30,
+    activity: 'Final venue walkthrough and site handover',
+    owner: 'Venue Manager',
+    bufferMin: 0,
+  },
+];
