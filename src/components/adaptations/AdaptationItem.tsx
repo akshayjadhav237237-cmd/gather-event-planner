@@ -2,7 +2,8 @@ import { type FC, type ReactNode } from 'react';
 import { AlertCircle, AlertTriangle, Info } from 'lucide-react';
 import type { ContextAdaptation, Severity } from '../../types/event';
 import { MODULE_LABELS, SEVERITY_LABELS } from '../../ui/adaptationView';
-import { Badge, type BadgeProps } from '../ui/Badge';
+import { SEVERITY_BADGE_TONES } from '../../ui/severityStyle';
+import { Badge } from '../ui/Badge';
 
 export interface AdaptationItemProps {
   adaptation: ContextAdaptation;
@@ -14,14 +15,8 @@ const SEVERITY_ICONS: Record<Severity, ReactNode> = {
   info: <Info size={14} strokeWidth={1.5} aria-hidden="true" />,
 };
 
-const SEVERITY_TONES: Record<Severity, BadgeProps['tone']> = {
-  critical: 'critical',
-  warning: 'warning',
-  info: 'neutral',
-};
-
 export const AdaptationItem: FC<AdaptationItemProps> = ({ adaptation }) => {
-  const tone = SEVERITY_TONES[adaptation.severity];
+  const tone = SEVERITY_BADGE_TONES[adaptation.severity];
   const icon = SEVERITY_ICONS[adaptation.severity];
   const severityLabel = SEVERITY_LABELS[adaptation.severity];
   const moduleLabel = MODULE_LABELS[adaptation.targetModule];

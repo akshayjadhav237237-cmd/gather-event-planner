@@ -1,14 +1,9 @@
-import type { PlanBundle } from '../../types/engine';
+import type { PanelProps } from './types';
 import { Card } from '../ui/Card';
 
-export interface TimelinePanelProps {
-  bundle: PlanBundle;
-  className?: string;
-}
-
-export function TimelinePanel({ bundle, className = '' }: TimelinePanelProps) {
+export function TimelinePanel({ bundle }: PanelProps) {
   return (
-    <Card padding="lg" className={className} aria-labelledby="timeline-panel-title">
+    <Card padding="lg" aria-labelledby="timeline-panel-title">
       <div className="space-y-4">
         <h2 id="timeline-panel-title" className="font-serif text-2xl text-ink">
           Timeline & Checklist ({bundle.timeline.tasks.length} tasks)

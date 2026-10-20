@@ -20,10 +20,16 @@ import { VitalsStrip } from './VitalsStrip';
 
 export interface WorkspaceProps {
   bundle?: PlanBundle | null;
+  hasLiveKey?: boolean;
+  onOpenAiSettings?: () => void;
 }
 
-export function Workspace({ bundle: propBundle }: WorkspaceProps = {}) {
-  const { bundle: hookBundle } = usePlan();
+export function Workspace({
+  bundle: propBundle,
+  hasLiveKey = false,
+  onOpenAiSettings = () => {},
+}: WorkspaceProps = {}) {
+  const { bundle: hookBundle, today } = usePlan();
   const bundle = propBundle !== undefined ? propBundle : hookBundle;
 
   const taskCompletion = usePlanStore((s) => s.taskCompletion);
@@ -57,25 +63,32 @@ export function Workspace({ bundle: propBundle }: WorkspaceProps = {}) {
       id: 'budget',
       label: 'Budget',
       icon: <Wallet className="w-4 h-4" aria-hidden="true" />,
-      panel: <BudgetPanel bundle={bundle} />,
+      panel: <BudgetPanel bundle={bundle} today={today} />,
     },
     {
       id: 'timeline',
       label: 'Timeline',
       icon: <Calendar className="w-4 h-4" aria-hidden="true" />,
-      panel: <TimelinePanel bundle={bundle} />,
+      panel: <TimelinePanel bundle={bundle} today={today} />,
     },
     {
       id: 'vendors',
       label: 'Vendors',
       icon: <Users className="w-4 h-4" aria-hidden="true" />,
-      panel: <VendorsPanel bundle={bundle} />,
+      panel: <VendorsPanel bundle={bundle} today={today} />,
     },
     {
       id: 'ideas',
       label: 'Ideas',
       icon: <Sparkles className="w-4 h-4" aria-hidden="true" />,
-      panel: <IdeasPanel bundle={bundle} />,
+      panel: (
+        <IdeasPanel
+          bundle={bundle}
+          today={today}
+          hasLiveKey={hasLiveKey}
+          onOpenAiSettings={onOpenAiSettings}
+        />
+      ),
     },
   ];
 

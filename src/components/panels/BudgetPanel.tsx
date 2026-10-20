@@ -1,14 +1,9 @@
-import type { PlanBundle } from '../../types/engine';
+import type { PanelProps } from './types';
 import { Card } from '../ui/Card';
 
-export interface BudgetPanelProps {
-  bundle: PlanBundle;
-  className?: string;
-}
-
-export function BudgetPanel({ bundle, className = '' }: BudgetPanelProps) {
+export function BudgetPanel({ bundle }: PanelProps) {
   return (
-    <Card padding="lg" className={className} aria-labelledby="budget-panel-title">
+    <Card padding="lg" aria-labelledby="budget-panel-title">
       <div className="space-y-4">
         <h2 id="budget-panel-title" className="font-serif text-2xl text-ink">
           Budget Planning ({bundle.context.currency})

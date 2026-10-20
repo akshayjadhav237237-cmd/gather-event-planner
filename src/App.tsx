@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { clearApiKey } from './ai';
+import { useEffect, useState } from 'react';
+import { clearApiKey, hasApiKey } from './ai';
 import { Launchpad } from './components/launchpad/Launchpad';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
@@ -19,6 +19,11 @@ export function App() {
   const [isApiKeyOpen, setIsApiKeyOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
   const [apiKeyVersion, setApiKeyVersion] = useState(0);
+  const [hasLiveKey, setHasLiveKey] = useState(() => hasApiKey());
+
+  useEffect(() => {
+    setHasLiveKey(hasApiKey());
+  }, [apiKeyVersion]);
 
   const isWorkspace = Boolean(context);
 
@@ -53,7 +58,14 @@ export function App() {
       />
 
       <main id="main" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 flex-1 w-full">
-        {isWorkspace ? <Workspace /> : <Launchpad />}
+        {isWorkspace ? (
+          <Workspace
+            hasLiveKey={hasLiveKey}
+            onOpenAiSettings={handleOpenApiKey}
+          />
+        ) : (
+          <Launchpad />
+        )}
       </main>
 
       <Footer />

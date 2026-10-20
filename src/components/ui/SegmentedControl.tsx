@@ -57,7 +57,6 @@ export function SegmentedControl<T extends string>({
                 value={opt.value}
                 checked={isSelected}
                 disabled={disabled}
-                aria-label={opt.label}
                 onChange={() => onChange(opt.value)}
                 className="sr-only peer"
               />
