@@ -43,4 +43,4 @@ This section outlines baseline heuristic constraints, planning assumptions, and 
    ```
 
 ### Evaluation Note
-No API key is needed to run or evaluate the project; all core workflows, budget allocations, timeline schedules, and vendor evaluations run out-of-the-box on the deterministic heuristic engine.
+No API key is required to run, test, or evaluate the application. All core features—including budget allocation, backward timeline generation, vendor checklists, run-of-show schedules, and personalized celebration ideas—run 100% offline out-of-the-box using the deterministic heuristic engine and local idea bank. Live LLM ideation (via Google Gemini) is completely optional and can be enabled at runtime by entering an API key in the application interface (stored transiently in `sessionStorage` with zero persistence).
