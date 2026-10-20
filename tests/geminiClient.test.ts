@@ -36,7 +36,7 @@ describe('geminiClient', () => {
 
     expect(result).toBe('{"themeConcepts":[]}');
     expect(capturedUrl).toBe(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
     );
     expect(capturedUrl).not.toContain(TEST_KEY);
     expect(new URL(capturedUrl).search).toBe('');

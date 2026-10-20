@@ -59,7 +59,7 @@ export const CURRENCY_LOCALE: Record<CurrencyCode, string> = {
 
 // Gemini model configuration; edit the live model ID string exclusively here when upgrading.
 export const LIVE_MODEL_CONFIG = {
-  modelId: 'gemini-2.5-flash',
+  modelId: 'gemini-flash-latest',
   endpointBase: 'https://generativelanguage.googleapis.com/v1beta',
 } as const;
 
