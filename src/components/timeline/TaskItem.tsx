@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { AlertCircle, Clock } from 'lucide-react';
 import type { TimelineTask } from '../../types/event';
 import { formatDateShort } from '../../ui/formatDate';
 import type { TaskStatus } from '../../ui/timelineView';
@@ -43,8 +44,16 @@ export const TaskItem: FC<TaskItemProps> = ({
         </label>
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
           <span>Due {formatDateShort(task.dueDate, locale)}</span>
-          {status === 'overdue' && <Badge tone="critical">Overdue</Badge>}
-          {status === 'dueSoon' && <Badge tone="warning">Due soon</Badge>}
+          {status === 'overdue' && (
+            <Badge tone="critical" icon={<AlertCircle size={12} aria-hidden="true" />}>
+              Overdue
+            </Badge>
+          )}
+          {status === 'dueSoon' && (
+            <Badge tone="warning" icon={<Clock size={12} aria-hidden="true" />}>
+              Due soon
+            </Badge>
+          )}
           {task.priority === 'critical' && <Badge tone="critical">Critical</Badge>}
           {task.priority === 'high' && <Badge tone="warning">High</Badge>}
         </div>

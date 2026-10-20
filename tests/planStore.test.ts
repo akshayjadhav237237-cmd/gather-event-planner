@@ -102,6 +102,30 @@ describe('planStore action behavior', () => {
     expect(store.getState().context).toBeNull();
     expect(store.getState().actualSpend).toEqual({});
   });
+
+  it('restores all five fields and replaces previous data via restoreBackup', () => {
+    const store = createPlanStore(createMemoryStorage());
+    store.getState().setContext(sampleContext);
+    store.getState().toggleTask('task-old');
+    store.getState().setActualSpend('venue', 5000);
+
+    const backupPayload = {
+      context: { ...sampleContext, id: 'evt-restored', title: 'Restored Celebration' },
+      taskCompletion: { 'task-new': true },
+      actualSpend: { catering: 8000 },
+      vendorQuotes: [sampleQuote],
+      ideas: null,
+    };
+
+    store.getState().restoreBackup(backupPayload);
+
+    expect(store.getState().context?.id).toBe('evt-restored');
+    expect(store.getState().context?.title).toBe('Restored Celebration');
+    expect(store.getState().taskCompletion).toEqual({ 'task-new': true });
+    expect(store.getState().actualSpend).toEqual({ catering: 8000 });
+    expect(store.getState().vendorQuotes).toHaveLength(1);
+    expect(store.getState().ideas).toBeNull();
+  });
 });
 
 describe('planStore storage rehydration and safety', () => {

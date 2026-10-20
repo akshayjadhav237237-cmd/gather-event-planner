@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { create } from 'zustand';
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware';
 import { STORAGE_KEY } from '../config/constants';
+import type { BackupPayload } from '../export/backupTypes';
 import type { EventContext, PersonalizedIdeas, VendorQuote } from '../types/event';
 import { EventContextSchema, PersonalizedIdeasSchema, VendorQuoteSchema } from '../types/schemas';
 
@@ -21,6 +22,7 @@ export interface PlanState extends PlanPersistedState {
   removeQuote: (quoteId: string) => void;
   setIdeas: (ideas: PersonalizedIdeas | null) => void;
   loadScenario: (context: EventContext) => void;
+  restoreBackup: (payload: BackupPayload) => void;
   clearAll: () => void;
 }
 
@@ -126,6 +128,14 @@ export const createPlanStore = (customStorage?: StateStorage) => {
         setIdeas: (ideas) => set({ ideas }),
         loadScenario: (context) =>
           set({ context, taskCompletion: {}, actualSpend: {}, vendorQuotes: [], ideas: null }),
+        restoreBackup: (payload) =>
+          set({
+            context: payload.context,
+            taskCompletion: payload.taskCompletion,
+            actualSpend: payload.actualSpend,
+            vendorQuotes: payload.vendorQuotes,
+            ideas: payload.ideas,
+          }),
         clearAll: () => set({ ...INITIAL_DATA }),
       }),
       {
