@@ -45,3 +45,11 @@
 - **Native Elements First**: Interactive controls prioritize native semantic HTML (`<button>`, `<input>`, `<select>`, `<textarea>`, `<fieldset>`, `<dialog>`), ensuring accessible keyboard navigation and visible focus rings (`:focus-visible`).
 - **Standardized Dialogs**: Modals and dialogs use the `Dialog` primitive built on native `<dialog>` with `showModal()`, accessible labels, and backdrop dismissal.
 - **Plain Text Only**: All user and AI content is rendered strictly as plain text without raw HTML or markdown interpretation.
+
+## Panel & Dashboard Conventions
+- **Shared Primitives**: Panels compose shared primitives (`SectionHeader`, `AlertCard`, `ProgressBar`, `EmptyState`) from `src/components/shared/` alongside atomic UI controls from `src/components/ui/`.
+- **Panel Interface Contract**: Panels implement `PanelProps` (`{ bundle: PlanBundle; today: string }`), with `IdeasPanel` extending to accept `{ hasLiveKey: boolean; onOpenAiSettings: () => void }`.
+- **View Derivation in `src/ui/`**: All data filtering, sorting, summarization, and group derivation live in pure helper functions in `src/ui/` (e.g., `budgetView.ts`, `timelineView.ts`, `vendorView.ts`, `ideasView.ts`, `calculatorsView.ts`) with dedicated test suites.
+- **Static Tailwind v3 Classes**: Class names must be complete static strings. Dynamic styling uses static dictionary maps (e.g. `TONE_CLASSES[tone]`) rather than template literals or string interpolation (`${...}`).
+- **Zero Style Attributes**: Inline styles (`style=`) are forbidden in `src/components/` except for the dynamic color swatch preview in `ThemeCard.tsx`.
+- **Render Smoke Testing**: Full app render and all 4 panels must be verified via `renderToStaticMarkup` across all demo scenarios (`tests/renderSmoke.test.tsx`), asserting no `NaN`, `undefined`, `[object Object]`, or `Infinity`.
