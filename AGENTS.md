@@ -37,3 +37,11 @@
     - `npm run lint`
     - `npm test`
     - `npm run build`
+
+## UI Conventions & Design System Rules
+- **Tokens Only**: All styles use design tokens mapped from CSS variables (`var(--color-*)`); zero hex literals (`#[0-9a-fA-F]{3,8}`) in component markup or styles.
+- **One Component Per File**: UI components live in their own dedicated files, modularly composed and strictly under 220 lines.
+- **Pure Helpers & Custom Hooks**: Complex rendering logic, formatting, and state derivation live in pure functions in `src/ui/` or custom hooks in `src/hooks/`.
+- **Native Elements First**: Interactive controls prioritize native semantic HTML (`<button>`, `<input>`, `<select>`, `<textarea>`, `<fieldset>`, `<dialog>`), ensuring accessible keyboard navigation and visible focus rings (`:focus-visible`).
+- **Standardized Dialogs**: Modals and dialogs use the `Dialog` primitive built on native `<dialog>` with `showModal()`, accessible labels, and backdrop dismissal.
+- **Plain Text Only**: All user and AI content is rendered strictly as plain text without raw HTML or markdown interpretation.
