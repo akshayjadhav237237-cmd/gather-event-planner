@@ -90,7 +90,7 @@ export const ApiKeyDialog: FC<ApiKeyDialogProps> = ({
 
         <div className="rounded-control bg-sunken p-3 text-xs text-muted flex flex-col gap-2">
           <p>
-            Your API key is stored only in this browser tab&apos;s sessionStorage and is
+            Your API key is stored only in this temporary browser session and is
             discarded when the tab closes.
           </p>
           <p>

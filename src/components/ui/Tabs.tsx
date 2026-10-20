@@ -16,12 +16,20 @@ export interface TabsProps {
   className?: string;
 }
 
+const TAB_BASE_COMMON =
+  'min-h-[44px] px-4 py-2.5 inline-flex items-center gap-2 text-sm font-medium border-b-2 transition-colors duration-150 ease-out whitespace-nowrap cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2';
+
+const TAB_CLASSES = {
+  selected: `${TAB_BASE_COMMON} border-accent text-ink`,
+  unselected: `${TAB_BASE_COMMON} border-transparent text-muted hover:text-ink hover:border-line`,
+} as const;
+
 export function Tabs({
   label,
   tabs,
   activeId,
   onChange,
-  className = '',
+  className,
 }: TabsProps) {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -29,8 +37,10 @@ export function Tabs({
   const currentIdx = activeIndex >= 0 ? activeIndex : 0;
   const activeTab = tabs[currentIdx];
 
+  const rootClass = className ? `flex flex-col ${className}` : 'flex flex-col';
+
   return (
-    <div className={`flex flex-col ${className}`.trim()}>
+    <div className={rootClass}>
       <div
         role="tablist"
         aria-label={label}
@@ -62,11 +72,7 @@ export function Tabs({
                   }
                 }
               }}
-              className={`min-h-[44px] px-4 py-2.5 inline-flex items-center gap-2 text-sm font-medium border-b-2 transition-colors duration-150 ease-out whitespace-nowrap cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2 ${
-                isSelected
-                  ? 'border-accent text-ink'
-                  : 'border-transparent text-muted hover:text-ink hover:border-line'
-              }`}
+              className={isSelected ? TAB_CLASSES.selected : TAB_CLASSES.unselected}
             >
               {tab.icon}
               <span>{tab.label}</span>
