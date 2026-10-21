@@ -49,7 +49,7 @@ Gather uses the same core domain engine for all three celebration types:
 2. **Birthdays**: Focuses on age-tailored entertainment rotations (toddlers aged 1-3, school kids aged 4-12, teens, and adult milestones), surprise party reveal coordination, and strict allergy alerts (such as peanut or latex allergies). Supported sub-formats (5): `kids_1_3`, `kids_4_12`, `teen`, `adult_milestone`, and `surprise`.
 3. **Community Events**: Handles large crowd logistics, municipal liaison permits, volunteer marshalling schedules, sponsor deliverables, and public safety egress. Supported sub-formats (4): `festival`, `fundraiser`, `neighborhood`, and `school_cultural`.
 
-Across all three verticals, Gather defines 14 event sub-formats, 28 vendor category definitions (10 wedding, 8 birthday, 10 community), 75 planning milestone task templates, and 121 curated idea seeds. Each event type supplies its own dedicated category sets, baseline planning heuristic splits, per-guest budget floors, and task templates into the pure domain engines, ensuring consistent architectural guarantees across all celebrations.
+Across all three verticals, Gather defines 14 event sub-formats, 28 budget categories (10 wedding, 8 birthday, 10 community) with 21 bookable vendor evaluation guides (9 wedding, 5 birthday, 7 community), 75 planning milestone task templates, and 121 curated idea seeds. Each event type supplies its own dedicated category sets, baseline planning heuristic splits, per-guest budget floors, and task templates into the pure domain engines, ensuring consistent architectural guarantees across all celebrations.
 
 ### Mission Brief Alignment
 
