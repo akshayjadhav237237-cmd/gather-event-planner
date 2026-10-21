@@ -84,3 +84,44 @@ h6 {
     scroll-behavior: auto !important;
   }
 }
+
+@page {
+  margin: 16mm;
+}
+
+@media print {
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    border: 1px solid #000;
+    padding: 4px 8px;
+  }
+
+  tr,
+  li,
+  h2,
+  h3 {
+    break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
