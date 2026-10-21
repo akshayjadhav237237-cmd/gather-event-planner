@@ -7,6 +7,28 @@ import {
 import type { BackupPayload } from './backupTypes';
 
 const MAX_BACKUP_CHARS = 1_000_000;
+const FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
+
+function hasForbiddenKeys(obj: unknown): boolean {
+  if (obj === null || typeof obj !== 'object') {
+    return false;
+  }
+  if (Array.isArray(obj)) {
+    return obj.some(hasForbiddenKeys);
+  }
+  if (Object.prototype.hasOwnProperty.call(obj, '__proto__')) {
+    return true;
+  }
+  for (const key of Object.keys(obj)) {
+    if (FORBIDDEN_KEYS.has(key)) {
+      return true;
+    }
+    if (hasForbiddenKeys((obj as Record<string, unknown>)[key])) {
+      return true;
+    }
+  }
+  return false;
+}
 
 const BackupEnvelopeSchema = z
   .object({
@@ -51,14 +73,6 @@ export function parseBackup(
     return { ok: false, reason: 'File exceeds maximum allowed backup size.' };
   }
 
-  if (
-    text.includes('"__proto__"') ||
-    text.includes('"constructor"') ||
-    text.includes('"prototype"')
-  ) {
-    return { ok: false, reason: 'Backup contains prohibited property keys.' };
-  }
-
   let raw: unknown;
   try {
     raw = JSON.parse(text);
@@ -66,11 +80,13 @@ export function parseBackup(
     return { ok: false, reason: 'Invalid JSON format.' };
   }
 
+  if (hasForbiddenKeys(raw)) {
+    return { ok: false, reason: 'Backup contains prohibited property keys.' };
+  }
+
   const result = BackupEnvelopeSchema.safeParse(raw);
   if (!result.success) {
-    const issue = result.error.issues[0];
-    const message = issue ? issue.message : 'Validation failed';
-    return { ok: false, reason: `Invalid backup document: ${message}` };
+    return { ok: false, reason: 'Invalid backup document.' };
   }
 
   return { ok: true, value: result.data.data };

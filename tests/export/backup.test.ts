@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
 import { buildBackupJson, parseBackup } from '../../src/export/backup';
 import type { BackupPayload } from '../../src/export/backupTypes';
@@ -123,6 +123,82 @@ describe('backup serialization and parsing', () => {
   it('rejects negative spend amounts in actualSpend', () => {
     const payload = createMockPayload(0);
     payload.actualSpend['venue'] = -500;
+    const json = buildBackupJson(payload, '2027-01-01');
+    const result = parseBackup(json);
+    expect(result.ok).toBe(false);
+  });
+
+  it('restores backup with forbidden words in vendor name and notes as plain text', () => {
+    const payload = createMockPayload(0);
+    payload.vendorQuotes[0]!.vendorName = 'Prototype Constructor Events';
+    payload.context.userNotes = 'Check __proto__ and constructor in plain text.';
+    const json = buildBackupJson(payload, '2027-01-01T12:00:00.000Z');
+    const result = parseBackup(json);
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toEqual(payload);
+    }
+  });
+
+  it('rejects payload with an own key __proto__ inside taskCompletion', () => {
+    const payload = createMockPayload(0);
+    const json = buildBackupJson(payload, '2027-01-01');
+    const tainted = json.replace(
+      '"taskCompletion": {',
+      '"taskCompletion": {\n      "__proto__": true,'
+    );
+    const result = parseBackup(tainted);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe('Backup contains prohibited property keys.');
+    }
+  });
+
+  it('rejects payload with an own key constructor inside actualSpend', () => {
+    const payload = createMockPayload(0);
+    const json = buildBackupJson(payload, '2027-01-01');
+    const tainted = json.replace(
+      '"actualSpend": {',
+      '"actualSpend": {\n      "constructor": 500,'
+    );
+    const result = parseBackup(tainted);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason).toBe('Backup contains prohibited property keys.');
+    }
+  });
+
+  it('rejects oversize input without calling JSON.parse', () => {
+    const parseSpy = vi.spyOn(JSON, 'parse');
+    const huge = 'a'.repeat(1_000_001);
+    const result = parseBackup(huge);
+    expect(result.ok).toBe(false);
+    expect(parseSpy).not.toHaveBeenCalled();
+    parseSpy.mockRestore();
+  });
+
+  it('ensures failure reason never echoes content from an invalid file', () => {
+    const payload = createMockPayload(0);
+    const canary = 'UNIQUE_CANARY_INJECTION_STRING_12345';
+    payload.context.title = canary;
+    const raw = JSON.parse(buildBackupJson(payload, '2027-01-01'));
+    raw.data.context.subFormat = 'invalid-subformat';
+    const json = JSON.stringify(raw);
+    const result = parseBackup(json);
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.reason.includes(canary)).toBe(false);
+      expect(result.reason.includes('invalid-subformat')).toBe(false);
+    }
+  });
+
+  it('rejects a backup with more than 200 vendor quotes', () => {
+    const payload = createMockPayload(0);
+    const quote = payload.vendorQuotes[0]!;
+    payload.vendorQuotes = Array.from({ length: 201 }, (_, i) => ({
+      ...quote,
+      id: `q-${i}`,
+    }));
     const json = buildBackupJson(payload, '2027-01-01');
     const result = parseBackup(json);
     expect(result.ok).toBe(false);
