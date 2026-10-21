@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Download } from 'lucide-react';
 import { hasApiKey } from '../../ai';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -7,6 +8,7 @@ export interface HeaderProps {
   isWorkspace?: boolean;
   onOpenApiKey?: () => void;
   onOpenReset?: () => void;
+  onOpenExport?: () => void;
   apiKeyVersion?: number;
 }
 
@@ -14,6 +16,7 @@ export function Header({
   isWorkspace = false,
   onOpenApiKey,
   onOpenReset,
+  onOpenExport,
   apiKeyVersion = 0,
 }: HeaderProps) {
   const [hasKey, setHasKey] = useState(() => hasApiKey());
@@ -23,7 +26,7 @@ export function Header({
   }, [apiKeyVersion]);
 
   return (
-    <header className="border-b border-line bg-surface">
+    <header className="border-b border-line bg-surface print:hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         <div className="flex flex-col">
           <span className="text-xs uppercase tracking-widest text-muted font-semibold leading-tight">
@@ -39,6 +42,18 @@ export function Header({
             <Badge tone={hasKey ? 'accent' : 'neutral'}>
               {hasKey ? 'Live ideas ready' : 'Offline ideas'}
             </Badge>
+
+            {onOpenExport && (
+              <Button
+                variant="ghost"
+                size="sm"
+                icon={<Download className="w-4 h-4" aria-hidden="true" />}
+                onClick={onOpenExport}
+                aria-label="Export"
+              >
+                Export
+              </Button>
+            )}
 
             {onOpenApiKey && (
               <Button

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { clearApiKey, hasApiKey } from './ai';
+import { ExportDialog } from './components/export';
 import { Launchpad } from './components/launchpad/Launchpad';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
@@ -18,6 +19,7 @@ export function App() {
 
   const [isApiKeyOpen, setIsApiKeyOpen] = useState(false);
   const [isResetOpen, setIsResetOpen] = useState(false);
+  const [isExportOpen, setIsExportOpen] = useState(false);
   const [apiKeyVersion, setApiKeyVersion] = useState(0);
   const [hasLiveKey, setHasLiveKey] = useState(() => hasApiKey());
 
@@ -36,6 +38,9 @@ export function App() {
   const handleOpenReset = () => setIsResetOpen(true);
   const handleCloseReset = () => setIsResetOpen(false);
 
+  const handleOpenExport = () => setIsExportOpen(true);
+  const handleCloseExport = () => setIsExportOpen(false);
+
   const handleKeyChange = () => {
     setApiKeyVersion((v) => v + 1);
   };
@@ -48,12 +53,15 @@ export function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-bg text-ink selection:bg-accent-soft selection:text-ink">
-      <SkipLink />
+      <div className="print:hidden">
+        <SkipLink />
+      </div>
 
       <Header
         isWorkspace={isWorkspace}
         onOpenApiKey={handleOpenApiKey}
         onOpenReset={handleOpenReset}
+        onOpenExport={handleOpenExport}
         apiKeyVersion={apiKeyVersion}
       />
 
@@ -68,7 +76,9 @@ export function App() {
         )}
       </main>
 
-      <Footer />
+      <div className="print:hidden">
+        <Footer />
+      </div>
 
       <ApiKeyDialog
         open={isApiKeyOpen}
@@ -80,6 +90,11 @@ export function App() {
         open={isResetOpen}
         onClose={handleCloseReset}
         onConfirm={handleConfirmReset}
+      />
+
+      <ExportDialog
+        open={isExportOpen}
+        onClose={handleCloseExport}
       />
     </div>
   );

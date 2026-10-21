@@ -12,6 +12,7 @@ import { BudgetPanel } from '../panels/BudgetPanel';
 import { IdeasPanel } from '../panels/IdeasPanel';
 import { TimelinePanel } from '../panels/TimelinePanel';
 import { VendorsPanel } from '../panels/VendorsPanel';
+import { PrintBrief } from '../print';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -33,6 +34,9 @@ export function Workspace({
   const bundle = propBundle !== undefined ? propBundle : hookBundle;
 
   const taskCompletion = usePlanStore((s) => s.taskCompletion);
+  const actualSpend = usePlanStore((s) => s.actualSpend);
+  const vendorQuotes = usePlanStore((s) => s.vendorQuotes);
+  const ideas = usePlanStore((s) => s.ideas);
   const setContext = usePlanStore((s) => s.setContext);
   const clearAll = usePlanStore((s) => s.clearAll);
 
@@ -97,7 +101,7 @@ export function Workspace({
 
   return (
     <div className="space-y-8 animate-rise">
-      <header className="space-y-3">
+      <header className="space-y-3 print:hidden">
         <div className="flex flex-wrap items-center gap-2">
           <Badge tone="accent">{typeLabel}</Badge>
           <Badge tone="neutral">{formatLabel}</Badge>
@@ -111,23 +115,40 @@ export function Workspace({
         </h1>
       </header>
 
-      <ContextForm
-        key={bundle.context.id}
-        mode="edit"
-        initialDraft={draftFromContext(bundle.context)}
-        existingId={bundle.context.id}
-        onSubmit={setContext}
-      />
+      <div className="print:hidden">
+        <ContextForm
+          key={bundle.context.id}
+          mode="edit"
+          initialDraft={draftFromContext(bundle.context)}
+          existingId={bundle.context.id}
+          onSubmit={setContext}
+        />
+      </div>
 
-      <VitalsStrip bundle={bundle} taskCompletion={taskCompletion} />
+      <div className="print:hidden">
+        <VitalsStrip bundle={bundle} taskCompletion={taskCompletion} />
+      </div>
 
-      <AdaptationBanner adaptations={bundle.decision.adaptations} />
+      <div className="print:hidden">
+        <AdaptationBanner adaptations={bundle.decision.adaptations} />
+      </div>
 
-      <Tabs
-        label="Event plan views"
-        tabs={tabs}
-        activeId={activeTab}
-        onChange={setActiveTab}
+      <div className="print:hidden">
+        <Tabs
+          label="Event plan views"
+          tabs={tabs}
+          activeId={activeTab}
+          onChange={setActiveTab}
+        />
+      </div>
+
+      <PrintBrief
+        bundle={bundle}
+        taskCompletion={taskCompletion}
+        actualSpend={actualSpend}
+        vendorQuotes={vendorQuotes}
+        ideas={ideas}
+        today={today}
       />
     </div>
   );
