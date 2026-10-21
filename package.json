@@ -1,8 +1,21 @@
 {
-  "name": "celebration-and-event-planner",
+  "name": "gather-event-planner",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "GenAI-powered planning assistant organizing weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas.",
   "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "event-planner",
+    "celebration",
+    "wedding-planner",
+    "budget",
+    "timeline",
+    "gemini-ai",
+    "offline-first"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
