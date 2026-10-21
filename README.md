@@ -1,5 +1,13 @@
 # Gather: Celebration & Event Planner
 
+### Contents
+
+- [1. Chosen Vertical and Persona](#1-chosen-vertical-and-persona)
+- [2. Approach and Logic](#2-approach-and-logic)
+- [3. How the Solution Works](#3-how-the-solution-works)
+- [4. Assumptions Made](#4-assumptions-made)
+- [Limitations](#limitations)
+
 Gather is an offline-first, client-only Single Page Application built to coordinate cross-cultural weddings, milestone birthdays, and community events with deterministic financial allocations, backward-scheduled timelines, vendor evaluation checklists, and personalized ideas. Operating entirely inside the user's web browser, Gather couples pure TypeScript calculation engines with an offline-first dual-engine design that requires zero third-party accounts, remote databases, or API keys to function out of the box, while offering an optional live Google Gemini adapter for contextual idea generation.
 
 ### Quick Start
@@ -21,7 +29,7 @@ Gather is an offline-first, client-only Single Page Application built to coordin
    npm run build
    ```
 
-Gather requires zero API keys, login credentials, or external network connections to run out of the box. All calculations, budget splits, milestone timelines, vendor evaluation guides, run-of-show schedules, and curated ideas execute 100% offline using deterministic domain logic and local seed libraries. Live AI ideation using Google Gemini 2.5 Flash is strictly optional and can be enabled by entering an API key in the application interface, stored transiently in `sessionStorage` with zero persistence.
+Gather requires zero API keys, login credentials, or external network connections to run out of the box. All calculations, budget splits, milestone timelines, vendor evaluation guides, run-of-show schedules, and curated ideas execute 100% offline using deterministic domain logic and local seed libraries. Live AI ideation is strictly optional, targeting the Google Gemini model configured via `LIVE_MODEL_CONFIG` in `src/config/constants.ts` (configured as `'gemini-flash-latest'`, defined in that single location). It can be enabled by entering an API key in the application interface, stored transiently in `sessionStorage` with zero persistence.
 
 ## 1. Chosen Vertical and Persona
 
@@ -37,11 +45,11 @@ The flagship vertical addressed by Gather is the coordinator of cross-cultural, 
 ### Shared Domain Engine Across Event Types
 
 Gather uses the same core domain engine for all three celebration types:
-1. **Weddings**: Addresses multi-day sequencing, ceremonial stage turnarounds, specialized cultural catering, attire changes, and venue contracts.
-2. **Birthdays**: Focuses on age-tailored entertainment rotations (toddlers aged 1-3, school kids aged 4-12, teens, and adult milestones), surprise party reveal coordination, and strict allergy alerts (such as peanut or latex allergies).
-3. **Community Events**: Handles large crowd logistics, municipal liaison permits, volunteer marshalling schedules, sponsor deliverables, and public safety egress.
+1. **Weddings**: Addresses multi-day sequencing, ceremonial stage turnarounds, specialized cultural catering, attire changes, and venue contracts. Supported sub-formats (5): `western`, `indian_multiday`, `interfaith`, `destination`, and `micro_wedding`.
+2. **Birthdays**: Focuses on age-tailored entertainment rotations (toddlers aged 1-3, school kids aged 4-12, teens, and adult milestones), surprise party reveal coordination, and strict allergy alerts (such as peanut or latex allergies). Supported sub-formats (5): `kids_1_3`, `kids_4_12`, `teen`, `adult_milestone`, and `surprise`.
+3. **Community Events**: Handles large crowd logistics, municipal liaison permits, volunteer marshalling schedules, sponsor deliverables, and public safety egress. Supported sub-formats (4): `festival`, `fundraiser`, `neighborhood`, and `school_cultural`.
 
-Each event type supplies its own dedicated category sets, baseline planning heuristic splits, per-guest budget floors, and task templates into the pure domain engines, ensuring consistent architectural guarantees across all celebrations.
+Across all three verticals, Gather defines 14 event sub-formats, 28 vendor category definitions (10 wedding, 8 birthday, 10 community), 75 planning milestone task templates, and 121 curated idea seeds. Each event type supplies its own dedicated category sets, baseline planning heuristic splits, per-guest budget floors, and task templates into the pure domain engines, ensuring consistent architectural guarantees across all celebrations.
 
 ### Mission Brief Alignment
 
@@ -57,7 +65,7 @@ Gather directly aligns with the celebration planner mission brief:
 
 Gather separates critical planning mathematics from creative ideation:
 - **Pure TypeScript Domain Layer (`src/domain/`)**: Pure functions executing without DOM, browser storage, or system clock side-effects. Engines accept `today` as an explicit ISO string parameter (`YYYY-MM-DD`), making all calculations completely reproducible and testable.
-- **Offline-First AI Layer (`src/ai/`)**: An offline-first dual-engine design where a local deterministic generator (`src/ai/localIdeaGenerator.ts`) scores and selects ideas from curated banks. When an optional Gemini API key is provided, the live adapter (`src/ai/geminiClient.ts`) requests structured JSON completions, automatically falling back to the local engine on any network, schema, or rate-limit failure.
+- **Offline-First AI Layer (`src/ai/`)**: An offline-first dual-engine design where a local deterministic generator (`src/ai/localIdeaGenerator.ts`) scores and selects ideas from curated banks (121 seeds across wedding, birthday, and community catalogs in `src/data/ideas/`). When an optional Gemini API key is provided, the live adapter (`src/ai/geminiClient.ts`) requests structured JSON completions, automatically falling back to the local engine on any network, schema, or rate-limit failure.
 
 ### Context Signals and Rule Adaptations
 
@@ -127,7 +135,7 @@ flowchart TD
     subgraph S3["3. Offline-First Dual AI Layer"]
         EC & SIG & DM --> AIS["aiService.getIdeas()"]
         AIS -->|Default Offline Mode| LIG["Local Heuristic Idea Generator"]
-        AIS -->|Optional Live Key| GC["Gemini 2.5 Flash Client"]
+        AIS -->|Optional Live Key| GC["Gemini Live Adapter (gemini-flash-latest)"]
         GC -->|On Network or Schema Error| LIG
         LIG & GC --> SEC["Security & Zod Strict Validation"]
         SEC --> PI["PersonalizedIdeas"]
@@ -166,8 +174,8 @@ flowchart TD
 
 ### AI Operation Modes
 
-- `local`: Default mode. Uses deterministic pseudo-random hashing and context matching to select ideas from offline banks (`src/data/ideaBanks/`). Zero network latency and 100% offline reliability.
-- `live`: Activated when the user provides an API key. Calls Google Gemini 2.5 Flash (`gemini-flash-latest`) via `https://generativelanguage.googleapis.com/v1beta` with structured system instructions.
+- `local`: Default mode. Uses deterministic pseudo-random hashing and context matching to select ideas from offline banks (`src/data/ideas/`). Zero network latency and 100% offline reliability.
+- `live`: Activated when the user provides an API key. Calls Google Gemini via `https://generativelanguage.googleapis.com/v1beta` using the exact model string `'gemini-flash-latest'` configured in `LIVE_MODEL_CONFIG` in `src/config/constants.ts` (the single location where the live model ID is defined) with structured system instructions.
 - `fallback`: Instant, graceful degradation to the local generator if a live request fails, times out (after 8000ms), encounters rate limiting, or returns malformed JSON.
 
 ### Security Measures Implemented
@@ -184,15 +192,15 @@ flowchart TD
 
 ### Accessibility and Design System
 
-- **WCAG 2.1 AA Compliance Target**: Visual tokens defined in `src/index.css` are verified through automated test suites (`tests/contrast.test.ts`), maintaining contrast ratios exceeding 4.5:1 for muted text and 7:1 for primary ink against backgrounds.
+- **WCAG 2.1 AA Guidance**: Visual tokens defined in `src/index.css` are verified through automated test suites (`tests/contrast.test.ts`), maintaining contrast ratios exceeding 4.5:1 for muted text and 7:1 for primary ink against backgrounds.
 - **Native Semantic HTML**: All interactive elements utilize semantic `<button>`, `<input>`, `<select>`, `<dialog>`, and `<fieldset>` tags.
 - **Focus Visibility**: Custom focus rings (`:focus-visible`) styled via `--color-focus` tokens.
 - **Accessible Modals and Live Regions**: Modals utilize the HTML `<dialog>` element with backdrop dismissals and focus restoration. Status notifications and alerts incorporate `role="status"` and `role="alert"`.
-- **Accessibility Disclosure**: Gather was developed toward WCAG 2.1 AA standards using automated contract and contrast verification. Dedicated manual screen-reader testing with assistive technology (e.g. NVDA, JAWS, VoiceOver) was not conducted.
+- **Accessibility Testing Scope**: Gather was built toward WCAG 2.1 AA guidance using automated token contrast tests and keyboard-interaction tests. Automated visual-regression testing and manual screen-reader testing with assistive technology were not performed.
 
 ### Testing and Verification
 
-Gather features a Vitest test suite spanning 448+ automated tests across unit, integration, and render smoke tests:
+Gather features an automated Vitest test suite covering unit, integration, and render smoke tests (run `npm test` to execute the complete test suite):
 - **Calculation Engines**: Budget allocation invariants, largest-remainder rounding guarantees, backward timeline dependencies, and vendor quote rankings.
 - **AI Infrastructure**: Input sanitization, prompt construction, nonce validation, injection detection, response caching, and fallback transitions.
 - **Render Smoke Testing**: Full application and all four core panels are verified using `renderToStaticMarkup` across all demo scenarios (`tests/renderSmoke.test.tsx`), asserting zero `NaN`, `undefined`, `[object Object]`, or `Infinity` tokens.
@@ -243,10 +251,11 @@ fervent-euclid/
 │   ├── config/
 │   │   └── constants.ts           # Global configuration constants and boundaries
 │   ├── data/                      # Reference datasets and planning heuristics
-│   │   ├── budgetPresets/         # Baseline category percentages per event type
-│   │   ├── ideaBanks/             # Curated themes, catering ideas, and activities
+│   │   ├── ideas/                 # Curated themes, catering ideas, and activities
 │   │   ├── tasks/                 # Planning milestone templates per celebration type
 │   │   ├── vendors/               # Vendor evaluation guide templates
+│   │   ├── budgetPresets.ts       # Baseline category percentages per event type
+│   │   ├── categories.ts          # Category definitions per event type
 │   │   ├── decisionRulesCore.ts   # Core operational decision rules
 │   │   ├── decisionRulesContext.ts# Contextual and cultural decision rules
 │   │   ├── demoScenarios.ts       # Pre-configured demonstration event scenarios
@@ -314,13 +323,14 @@ fervent-euclid/
 | **Code Quality & Architecture** | Strict TypeScript configuration, zero `any` types, zero `@ts-ignore`, max 220 lines per file, pure calculation engines free of DOM/React imports. | `src/domain/`, `src/types/`, `tsconfig.json` |
 | **Problem Statement Alignment** | Comprehensive support for multi-day weddings, milestone birthdays, and community gatherings; integer budget allocations, topological timeline dependencies, vendor evaluation guides, and tailored ideas. | `src/domain/buildPlan.ts`, `src/data/` |
 | **Security Engineering** | Transient `sessionStorage` key handling, regex prompt injection scanning, cryptographically random XML nonces, Zod `.strict()` schema rejection, build-time CSP headers, and CSV formula injection defenses. | `src/ai/securityGuard.ts`, `src/export/csv.ts`, `vite.config.ts` |
-| **Performance & Efficiency** | Zero heavy UI component libraries, pure in-memory calculations executing in under 5 milliseconds, offline-first execution, and rapid bundle build times. | `src/domain/budgetEngine.ts`, `src/ai/localIdeaGenerator.ts` |
-| **Testing & Verification** | 448+ automated tests covering edge cases, arithmetic invariants, prompt construction, SSR render smoke tests, and design token contrast audits. | `tests/`, `tests/renderSmoke.test.tsx` |
-| **Accessibility & Design System** | Native semantic HTML controls, WCAG 2.1 AA token contrast ratios verified via unit tests, visible focus rings, ARIA live regions, and screen-reader accessibility disclosures. | `tests/contrast.test.ts`, `src/components/ui/` |
+| **Performance & Efficiency** | Zero heavy UI component libraries, pure in-memory calculation engines, offline-first execution, and lean asset bundles (run `npm run build` to verify). | `src/domain/budgetEngine.ts`, `src/ai/localIdeaGenerator.ts` |
+| **Testing & Verification** | Automated test suite (run `npm test` to verify) covering edge cases, arithmetic invariants, prompt construction, SSR render smoke tests, and design token contrast audits. | `tests/`, `tests/renderSmoke.test.tsx` |
+| **Accessibility & Design System** | Native semantic HTML controls, token contrast ratios verified against WCAG 2.1 AA guidance via unit tests, visible focus rings, ARIA live regions, and testing scope disclosures. | `tests/contrast.test.ts`, `src/components/ui/` |
 
 ## Limitations
 
-1. **Browser-Local Storage**: Event plans are persisted exclusively to the user's browser via `localStorage`. To transfer plans between devices or browsers, users must manually export and restore a JSON backup.
-2. **Optional Live AI Connectivity**: Live AI ideation requires an active internet connection and a valid Google Gemini API key provided by the user. When offline or without an API key, the system uses the local heuristic generator.
-3. **Screen-Reader Testing Scope**: While built using semantic HTML, ARIA attributes, and token contrast ratios meeting WCAG 2.1 AA standards, Gather has not undergone formal end-to-end evaluation with physical assistive screen-reading software.
-4. **Browser Print Rendering**: Physical and PDF brief generation relies on the native print engine of the host web browser, which may introduce minor layout differences across different operating systems and print drivers.
+1. **Testing Scope**: No automated visual-regression testing and no screen-reader testing were performed. Accessibility was built toward WCAG 2.1 AA and checked with automated contrast tests and keyboard-interaction tests only.
+2. **Planning Numbers**: Planning numbers are heuristics. All percentage splits, spending baselines, milestone horizons, and contingency reserves are heuristic planning guidelines intended as starting points, not empirical facts or legal guarantees.
+3. **Storage Architecture**: Single-device local storage only. Plans are persisted exclusively to browser `localStorage` on the host device; transferring plans between devices or browsers requires manual JSON export and restore.
+4. **Live AI Availability**: Live AI ideation requires an active internet connection and a user-provided Google Gemini API key. When offline or without an API key, the system uses the deterministic local heuristic generator.
+5. **Print Engine Dependency**: Physical and PDF brief formatting relies on the native print engine of the host web browser, which may introduce minor layout differences across operating systems and print drivers.
