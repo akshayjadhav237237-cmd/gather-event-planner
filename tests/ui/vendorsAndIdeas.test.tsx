@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setApiKey } from '../../src/ai/apiKeyStorage';
@@ -35,19 +35,19 @@ describe('Vendors and Ideas Interaction Tests', () => {
     await user.click(vendorsTab);
 
     // Click Save quote with empty form
-    const saveBtn = screen.getByRole('button', { name: /save quote/i });
+    const saveBtn = await screen.findByRole('button', { name: /save quote/i });
     await user.click(saveBtn);
 
     // Validation errors displayed
-    expect(screen.getByText('Vendor name is required.')).toBeDefined();
-    expect(screen.getByText('Base quote must be a whole number 0 or greater.')).toBeDefined();
+    expect(await screen.findByText('Vendor name is required.')).toBeDefined();
+    expect(await screen.findByText('Base quote must be a whole number 0 or greater.')).toBeDefined();
 
     // Enter valid quote details
     const nameInput = screen.getByLabelText(/vendor name/i);
-    await user.type(nameInput, 'Grand Palace Catering');
+    fireEvent.change(nameInput, { target: { value: 'Grand Palace Catering' } });
 
     const baseInput = screen.getByLabelText(/base quote/i);
-    await user.type(baseInput, '50000');
+    fireEvent.change(baseInput, { target: { value: '50000' } });
 
     await user.click(saveBtn);
 
@@ -69,7 +69,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
   // Test 7: Ideas (no key): Idea sections render; clicking Regenerate keeps app stable with no depth errors
   it('renders idea sections and keeps app stable without maximum update depth errors on regenerate', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null, skipHover: true, pointerEventsCheck: 0 });
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
@@ -78,10 +78,10 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
     // Switch to Ideas tab
     const ideasTab = screen.getByRole('tab', { name: /ideas/i });
-    await user.click(ideasTab);
+    fireEvent.click(ideasTab);
 
     // Verify sections render
-    expect(screen.getByText('Themes')).toBeDefined();
+    expect(await screen.findByText('Themes')).toBeDefined();
     expect(screen.getByText('Food & Drink')).toBeDefined();
     expect(screen.getByText('Activities')).toBeDefined();
 
@@ -109,7 +109,6 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
   // Test 8: Ideas with key & failing network: Network failure triggers offline fallback; key NEVER leaks
   it('falls back to offline mode on network failure without leaking the API key in rendered text', async () => {
-    const user = userEvent.setup();
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
@@ -124,11 +123,11 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
     // Switch to Ideas tab
     const ideasTab = screen.getByRole('tab', { name: /ideas/i });
-    await user.click(ideasTab);
+    fireEvent.click(ideasTab);
 
     // Click Refresh all ideas
-    const refreshBtn = screen.getByRole('button', { name: /refresh all ideas/i });
-    await user.click(refreshBtn);
+    const refreshBtn = await screen.findByRole('button', { name: /refresh all ideas/i });
+    fireEvent.click(refreshBtn);
 
     // Offline fallback text is shown
     expect(await screen.findByText('Offline fallback')).toBeDefined();
@@ -143,7 +142,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
   // Test 9: AI settings dialog: invalid key shows error; Escape or Done closes dialog
   it('validates invalid API key and closes dialog when dismissed', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null, skipHover: true, pointerEventsCheck: 0 });
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
@@ -159,7 +158,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
     // Enter invalid key
     const keyInput = screen.getByLabelText(/gemini api key/i);
-    await user.type(keyInput, 'invalid');
+    fireEvent.change(keyInput, { target: { value: 'invalid' } });
 
     // Click Save key
     const saveKeyBtn = screen.getByRole('button', { name: /save key/i });

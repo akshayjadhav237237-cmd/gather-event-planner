@@ -23,13 +23,14 @@ describe('Export and Restore Interaction Tests', () => {
 
   // Test 11: Export dialog: clipboard success & fallback, calendar download blob invocation
   it('handles clipboard copy with announcement, provides fallback on unavailable clipboard, and downloads ics blob', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null, skipHover: true, pointerEventsCheck: 0 });
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
 
     const { writeText } = stubClipboard();
     const { createObjectURL } = stubObjectURL();
+    const anchorClickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
 
     render(<App />);
 
@@ -57,7 +58,7 @@ describe('Export and Restore Interaction Tests', () => {
       writable: true,
     });
     await user.click(copyBtn);
-    expect(screen.getByText('Copying is not available here. Use a download instead.')).toBeDefined();
+    expect(await screen.findByText('Copying is not available here. Use a download instead.')).toBeDefined();
 
     // 3. Calendar download invokes URL.createObjectURL with a Blob
     const calendarHeading = screen.getByText('Calendar file (.ics)');
@@ -69,11 +70,12 @@ describe('Export and Restore Interaction Tests', () => {
     expect(createObjectURL).toHaveBeenCalled();
     const createdBlob = createObjectURL.mock.calls[0]?.[0];
     expect(createdBlob instanceof Blob).toBe(true);
+    expect(anchorClickSpy).toHaveBeenCalled();
   });
 
   // Test 12: Backup and restore: valid file triggers confirmation and restores plan; invalid file shows warning
   it('triggers confirmation step and replaces store on valid backup, while showing warning on invalid backup', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null, skipHover: true, pointerEventsCheck: 0 });
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);

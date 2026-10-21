@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { App } from '../../src/App';
@@ -16,8 +16,7 @@ describe('Launchpad and Tabs Interaction Tests', () => {
   });
 
   // Test 1: Launchpad shows single h1; clicking sample scenario card loads scenario workspace with title as h1
-  it('renders Launchpad with single h1, loads sample scenario on card click, and presents workspace h1', async () => {
-    const user = userEvent.setup();
+  it('renders Launchpad with single h1, loads sample scenario on card click, and presents workspace h1', () => {
     render(<App />);
 
     const headings = screen.getAllByRole('heading', { level: 1 });
@@ -27,7 +26,7 @@ describe('Launchpad and Tabs Interaction Tests', () => {
     const scenarioCard = screen.getByRole('button', {
       name: /Multiday Traditional Wedding/i,
     });
-    await user.click(scenarioCard);
+    fireEvent.click(scenarioCard);
 
     const workspaceHeadings = screen.getAllByRole('heading', { level: 1 });
     expect(workspaceHeadings).toHaveLength(1);
@@ -36,11 +35,11 @@ describe('Launchpad and Tabs Interaction Tests', () => {
 
   // Test 2: Tabs exist; keyboard navigation updates active tab; only active panel is mounted
   it('provides accessible tabs navigable via Arrow keys, Home, and End, mounting only the active panel', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup({ delay: null, skipHover: true, pointerEventsCheck: 0 });
     render(<App />);
 
     // Load scenario to reach workspace
-    await user.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
 
     const budgetTab = screen.getByRole('tab', { name: /budget/i });
     const timelineTab = screen.getByRole('tab', { name: /timeline/i });
@@ -88,22 +87,21 @@ describe('Launchpad and Tabs Interaction Tests', () => {
   });
 
   // Test 10: Start over button opens reset confirmation dialog; confirming clears store and returns to launchpad
-  it('opens reset confirmation dialog from header and returns to launchpad when confirmed', async () => {
-    const user = userEvent.setup();
+  it('opens reset confirmation dialog from header and returns to launchpad when confirmed', () => {
     render(<App />);
 
     // Enter workspace via scenario
-    await user.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
     expect(screen.getByRole('heading', { level: 1 }).textContent).toContain('Multiday Traditional Wedding');
 
     // Click Start over in header
     const startOverBtn = screen.getByRole('button', { name: /start over/i });
-    await user.click(startOverBtn);
+    fireEvent.click(startOverBtn);
 
     // Confirmation dialog appears
     expect(screen.getByText('Clear everything on this device?')).toBeDefined();
     const confirmBtn = screen.getByRole('button', { name: /clear everything/i });
-    await user.click(confirmBtn);
+    fireEvent.click(confirmBtn);
 
     // Returns to launchpad with its single h1
     const headings = screen.getAllByRole('heading', { level: 1 });

@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from '../../src/App';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
@@ -22,8 +21,7 @@ describe('Timeline and Budget Interaction Tests', () => {
   });
 
   // Test 3: Timeline: Ticking a task checkbox increases "tasks done" count in vitals; unticking decreases it
-  it('updates completed task counts in vitals strip when checkboxes are toggled in timeline', async () => {
-    const user = userEvent.setup();
+  it('updates completed task counts in vitals strip when checkboxes are toggled in timeline', () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     const bundle = buildPlan(scenario.context, TODAY);
@@ -33,7 +31,7 @@ describe('Timeline and Budget Interaction Tests', () => {
 
     // Switch to Timeline tab
     const timelineTab = screen.getByRole('tab', { name: /timeline/i });
-    await user.click(timelineTab);
+    fireEvent.click(timelineTab);
 
     const firstTask = bundle.timeline.tasks.find((t) => !t.skippedInCompression);
     if (!firstTask) throw new Error('No unskipped task found');
@@ -45,11 +43,11 @@ describe('Timeline and Budget Interaction Tests', () => {
     expect(taskCheckbox).toBeDefined();
 
     // Tick task checkbox
-    await user.click(taskCheckbox);
+    fireEvent.click(taskCheckbox);
     expect(screen.getByText(`1/${totalTasks}`)).toBeDefined();
 
     // Untick task checkbox
-    await user.click(taskCheckbox);
+    fireEvent.click(taskCheckbox);
     expect(screen.getByText(`0/${totalTasks}`)).toBeDefined();
   });
 
