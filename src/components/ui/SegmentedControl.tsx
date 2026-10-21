@@ -25,10 +25,16 @@ export function SegmentedControl<T extends string>({
   disabled = false,
   className = '',
 }: SegmentedControlProps<T>) {
+  const fieldsetClass = [
+    'border-0 p-0 m-0',
+    disabled ? 'opacity-50 cursor-not-allowed' : '',
+    className,
+  ].filter(Boolean).join(' ');
+
   return (
     <fieldset
       disabled={disabled}
-      className={`border-0 p-0 m-0 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`.trim()}
+      className={fieldsetClass}
     >
       <legend
         className={
@@ -42,13 +48,16 @@ export function SegmentedControl<T extends string>({
         {options.map((opt) => {
           const isSelected = value === opt.value;
           const inputId = `${name}-${opt.value}`;
+          const labelClass = [
+            'relative cursor-pointer select-none',
+            disabled ? 'cursor-not-allowed pointer-events-none' : '',
+          ].filter(Boolean).join(' ');
+
           return (
             <label
               key={opt.value}
               htmlFor={inputId}
-              className={`relative cursor-pointer select-none ${
-                disabled ? 'cursor-not-allowed pointer-events-none' : ''
-              }`}
+              className={labelClass}
             >
               <input
                 id={inputId}

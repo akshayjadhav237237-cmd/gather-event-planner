@@ -20,9 +20,14 @@ export function Disclosure({
 }: DisclosureProps) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const triggerId = `${id}-trigger`;
+  const containerClass = ['border border-line rounded-card bg-surface', className].filter(Boolean).join(' ');
+  const chevronClass = [
+    'shrink-0 text-muted transition-transform duration-150 ease-out',
+    isOpen ? 'rotate-180 text-ink' : '',
+  ].filter(Boolean).join(' ');
 
   return (
-    <div className={`border border-line rounded-card bg-surface ${className}`.trim()}>
+    <div className={containerClass}>
       <button
         id={triggerId}
         type="button"
@@ -39,9 +44,7 @@ export function Disclosure({
           size={18}
           strokeWidth={1.5}
           aria-hidden="true"
-          className={`shrink-0 text-muted transition-transform duration-150 ease-out ${
-            isOpen ? 'rotate-180 text-ink' : ''
-          }`}
+          className={chevronClass}
         />
       </button>
 

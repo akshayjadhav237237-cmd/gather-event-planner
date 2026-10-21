@@ -53,9 +53,11 @@ export function ContextForm({
       ? `Form has ${errorCount} error${errorCount > 1 ? 's' : ''}. Please correct them.`
       : '';
 
+  const formClass = ['flex flex-col gap-6', className].filter(Boolean).join(' ');
+
   if (mode === 'edit') {
     return (
-      <form onSubmit={handleSubmit} className={`flex flex-col gap-6 ${className}`.trim()} noValidate>
+      <form onSubmit={handleSubmit} className={formClass} noValidate>
         <VisuallyHidden role="status" aria-live="polite">
           {errorSummary}
         </VisuallyHidden>
@@ -100,7 +102,7 @@ export function ContextForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className={`flex flex-col gap-6 ${className}`.trim()} noValidate>
+    <form onSubmit={handleSubmit} className={formClass} noValidate>
       <VisuallyHidden role="status" aria-live="polite">
         {errorSummary}
       </VisuallyHidden>

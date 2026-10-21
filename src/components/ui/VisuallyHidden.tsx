@@ -12,8 +12,10 @@ export function VisuallyHidden({
   className = '',
   ...props
 }: VisuallyHiddenProps) {
+  const hiddenClass = ['sr-only', className].filter(Boolean).join(' ');
+
   return (
-    <Component className={`sr-only ${className}`.trim()} {...props}>
+    <Component className={hiddenClass} {...props}>
       {children}
     </Component>
   );

@@ -31,11 +31,18 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       sm: 'min-h-[36px] px-3 py-1.5 text-sm gap-1.5',
     }[size];
 
+    const buttonClass = [
+      'inline-flex items-center justify-center font-medium rounded-control transition-colors duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
+      variantStyles,
+      sizeStyles,
+      className,
+    ].filter(Boolean).join(' ');
+
     return (
       <button
         ref={ref}
         type={type}
-        className={`inline-flex items-center justify-center font-medium rounded-control transition-colors duration-150 ease-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus focus-visible:outline-offset-2 disabled:opacity-50 disabled:pointer-events-none cursor-pointer ${variantStyles} ${sizeStyles} ${className}`.trim()}
+        className={buttonClass}
         {...props}
       >
         {icon}

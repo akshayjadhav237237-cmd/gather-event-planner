@@ -29,9 +29,10 @@ export function FormField({
 
   const describedBy = [errorId, hintId].filter(Boolean).join(' ') || undefined;
   const isInvalid = error ? true : undefined;
+  const fieldClass = ['flex flex-col gap-1.5', className].filter(Boolean).join(' ');
 
   return (
-    <div className={`flex flex-col gap-1.5 ${className}`.trim()}>
+    <div className={fieldClass}>
       <label htmlFor={id} className="text-sm font-medium text-ink">
         {label}
       </label>

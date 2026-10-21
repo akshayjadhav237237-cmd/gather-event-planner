@@ -19,8 +19,25 @@ export function ChipCheckbox({
   onChange,
   className = '',
 }: ChipCheckboxProps) {
+  const containerClass = ['inline-flex', className].filter(Boolean).join(' ');
+  const labelClass = [
+    'min-h-[44px] inline-flex items-center gap-2.5 px-3.5 py-2 rounded-control border text-sm select-none transition-colors duration-150 ease-out peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-2',
+    checked
+      ? 'bg-accent-soft border-accent text-ink font-medium'
+      : 'bg-surface border-line-control text-ink hover:bg-sunken',
+    disabled
+      ? 'opacity-50 cursor-not-allowed pointer-events-none'
+      : 'cursor-pointer',
+  ].join(' ');
+  const boxClass = [
+    'w-4 h-4 rounded flex items-center justify-center shrink-0 border',
+    checked
+      ? 'border-accent bg-accent text-accent-ink'
+      : 'border-line-control bg-surface',
+  ].join(' ');
+
   return (
-    <div className={`inline-flex ${className}`.trim()}>
+    <div className={containerClass}>
       <input
         type="checkbox"
         id={id}
@@ -29,25 +46,8 @@ export function ChipCheckbox({
         onChange={(e) => onChange(e.target.checked)}
         className="sr-only peer"
       />
-      <label
-        htmlFor={id}
-        className={`min-h-[44px] inline-flex items-center gap-2.5 px-3.5 py-2 rounded-control border text-sm select-none transition-colors duration-150 ease-out peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-2 ${
-          checked
-            ? 'bg-accent-soft border-accent text-ink font-medium'
-            : 'bg-surface border-line-control text-ink hover:bg-sunken'
-        } ${
-          disabled
-            ? 'opacity-50 cursor-not-allowed pointer-events-none'
-            : 'cursor-pointer'
-        }`}
-      >
-        <span
-          className={`w-4 h-4 rounded flex items-center justify-center shrink-0 border ${
-            checked
-              ? 'border-accent bg-accent text-accent-ink'
-              : 'border-line-control bg-surface'
-          }`}
-        >
+      <label htmlFor={id} className={labelClass}>
+        <span className={boxClass}>
           {checked && (
             <Check
               size={16}

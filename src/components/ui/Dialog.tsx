@@ -68,12 +68,17 @@ export function Dialog({
     };
   }, [onClose]);
 
+  const dialogClass = [
+    'backdrop:bg-ink/40 bg-surface text-ink rounded-card p-6 max-w-lg w-full border border-line shadow-[0_24px_64px_-24px_rgba(28,25,23,0.25)] animate-rise m-auto focus-visible:outline-none',
+    className,
+  ].filter(Boolean).join(' ');
+
   return (
     <dialog
       ref={dialogRef}
       aria-labelledby="dialog-title"
       aria-describedby={description ? 'dialog-desc' : undefined}
-      className={`backdrop:bg-ink/40 bg-surface text-ink rounded-card p-6 max-w-lg w-full border border-line shadow-[0_24px_64px_-24px_rgba(28,25,23,0.25)] animate-rise m-auto focus-visible:outline-none ${className}`.trim()}
+      className={dialogClass}
     >
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex flex-col">

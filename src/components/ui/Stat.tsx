@@ -14,8 +14,10 @@ export function Stat({
   className = '',
   ...props
 }: StatProps) {
+  const statClass = ['flex flex-col gap-1', className].filter(Boolean).join(' ');
+
   return (
-    <div className={`flex flex-col gap-1 ${className}`.trim()} {...props}>
+    <div className={statClass} {...props}>
       <span className="text-xs uppercase tracking-wider text-muted font-semibold">
         {label}
       </span>

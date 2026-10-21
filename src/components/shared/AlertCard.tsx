@@ -39,11 +39,15 @@ function renderToneIcon(tone: AlertTone): ReactNode {
 }
 
 export const AlertCard: FC<AlertCardProps> = ({ tone, title, children, actions }) => {
+  const containerClass = [
+    'rounded-card p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3.5',
+    TONE_CONTAINER_CLASSES[tone],
+  ].join(' ');
+  const iconClass = ['shrink-0 mt-0.5', TONE_ICON_CLASSES[tone]].join(' ');
+
   return (
-    <aside
-      className={`rounded-card p-4 sm:p-5 flex flex-col sm:flex-row items-start gap-3.5 ${TONE_CONTAINER_CLASSES[tone]}`}
-    >
-      <span className={`shrink-0 mt-0.5 ${TONE_ICON_CLASSES[tone]}`}>
+    <aside className={containerClass}>
+      <span className={iconClass}>
         {renderToneIcon(tone)}
       </span>
       <div className="flex-1 space-y-1.5">

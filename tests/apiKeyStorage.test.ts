@@ -58,7 +58,7 @@ class ThrowingStorage implements Storage {
 
 describe('apiKeyStorage', () => {
   const originalStorage = globalThis.sessionStorage;
-  const validKey = 'TESTKSyD-1234567890abcdefghijklmnopqrstuvwxyz';
+  const validKey = 'TEST_MOCK_GEMINI_API_KEY_1234567890_VALID';
 
   beforeEach(() => {
     globalThis.sessionStorage = new MockStorage();

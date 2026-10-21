@@ -23,11 +23,14 @@ export function Badge({
     success: 'bg-success-soft text-success',
   }[tone];
 
+  const badgeClass = [
+    'rounded-full text-xs font-medium px-2.5 py-1 inline-flex items-center gap-1.5',
+    toneStyles,
+    className,
+  ].filter(Boolean).join(' ');
+
   return (
-    <span
-      className={`rounded-full text-xs font-medium px-2.5 py-1 inline-flex items-center gap-1.5 ${toneStyles} ${className}`.trim()}
-      {...props}
-    >
+    <span className={badgeClass} {...props}>
       {icon}
       {children}
     </span>
