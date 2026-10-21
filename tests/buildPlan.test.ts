@@ -10,37 +10,47 @@ function assertInvariants(plan: PlanBundle, today: string): void {
   const { context, budget, timeline } = plan;
 
   const categorySum = budget.categories.reduce((acc, cat) => acc + cat.allocatedAmount, 0);
-  expect(categorySum + budget.contingencyAmount).toBe(context.totalBudget);
+  if (categorySum + budget.contingencyAmount !== context.totalBudget) {
+    throw new Error('Invariant failed: total budget sum mismatch');
+  }
 
-  expect(Number.isFinite(budget.contingencyAmount)).toBe(true);
-  expect(Number.isNaN(budget.contingencyAmount)).toBe(false);
+  if (!Number.isFinite(budget.contingencyAmount) || Number.isNaN(budget.contingencyAmount)) {
+    throw new Error('Invariant failed: non-finite contingency');
+  }
 
   for (const cat of budget.categories) {
-    expect(Number.isFinite(cat.allocatedAmount)).toBe(true);
-    expect(Number.isNaN(cat.allocatedAmount)).toBe(false);
-    expect(Number.isFinite(cat.allocatedPct)).toBe(true);
-    expect(Number.isNaN(cat.allocatedPct)).toBe(false);
+    if (!Number.isFinite(cat.allocatedAmount) || Number.isNaN(cat.allocatedAmount)) {
+      throw new Error(`Invariant failed: invalid allocatedAmount for ${cat.id}`);
+    }
+    if (!Number.isFinite(cat.allocatedPct) || Number.isNaN(cat.allocatedPct)) {
+      throw new Error(`Invariant failed: invalid allocatedPct for ${cat.id}`);
+    }
   }
 
   const taskMap = new Map(timeline.tasks.map((t) => [t.id, t]));
   for (const task of timeline.tasks) {
-    expect(task.dueDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(task.dueDate)) {
+      throw new Error(`Invariant failed: invalid dueDate format for ${task.id}`);
+    }
     if (plan.signals.isPast) {
-      expect(task.dueDate).toBe(today);
+      if (task.dueDate !== today) throw new Error(`Invariant failed: past task due date != today`);
     } else {
-      expect(task.dueDate >= today).toBe(true);
-      expect(task.dueDate <= context.eventDate).toBe(true);
+      if (task.dueDate < today || task.dueDate > context.eventDate) {
+        throw new Error(`Invariant failed: task due date out of bounds for ${task.id}`);
+      }
     }
 
     for (const depId of task.dependsOn) {
       const depTask = taskMap.get(depId);
-      if (depTask) {
-        expect(task.dueDate >= depTask.dueDate).toBe(true);
+      if (depTask && task.dueDate < depTask.dueDate) {
+        throw new Error(`Invariant failed: dependency ordering violated for ${task.id}`);
       }
     }
   }
 
-  expect(plan.vendorGuides.length).toBeGreaterThan(0);
+  if (plan.vendorGuides.length === 0) {
+    throw new Error('Invariant failed: zero vendor guides');
+  }
 }
 
 describe('buildPlan Integration Tests', () => {
