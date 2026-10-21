@@ -5,8 +5,9 @@ import { LlmError } from '../src/ai/llmError';
 import { createResponseCache } from '../src/ai/responseCache';
 import type { ContextSignals, DecisionResult } from '../src/types/engine';
 import type { EventContext, PersonalizedIdeas } from '../src/types/event';
+import { FAKE_KEY_A } from './helpers/fakeKeys';
 
-const TEST_KEY = 'test-api-key-1234567890abcdef123456';
+const TEST_KEY = FAKE_KEY_A;
 
 function makeInput(overrides: Partial<EventContext> = {}): AiPlanInput {
   const context: EventContext = {

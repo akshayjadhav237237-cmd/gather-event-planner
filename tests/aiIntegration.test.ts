@@ -5,6 +5,7 @@ import { createResponseCache } from '../src/ai/responseCache';
 import { getDemoScenarios } from '../src/data/demoScenarios';
 import { buildPlan } from '../src/domain/buildPlan';
 import { PersonalizedIdeasSchema } from '../src/types/schemas';
+import { FAKE_KEY_B } from './helpers/fakeKeys';
 
 const VALID_LIVE_JSON = JSON.stringify({
   themeConcepts: [
@@ -144,7 +145,7 @@ describe('AI Layer Integration with buildPlan across all Demo Scenarios', () => 
     for (const sc of scenarios) {
       const plan = buildPlan(sc.context, referenceDate);
       const result = await generateIdeas(plan, {
-        apiKey: 'mock-valid-api-key-test-value-12345',
+        apiKey: FAKE_KEY_B,
         client: fakeClient,
         notes: sc.context.userNotes,
         now: () => (mockClock += 5000),
@@ -170,7 +171,7 @@ describe('AI Layer Integration with buildPlan across all Demo Scenarios', () => 
     for (const sc of scenarios) {
       const plan = buildPlan(sc.context, referenceDate);
       const result = await generateIdeas(plan, {
-        apiKey: 'mock-valid-api-key-test-value-12345',
+        apiKey: FAKE_KEY_B,
         client: garbageClient,
         notes: sc.context.userNotes,
         now: () => (mockClock += 5000),

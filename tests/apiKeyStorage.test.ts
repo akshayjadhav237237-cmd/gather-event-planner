@@ -1,6 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { clearApiKey, getApiKey, hasApiKey, setApiKey } from '../src/ai/apiKeyStorage';
 import { API_KEY_SESSION_KEY } from '../src/config/constants';
+import { FAKE_KEY_A } from './helpers/fakeKeys';
 
 class MockStorage implements Storage {
   private store = new Map<string, string>();
@@ -58,7 +59,7 @@ class ThrowingStorage implements Storage {
 
 describe('apiKeyStorage', () => {
   const originalStorage = globalThis.sessionStorage;
-  const validKey = 'TEST_MOCK_GEMINI_API_KEY_1234567890_VALID';
+  const validKey = FAKE_KEY_A;
 
   beforeEach(() => {
     globalThis.sessionStorage = new MockStorage();

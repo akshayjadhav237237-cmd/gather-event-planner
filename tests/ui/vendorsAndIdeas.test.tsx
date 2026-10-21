@@ -7,6 +7,7 @@ import { App } from '../../src/App';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
 import { usePlanStore } from '../../src/store/planStore';
 import { resetTestStore } from '../helpers/dom';
+import { FAKE_KEY_A } from '../helpers/fakeKeys';
 
 const TODAY = '2026-10-20';
 
@@ -113,7 +114,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
 
-    const FAKE_KEY = 'TEST_MOCK_GEMINI_API_KEY_1234567890_VALID';
+    const FAKE_KEY = FAKE_KEY_A;
     setApiKey(FAKE_KEY);
 
     // Stub fetch to simulate network failure

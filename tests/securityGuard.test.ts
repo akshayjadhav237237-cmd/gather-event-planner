@@ -10,6 +10,7 @@ import {
   wrapUntrusted,
 } from '../src/ai/securityGuard';
 import type { PersonalizedIdeas } from '../src/types/event';
+import { FAKE_KEY_A } from './helpers/fakeKeys';
 
 function createValidIdeas(): PersonalizedIdeas {
   const theme = (id: string) => ({
@@ -200,10 +201,10 @@ describe('validateIdeas', () => {
 
 describe('isPlausibleApiKey', () => {
   it('validates plausible API key tokens', () => {
-    expect(isPlausibleApiKey('TESTKSyD-1234567890abcdef_GHIJKLMN')).toBe(true);
+    expect(isPlausibleApiKey(FAKE_KEY_A)).toBe(true);
     expect(isPlausibleApiKey('a'.repeat(20))).toBe(true);
     expect(isPlausibleApiKey('b'.repeat(200))).toBe(true);
-    expect(isPlausibleApiKey('   TESTKSyD-1234567890abcdef_GHIJKLMN   ')).toBe(true);
+    expect(isPlausibleApiKey(`   ${FAKE_KEY_A}   `)).toBe(true);
   });
 
   it('rejects invalid, short, oversized, or malformed API keys', () => {

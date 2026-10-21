@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createGeminiClient } from '../src/ai/geminiClient';
 import { LlmError } from '../src/ai/llmError';
+import { FAKE_KEY_A } from './helpers/fakeKeys';
 
-const TEST_KEY = 'TESTKSyA_SECRET_KEY_1234567890';
+const TEST_KEY = FAKE_KEY_A;
 const SENSITIVE_BODY = 'Detailed provider trace with secret credentials';
 
 function makeResponse(body: string, init?: ResponseInit): Response {
