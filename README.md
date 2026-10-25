@@ -38,7 +38,7 @@ Gather requires zero API keys, login credentials, or external network connection
 ### Flagship Vertical: Cross-Cultural and Multi-Day Wedding Coordination
 
 The flagship vertical addressed by Gather is the coordinator of cross-cultural, interfaith, and multi-day weddings. Families planning celebrations in this category face logistical challenges that conventional single-day wedding tools cannot handle:
-- Multi-day ceremonial sequencing spanning distinct events (such as Haldi, Mehndi, Sangeet, Main Ceremony, and Reception), coordinated via dedicated milestone tasks and attire/logistics checklists, alongside a synchronized minute-by-minute day-of run-of-show schedule for the primary celebration day.
+- Multi-day milestone coordination spanning distinct ceremonies (such as Haldi, Mehndi, Sangeet, Main Ceremony, and Reception), planned through dedicated milestone tasks (`WEDDING_MULTIDAY_TASKS`) alongside a synchronized minute-by-minute run-of-show schedule for the primary celebration day (`INDIAN_MULTIDAY_WEDDING_TEMPLATE`). Pre-wedding rituals are organized through sequential planning milestones rather than separate day-of run-of-show schedules.
 - Strict cultural and dietary requirements (including Jain, vegetarian, Halal, and vegan diets) requiring dedicated catering isolation and vendor compliance checklists.
 - Intergenerational guest accommodations, accounting for elderly mobility needs (step-free access, shaded seating, low-decibel breakout spaces) and multi-age schedules.
 - Seasonal weather vulnerabilities, specifically outdoor monsoon rains or extreme summer heat in regional climates, requiring reserve buffers and contingency shelters.
@@ -47,7 +47,7 @@ The flagship vertical addressed by Gather is the coordinator of cross-cultural, 
 ### Shared Domain Engine Across Event Types
 
 Gather uses the same core domain engine for all three celebration types:
-1. **Weddings**: Addresses multi-day sequencing, ceremonial stage turnarounds, specialized cultural catering, attire changes, and venue contracts. Supported sub-formats (5): `western`, `indian_multiday`, `interfaith`, `destination`, and `micro_wedding`.
+1. **Weddings**: Addresses multi-day milestone planning, cultural catering, attire coordination, and venue contracts. Supported sub-formats (5): `western`, `indian_multiday`, `interfaith`, `destination`, and `micro_wedding`.
 2. **Birthdays**: Focuses on age-tailored entertainment rotations (toddlers aged 1-3, school kids aged 4-12, teens, and adult milestones), surprise party reveal coordination, and strict allergy alerts (such as peanut or latex allergies). Supported sub-formats (5): `kids_1_3`, `kids_4_12`, `teen`, `adult_milestone`, and `surprise`.
 3. **Community Events**: Handles large crowd logistics, municipal liaison permits, volunteer marshalling schedules, sponsor deliverables, and public safety egress. Supported sub-formats (4): `festival`, `fundraiser`, `neighborhood`, and `school_cultural`.
 
@@ -73,26 +73,26 @@ Gather separates critical planning mathematics from creative ideation:
 
 Event parameters are derived into signals via `deriveSignals()` in `src/domain/signals.ts`, which are evaluated by 18 deterministic rules defined in `src/data/decisionRulesCore.ts` and `src/data/decisionRulesContext.ts`:
 
-| Rule ID | Module | Severity | Trigger Condition | Real Effect (Budget / Timeline / Vendor / Safety / Run-of-Show) | Contingency Delta |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| `PAST_DATE` | Timeline | Critical | Event date is in the past (`daysUntilEvent < 0`) | Clamps all task due dates to `today` (`task.dueDate = today`) and flags them as overdue; emits feasibility alert `DATE_IN_PAST`. | +0% |
-| `SHORT_NOTICE` | Timeline | Warning | Planning runway under 21 days (`daysUntilEvent < 21`) | Compresses timeline lead times proportionally; marks optional tasks as skipped (`skippedInCompression = true`); injects task `inj-short-notice` ("Fast-track priority vendor agreements and consolidate planning milestones", Foundations phase). | +2% |
-| `TIGHT_PER_HEAD` | Budget | Critical (`< floor / 2`) / Warning (`< floor`) | Per-guest spend below heuristic floor (`perGuestBudget < floorPerGuest`) | Injects feasibility alert `UNREALISTIC_PER_HEAD` with budget rebalancing remedies; surfaces category cost-saving swap recommendations. | +0% |
-| `MICRO_EVENT` | Budget | Info | Intimate guest count (`guestCount < 50`) | Applies `MICRO_EVENT_FIXED_COST_MULTIPLIER` (1.15) to fixed-cost category weights in `buildBudget`; emits feasibility alert `MICRO_EVENT_FIXED_COSTS`. | +0% |
-| `LARGE_CROWD` | Safety | Warning | Guest count >= 1000 (`guestCount >= 1000`) | Injects task `inj-large-crowd` ("Plan wide egress routes, perimeter crowd flow, and first aid stations", Details phase, 60 days before). | +2% |
-| `YOUNG_KIDS` | Safety | Warning | Subformat is `kids_1_3` | Injects task `inj-young-kids` ("Review child supervision protocols and remove choking hazard decorations", Details phase, 14 days before); replaces standard schedule with a dedicated early-day young kids run-of-show. | +0% |
-| `SCHOOL_KIDS` | Safety | Info | Subformat is `kids_4_12` | Injects task `inj-school-kids` ("Organize structured group games and activity rotation schedules", Details phase, 14 days before). | +0% |
-| `OUTDOOR` | Safety | Warning | Venue setting is `outdoor` or `hybrid` | Injects task `inj-outdoor` ("Verify weather go/no-go backup plan with venue and rentals", Details phase, 28 days before); adds covered backup checks to venue vendor guides; injects run-of-show slot "Weather and ground conditions review" (20 min). | +3% |
-| `HOT_OR_WET_SEASON` | Safety | Warning | Outdoor/hybrid venue in `summer` or `monsoon` | Injects task `inj-hot-wet` ("Arrange guest cooling stations, covered shade, and rain backup shelters", Details phase, 21 days before). | +0% |
-| `ALLERGY_ALERT` | Safety | Warning | Flag `nut_allergy`, `latex_allergy`, or `gluten_free` | Injects task `inj-allergy` ("Confirm allergen handling protocols and ingredient labeling with caterer", Details phase, 14 days before); adds allergen labeling checks to catering vendor guides; injects run-of-show slot "Allergen briefing with catering team and food stations" (15 min). | +0% |
-| `DIETARY_CULTURAL` | Vendor | Info | Flag `vegan`, `vegetarian`, `jain`, or `halal` | Injects task `inj-dietary` ("Review cultural dietary prep and dedicated utensils with caterer", Details phase, 21 days before); adds dedicated preparation area checks to catering vendor guides. | +0% |
-| `ACCESSIBILITY` | Safety | Info | Flag `wheelchair_access`, `elderly_guests`, or `sensory_friendly` | Injects task `inj-accessibility` ("Inspect venue for step-free access, accessible restrooms, and quiet rest areas", Details phase, 30 days before); adds step-free checks to venue vendor guides; adds +10 min buffer to every run-of-show slot. | +0% |
-| `MULTI_CEREMONY` | Timeline | Info | `indian_multiday` format or `multi_ceremony` flag | Injects task `inj-multi-ceremony` ("Create master multi-ceremony itinerary with buffer times between rituals", Details phase, 45 days before). Pre-wedding milestones load via `WEDDING_MULTIDAY_TASKS`. | +0% |
-| `SURPRISE_PARTY` | Timeline | Info | Subformat is `surprise` | Injects task `inj-surprise` ("Coordinate early guest arrival and distraction plan for guest of honor", Details phase, 7 days before); injects 3 coordinated run-of-show slots: briefing (30 min), hiding/staging (15 min), and reveal moment (15 min). | +0% |
-| `COMMUNITY_PUBLIC_EVENT` | Safety | Info | Event type is `community` | Injects task `inj-community-public` ("Confirm local municipal permits, noise variances, and road closure approvals", Details phase, 45 days before); injects run-of-show slot "Site safety inspection and volunteer briefing" (30 min). | +0% |
-| `SPONSORSHIP` | Budget | Info | Flag `sponsorship_needed` | Injects task `inj-sponsorship` ("Finalize sponsor banner placement, announcements, and booth setups", Details phase, 30 days before). | +0% |
-| `OPEN_BAR` | Vendor | Info | Flag `open_bar` with `guestCount >= 50` | Injects task `inj-open-bar` ("Review beverage service standards and organize safe transport options", Details phase, 28 days before); adds liquor liability insurance verification to vendor guides; injects run-of-show slot "Bar last-call and service closure" (15 min). | +0% |
-| `AMPLIFIED_MUSIC_RESIDENTIAL` | Timeline | Warning | Flags `amplified_music` and `residential_venue` | Injects task `inj-amplified-music` ("Plan sound system orientation and schedule residential volume curfew", Details phase, 14 days before); in run-of-show, truncates activities past 21:30, injects "Amplified music wind-down and acoustic transition" (25 min), and converts subsequent music slots to acoustic. | +0% |
+| Rule ID | Trigger | What changes (budget, timeline, vendors, safety, ideas) | Contingency delta |
+| :--- | :--- | :--- | :--- |
+| `PAST_DATE` | Event date is in the past (`daysUntilEvent < 0`) | Clamps all task due dates to `today` (`task.dueDate = today`), marks optional tasks as skipped (`skippedInCompression = true`), appends compressed rationale suffix, and emits feasibility alert `DATE_IN_PAST`. | +0% |
+| `SHORT_NOTICE` | Planning runway under 21 days (`daysUntilEvent < 21`) | Scales task lead times proportionally, marks optional tasks as skipped (`skippedInCompression = true`), appends compressed rationale suffix, and injects 1 timeline task: `inj-short-notice` ("Fast-track priority vendor agreements and consolidate planning milestones", Foundations phase, 14 days before). | +2% |
+| `TIGHT_PER_HEAD` | Per-guest spend below heuristic floor (`perGuestBudget < floorPerGuest`) | Emits budget feasibility alert `UNREALISTIC_PER_HEAD` with core hospitality prioritization rationale and guest capacity calculations. | +0% |
+| `MICRO_EVENT` | Intimate guest count under 50 (`guestCount < 50`) | Multiplies fixed-cost category weights by 1.15 (`MICRO_EVENT_FIXED_COST_MULTIPLIER`) in `buildBudget` and emits feasibility alert `MICRO_EVENT_FIXED_COSTS`. | +0% |
+| `LARGE_CROWD` | Guest count 1000 or more (`guestCount >= 1000`) | Injects 1 timeline task: `inj-large-crowd` ("Plan wide egress routes, perimeter crowd flow, and first aid stations", Details phase, 60 days before). | +2% |
+| `YOUNG_KIDS` | Sub-format is `kids_1_3` | Injects 1 timeline task: `inj-young-kids` ("Review child supervision protocols and remove choking hazard decorations", Details phase, 14 days before) and replaces run-of-show with a 4-slot early-day schedule (`buildYoungKidsSchedule`). | +0% |
+| `SCHOOL_KIDS` | Sub-format is `kids_4_12` | Injects 1 timeline task: `inj-school-kids` ("Organize structured group games and activity rotation schedules", Details phase, 14 days before). | +0% |
+| `OUTDOOR` | Venue setting is `outdoor` or `hybrid` | Injects 1 timeline task: `inj-outdoor` ("Verify weather go/no-go backup plan with venue and rentals", Details phase, 28 days before), appends weather backup verification checks to 7 vendor guides (`wedding:venue`, `wedding:decor_florals`, `wedding:entertainment`, `birthday:venue`, `birthday:decor_balloons`, `community:venue_permits`, `community:production_av`), and injects 1 run-of-show slot: "Weather and ground conditions review" (20 min duration, 10 min buffer, 2 hours prior to arrival). | +3% |
+| `HOT_OR_WET_SEASON` | Outdoor or hybrid venue in `summer` or `monsoon` | Injects 1 timeline task: `inj-season` ("Arrange guest cooling amenities or covered inclement weather shelters", Details phase, 21 days before). | +0% |
+| `ALLERGY_ALERT` | Flag `nut_allergy`, `latex_allergy`, or `gluten_free` | Injects 1 timeline task: `inj-allergy` ("Conduct allergen intake review with caterer and confirm labeling", Details phase, 21 days before), appends kitchen allergen separation checks to 3 catering vendor guides (`wedding:catering`, `birthday:catering_cake`, `community:food_beverage`), and injects 1 run-of-show slot: "Allergen briefing with catering team and food stations" (15 min duration, 5 min buffer, 20 min before meal). | +0% |
+| `DIETARY_CULTURAL` | Flag `vegan`, `vegetarian`, `jain`, or `halal` | Injects 1 timeline task: `inj-dietary` ("Confirm dietary preparation protocols and separated serving utensils", Details phase, 21 days before) and appends dedicated prep area checks to 3 catering vendor guides (`wedding:catering`, `birthday:catering_cake`, `community:food_beverage`). | +0% |
+| `ACCESSIBILITY` | Flag `wheelchair_access`, `elderly_guests`, or `sensory_friendly` | Injects 1 timeline task: `inj-accessibility` ("Check step-free route and accessible restroom access", Details phase, 28 days before), appends accessibility and restroom checks to 4 vendor guides (`wedding:venue`, `wedding:transport_stay`, `birthday:venue`, `community:venue_permits`), and adds +10 min buffer to every run-of-show slot. | +0% |
+| `MULTI_CEREMONY` | `indian_multiday` sub-format or `multi_ceremony` flag in weddings | Injects 1 timeline task: `inj-multi-ceremony` ("Coordinate transition logistics and ritual staging across multiple ceremonies", Details phase, 60 days before). (Multi-day milestones load via `WEDDING_MULTIDAY_TASKS`). | +0% |
+| `SURPRISE_PARTY` | Sub-format is `surprise` | Injects 1 timeline task: `inj-surprise-party` ("Coordinate covert guest arrivals, decoy schedule, and reveal cues", Details phase, 14 days before) and injects 3 run-of-show slots if not present: "Secret guest arrival and coordination briefing" (30 min duration, 10 min buffer), "Guest quiet hiding and staging in position" (15 min duration, 5 min buffer), and "Guest of honor arrival and surprise reveal moment" (15 min duration, 10 min buffer). | +0% |
+| `COMMUNITY_PUBLIC_EVENT` | Event type is `community` | Injects 1 timeline task: `inj-community-public` ("Confirm local permits and liability insurance with municipal office", Foundations phase, 90 days before) and injects 1 run-of-show slot: "Site safety inspection and volunteer briefing" (30 min duration, 15 min buffer, 45 min before gates open). | +0% |
+| `SPONSORSHIP` | Flag `sponsorship_needed` | Injects 1 timeline task: `inj-sponsorship` ("Finalize sponsor banner placement, announcements, and booth setups", Details phase, 30 days before). | +0% |
+| `OPEN_BAR` | Flag `open_bar` with `guestCount >= 50` | Injects 1 timeline task: `inj-open-bar` ("Review beverage service standards and organize safe transport options", Details phase, 28 days before), appends liquor liability and server license checks to 6 vendor guides (`wedding:venue`, `wedding:catering`, `birthday:venue`, `birthday:catering_cake`, `community:venue_permits`, `community:food_beverage`), and injects 1 run-of-show slot: "Bar last-call and service closure" (15 min duration, 5 min buffer, 40 min before close). | +0% |
+| `AMPLIFIED_MUSIC_RESIDENTIAL` | Flags `amplified_music` and `residential_venue` | Injects 1 timeline task: `inj-amplified-music` ("Plan sound system orientation and schedule residential volume curfew", Details phase, 14 days before); in run-of-show: truncates activities past 21:30, injects 1 slot: "Amplified music wind-down and acoustic transition" (25 min duration, 0 min buffer) at 21:30, and renames subsequent music activities to "Acoustic background music and guest farewells". | +0% |
 
 ### Budget Allocation Methodology
 
@@ -105,7 +105,7 @@ Event parameters are derived into signals via `deriveSignals()` in `src/domain/s
 
 1. **Backwards Planning**: Due dates are calculated backwards from `eventDate` using task template day offsets (`daysBefore`).
 2. **Short-Notice Runway Scaling**: When available runway is less than the baseline planning horizon, task offsets are scaled proportionally. If `daysUntilEvent < COMPRESSED_THRESHOLD_DAYS` (21) or if the date has passed, optional tasks are flagged as `skippedInCompression`, allowing users to focus on critical-path milestones.
-3. **Topological Dependency Propagation**: Task dependencies are resolved via Kahn's algorithm in `computeTopologicalOrder()`, ensuring dependent task due dates are scheduled on or after their prerequisite due dates (`task.dueDate = max(task.dueDate, maxDepDate)`). Tasks are then sorted by `dueDate` ascending.
+3. **Topological Dependency Propagation**: Task dependencies are resolved via dependency ordering in `computeTopologicalOrder()` (calculating in-degrees and propagating maximum prerequisite due dates), ensuring dependent task due dates are scheduled on or after their prerequisite due dates (`task.dueDate = max(task.dueDate, maxDepDate)`). Tasks are then sorted by `dueDate` ascending.
 4. **Day-of Run-of-Show**: Generates a synchronized minute-by-minute schedule for the primary celebration day with contextual buffers and cue checkpoints.
 
 ### Vendor Evaluation Methodology
@@ -121,8 +121,8 @@ Gather avoids fabricating vendor names, addresses, ratings, or prices:
 ```mermaid
 flowchart TD
     subgraph S1["1. Intake and Context"]
-        LP["Launchpad View"] -->|Select Type or Demo Scenario| CF["Context Form"]
-        CF -->|Validate Input Schema| EC["EventContext (State)"]
+        LP["Launchpad View"] -->|"Select Type or Demo Scenario"| CF["Context Form"]
+        CF -->|"Validate Input Schema"| EC["EventContext (State)"]
     end
 
     subgraph S2["2. Deterministic Domain Engine"]
@@ -136,9 +136,9 @@ flowchart TD
 
     subgraph S3["3. Offline-First Dual AI Layer"]
         EC & SIG & DM --> AIS["generateIdeas()"]
-        AIS -->|Default Offline Mode| LIG["Local Heuristic Idea Generator"]
-        AIS -->|Optional Live Key| GC["Gemini Live Adapter (gemini-flash-latest)"]
-        GC -->|On Network or Schema Error| LIG
+        AIS -->|"Default Offline Mode"| LIG["Local Heuristic Idea Generator"]
+        AIS -->|"Optional Live Key"| GC["Gemini Live Adapter (gemini-flash-latest)"]
+        GC -->|"On Network or Schema Error"| LIG
         LIG & GC --> SEC["Security & Zod Strict Validation"]
         SEC --> PI["PersonalizedIdeas"]
     end
@@ -223,7 +223,7 @@ Gather supports six client-side export and data portability formats:
 gather-event-planner/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml                 # GitHub Actions continuous integration workflow
+│       └── ci.yml                 # CI workflow verifying typecheck, lint, test, build, and deploying to GitHub Pages
 ├── src/
 │   ├── ai/                        # Offline-first AI services and LLM adapter
 │   │   ├── aiService.ts           # Dual-engine orchestrator with fallback logic
@@ -293,7 +293,7 @@ gather-event-planner/
 ├── index.html                     # HTML entry point with metadata
 ├── package.json                   # Project metadata, dependencies, and scripts
 ├── tailwind.config.js             # Tailwind CSS design system configuration
-└── vite.config.ts                 # Vite bundler configuration and CSP plugin
+└── vite.config.ts                 # Bundler config setting base path and injecting production CSP
 ```
 
 ### Available Scripts
@@ -315,16 +315,17 @@ gather-event-planner/
 2. **Calendar Dates**: Dates are processed strictly as ISO calendar date strings (`YYYY-MM-DD`). Computations calculate day boundaries using UTC calendar math without local time zone or daylight saving distortions.
 3. **Currencies Supported**: The system natively supports Indian Rupee (INR), US Dollar (USD), Euro (EUR), and British Pound (GBP). Financial values are treated as non-negative integers in major currency units.
 4. **Generic Compliance Guidance**: Safety, liability, and vendor licensing guidance is generic (such as verifying local permits and requiring certificates of insurance) rather than citing specific statutory codes or jurisdiction-specific regulatory bodies.
-5. **Zero Committed Secrets**: The application is architected as a pure client-side SPA. API keys and sensitive user inputs are never committed to version control, transmitted to proprietary backend proxies, or stored in persistent browser storage.
-6. **Fictional Demonstration Scenarios**: The four pre-configured scenarios provided on the launchpad are illustrative models created to demonstrate application capabilities across diverse constraint sets.
-7. **AI Data Flow and Privacy Boundaries**: When live AI ideation is enabled, Gather sends strictly the following fields to Google Gemini in `buildUserPrompt()`: `eventType`, `subFormat`, `guestCount`, `currency`, `totalBudget`, per-guest `budgetTier`, venue `setting`, `season`, `daysUntilEvent`, active `flags`, active `decision.adaptations` (rule IDs and explanations), and sanitized `userNotes` enclosed in cryptographically random XML nonce tags (`<user_notes_${nonce}>`). The following sensitive data fields are **never transmitted** to the model: `title` (event title), `vendorQuotes` (supplier names, quotes, deposit amounts), `actualSpend` (expenditures per category), and `taskCompletion` (checklist progress). The user-provided API key is transmitted strictly via the HTTP `x-goog-api-key` header and is never included in URLs, request bodies, or log outputs.
+5. **Zero Committed Secrets & Local Storage**: The application operates as a client-side Single Page Application. API keys reside transiently in `sessionStorage` (`API_KEY_SESSION_KEY`) and are never written to permanent storage, URL parameters, or backups. All user plans, expenditures, and checklist progress are persisted exclusively to browser `localStorage` (`STORAGE_KEY`) on the user's local device, with no remote database, user accounts, or proprietary backend synchronization.
+6. **Static Hosting Architecture**: The live deployment hosted on GitHub Pages is a purely static bundle with zero server components, serverless functions, or backend proxies.
+7. **Fictional Demonstration Scenarios**: The four pre-configured scenarios provided on the launchpad are illustrative models created to demonstrate application capabilities across diverse constraint sets.
+8. **AI Data Flow and Privacy Boundaries**: When live AI ideation is enabled, Gather sends strictly the following fields to Google Gemini in `buildUserPrompt()`: `eventType`, `subFormat`, `guestCount`, `currency`, `totalBudget`, per-guest `budgetTier`, venue `setting`, `season`, `daysUntilEvent`, active `flags`, active `decision.adaptations` (rule IDs and explanations), sanitized `userNotes` enclosed in cryptographically random XML nonce tags (`<user_notes_${nonce}>`) if present, and optional `section` focus. Sensitive data fields including event `title`, `vendorQuotes` (vendor names, quotes, deposit balances), `actualSpend` (expenditures per category), and task progress (`taskCompletion`) are **never transmitted** to the model. The user-provided API key is transmitted strictly via the HTTP `x-goog-api-key` header directly to Google and is never included in URLs, request bodies, or log outputs.
 
 ## Evaluation focus map
 
 | Evaluation Criterion | Implementation Details | Source Verification |
 | :--- | :--- | :--- |
 | **Code Quality & Architecture** | Strict TypeScript configuration, zero `any` types, zero `@ts-ignore`, max 220 lines per file, pure calculation engines free of DOM/React imports. | `src/domain/`, `src/types/`, `tsconfig.json` |
-| **Problem Statement Alignment** | Comprehensive support for multi-day weddings, milestone birthdays, and community gatherings; integer budget allocations, topological timeline dependencies, vendor evaluation guides, and tailored ideas. | `src/domain/buildPlan.ts`, `src/data/` |
+| **Problem Statement Alignment** | Milestone planning for multi-day weddings, milestone birthdays, and community gatherings; integer budget allocations, dependency ordering, vendor evaluation guides, and tailored ideas. | `src/domain/buildPlan.ts`, `src/data/` |
 | **Security Engineering** | Transient `sessionStorage` key handling, regex prompt injection scanning, cryptographically random XML nonces, Zod `.strict()` schema rejection, build-time CSP headers, and CSV formula injection defenses. | `src/ai/securityGuard.ts`, `src/export/csv.ts`, `vite.config.ts` |
 | **Performance & Efficiency** | Zero heavy UI component libraries, pure in-memory calculation engines, offline-first execution, and lean asset bundles (run `npm run build` to verify). | `src/domain/budgetEngine.ts`, `src/ai/localIdeaGenerator.ts` |
 | **Testing & Verification** | Automated test suite (run `npm test` to verify) covering edge cases, arithmetic invariants, prompt construction, SSR render smoke tests, and design token contrast audits. | `tests/`, `tests/renderSmoke.test.tsx` |
