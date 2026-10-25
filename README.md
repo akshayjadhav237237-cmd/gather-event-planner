@@ -10,6 +10,8 @@
 
 Gather is an offline-first, client-only Single Page Application built to coordinate cross-cultural weddings, milestone birthdays, and community events with deterministic financial allocations, backward-scheduled timelines, vendor evaluation checklists, and personalized ideas. Operating entirely inside the user's web browser, Gather couples pure TypeScript calculation engines with an offline-first dual-engine design that requires zero third-party accounts, remote databases, or API keys to function out of the box, while offering an optional live Google Gemini adapter for contextual idea generation.
 
+Live demo: https://akshayjadhav237237-cmd.github.io/gather-event-planner/ (static build served from GitHub Pages; it works offline-first with no API key).
+
 ### Quick Start
 
 1. Install project dependencies:
