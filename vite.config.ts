@@ -13,6 +13,7 @@ const cspPlugin: Plugin = {
 };
 
 export default defineConfig({
+  base: './',
   plugins: [react(), cspPlugin],
   build: {
     assetsInlineLimit: 0,
