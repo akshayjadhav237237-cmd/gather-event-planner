@@ -1,18 +1,97 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' https://generativelanguage.googleapis.com; object-src 'none'; frame-src 'none'; worker-src 'none'; media-src 'none'; manifest-src 'self'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="theme-color" content="#FAF8F5" />
+
+    <!-- Primary meta -->
+    <title>Gather: Event Planner for Weddings, Birthdays &amp; More</title>
     <meta
       name="description"
-      content="Gather is an offline-first celebration and event planning assistant for weddings, birthdays, and community gatherings."
+      content="Gather is an offline-first planner for weddings, birthdays, and community events with budget allocations, milestone timelines, vendor guides, and ideas."
     />
-    <title>Celebration & Event Planner</title>
+    <meta name="robots" content="index,follow" />
+    <link rel="canonical" href="https://akshayjadhav237237-cmd.github.io/gather-event-planner/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gather" />
+    <meta property="og:title" content="Gather: Event Planner for Weddings, Birthdays &amp; More" />
+    <meta
+      property="og:description"
+      content="Gather is an offline-first planner for weddings, birthdays, and community events with budget allocations, milestone timelines, vendor guides, and ideas."
+    />
+    <meta
+      property="og:url"
+      content="https://akshayjadhav237237-cmd.github.io/gather-event-planner/"
+    />
+    <meta
+      property="og:image"
+      content="https://akshayjadhav237237-cmd.github.io/gather-event-planner/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Gather event planner - Plan the celebration, not the spreadsheet."
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Gather: Event Planner for Weddings, Birthdays &amp; More" />
+    <meta
+      name="twitter:description"
+      content="Gather is an offline-first planner for weddings, birthdays, and community events with budget allocations, milestone timelines, vendor guides, and ideas."
+    />
+    <meta
+      name="twitter:image"
+      content="https://akshayjadhav237237-cmd.github.io/gather-event-planner/og-image.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Gather event planner - Plan the celebration, not the spreadsheet."
+    />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Gather",
+        "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
+        "description": "An offline-first event planning assistant for weddings, birthdays, and community events. Provides budget allocation, backward-scheduled timelines, vendor checklists, and personalized ideas.",
+        "applicationCategory": "LifestyleApplication",
+        "operatingSystem": "Any",
+        "inLanguage": "en",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <h1>Gather: Event Planner</h1>
+      <p>
+        Gather is an offline-first planning assistant for weddings, birthdays, and community events.
+        It runs entirely in your browser with no account or API key required.
+      </p>
+      <ul>
+        <li>Weddings</li>
+        <li>Birthdays</li>
+        <li>Community events</li>
+      </ul>
+    </div>
+    <noscript>JavaScript is required to use Gather. Please enable JavaScript in your browser.</noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
