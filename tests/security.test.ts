@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
+import { readFileSync, existsSync } from 'fs';
+import { resolve } from 'path';
 import { CSP } from '../src/config/csp';
+
+const ROOT = resolve(__dirname, '..');
+const VERCEL_JSON = resolve(ROOT, 'vercel.json');
 
 describe('Content Security Policy', () => {
   it("contains object-src 'none'", () => {
@@ -68,5 +73,25 @@ describe('Content Security Policy', () => {
     expect(match).not.toBeNull();
     const styleSrcAttr = (match?.[1] ?? '').trim();
     expect(styleSrcAttr).toBe("'unsafe-inline'");
+  });
+});
+
+describe('Deployment Security Headers (vercel.json)', () => {
+  it('vercel.json exists and configures nosniff and clickjacking headers', () => {
+    expect(existsSync(VERCEL_JSON)).toBe(true);
+    const config = JSON.parse(readFileSync(VERCEL_JSON, 'utf-8')) as {
+      headers?: Array<{
+        source: string;
+        headers: Array<{ key: string; value: string }>;
+      }>;
+    };
+    expect(config.headers).toBeDefined();
+    const allHeaders = config.headers?.[0]?.headers ?? [];
+    const headerMap = new Map(allHeaders.map((h) => [h.key.toLowerCase(), h.value]));
+
+    expect(headerMap.get('x-content-type-options')).toBe('nosniff');
+    expect(headerMap.get('x-frame-options')).toBe('DENY');
+    expect(headerMap.get('referrer-policy')).toBe('no-referrer');
+    expect(headerMap.get('content-security-policy')).toContain("frame-ancestors 'none'");
   });
 });

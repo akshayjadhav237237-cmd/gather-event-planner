@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Gather Event Planner",
+    "identifier": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
+    "documentationUrl": "https://github.com/akshayjadhav237237-cmd/gather-event-planner#readme"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:gather:web-app",
+      "displayName": "Gather Celebration Planner Application",
+      "type": "text/html",
+      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
+      "description": "Offline-first single-page web application for celebration planning."
+    },
+    {
+      "identifier": "urn:air:gather:llms-txt",
+      "displayName": "LLM Guidance and Agent Resource Index",
+      "type": "text/markdown",
+      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/llms.txt",
+      "description": "Machine-readable documentation and navigation guidance for large language models."
+    },
+    {
+      "identifier": "urn:air:gather:repo",
+      "displayName": "GitHub Source Repository",
+      "type": "text/html",
+      "url": "https://github.com/akshayjadhav237237-cmd/gather-event-planner",
+      "description": "Open-source codebase, domain logic, calculation engines, and test suites."
+    }
+  ]
+}

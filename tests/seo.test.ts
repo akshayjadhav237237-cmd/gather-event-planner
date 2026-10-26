@@ -94,7 +94,38 @@ describe('SEO metadata in index.html', () => {
     const headMatch = /<head>([\s\S]*?)<\/head>/.exec(html);
     expect(headMatch).not.toBeNull();
     const headInner = (headMatch?.[1] ?? '').trim();
-    // First element in head must be the CSP meta tag
     expect(headInner).toMatch(/^<meta[\s\S]*?http-equiv=["']Content-Security-Policy["']/i);
+  });
+});
+
+describe('Agentic Discoverability & Machine-Readable Assets', () => {
+  it('llms.txt exists, contains an H1 title, and includes markdown links', () => {
+    const p = resolve(PUBLIC, 'llms.txt');
+    expect(existsSync(p)).toBe(true);
+    const text = readFileSync(p, 'utf-8');
+    expect(text).toMatch(/^#\s+[^\n]+/m);
+    expect(text).toMatch(/\[.+?\]\(https?:\/\/.+?\)/);
+    expect(text).toContain('Gather: Celebration & Event Planner');
+  });
+
+  it('ai-catalog.json exists and is valid ARD spec format', () => {
+    const p = resolve(PUBLIC, 'ai-catalog.json');
+    expect(existsSync(p)).toBe(true);
+    const data = JSON.parse(readFileSync(p, 'utf-8')) as {
+      specVersion?: string;
+      host?: { identifier?: string };
+      entries?: Array<{ identifier: string; url: string }>;
+    };
+    expect(data.specVersion).toBe('1.0');
+    expect(data.host?.identifier).toBe(LIVE_URL);
+    expect(Array.isArray(data.entries)).toBe(true);
+    expect((data.entries?.length ?? 0)).toBeGreaterThan(0);
+  });
+
+  it('.well-known/ai-catalog.json exists and matches ai-catalog.json', () => {
+    const wellKnown = resolve(PUBLIC, '.well-known', 'ai-catalog.json');
+    const rootCatalog = resolve(PUBLIC, 'ai-catalog.json');
+    expect(existsSync(wellKnown)).toBe(true);
+    expect(readFileSync(wellKnown, 'utf-8')).toBe(readFileSync(rootCatalog, 'utf-8'));
   });
 });
