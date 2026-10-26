@@ -20,8 +20,8 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     targetModule: 'timeline',
     signalLabel: 'Event date is in the past',
     trigger: (_ctx, s) => s.isPast,
-    explain: (ctx, s) =>
-      `Milestone target dates were set to today because scheduled date ${ctx.eventDate} was ${Math.abs(s.daysUntilEvent)} day(s) ago. Retrospective budget auditing is enabled.`,
+    explain: (_ctx, s) =>
+      `Milestone target dates were set to today because the scheduled date was ${Math.abs(s.daysUntilEvent)} day(s) ago.`,
     contingencyDelta: 0,
   },
   {

@@ -102,7 +102,7 @@ export function buildBudget(
       severity,
       message: `Estimated spend of ${formatCurrency(signals.perGuestBudget, ctx.currency)} per guest is below the baseline planning floor of ${formatCurrency(signals.floorPerGuest, ctx.currency)} for ${ctx.eventType} events.`,
       remedies: [
-        `At this total budget, the baseline planning floor supports about ${supportedGuests} guests.`,
+        `At this total budget (before contingency reserves), the baseline planning floor supports about ${supportedGuests} guests.`,
         'Reduce guest count to raise spend per attendee closer to baseline vendor expectations.',
         'Increase overall event budget to adequately support minimum hospitality overheads.',
         'Adopt simplified hospitality formats such as drop-off catering or cocktail receptions.',
