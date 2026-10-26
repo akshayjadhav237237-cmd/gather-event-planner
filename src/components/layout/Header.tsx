@@ -39,11 +39,22 @@ export function Header({
 
         {isWorkspace && (
           <div className="flex items-center gap-1.5 sm:gap-3">
-            <span className="hidden md:inline-flex">
-              <Badge tone={hasKey ? 'accent' : 'neutral'}>
+            <Badge
+              tone={hasKey ? 'accent' : 'neutral'}
+              aria-label={hasKey ? 'Live ideas ready' : 'Offline ideas'}
+              className="px-2 sm:px-2.5"
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${hasKey ? 'bg-accent' : 'bg-muted'}`}
+                aria-hidden="true"
+              />
+              <span className="sr-only sm:not-sr-only sm:inline md:hidden">
+                {hasKey ? 'Live' : 'Offline'}
+              </span>
+              <span className="hidden md:inline">
                 {hasKey ? 'Live ideas ready' : 'Offline ideas'}
-              </Badge>
-            </span>
+              </span>
+            </Badge>
 
             {onOpenExport && (
               <Button
