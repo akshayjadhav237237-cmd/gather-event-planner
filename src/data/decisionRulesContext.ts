@@ -13,7 +13,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
       ctx.flags.includes('latex_allergy') ||
       ctx.flags.includes('gluten_free'),
     explain: (ctx) =>
-      `Catering protocols were updated to enforce dedicated prep areas and allergen ingredient labeling for ${ctx.guestCount} guests due to declared food or environmental allergies.`,
+      `An allergen briefing slot, catering review milestone, and vendor verification checks were added due to declared allergies across ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -27,7 +27,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
       ctx.flags.includes('jain') ||
       ctx.flags.includes('halal'),
     explain: (ctx) =>
-      `Catering vendor requirements were adapted to mandate certified dietary preparation procedures for the menu served to ${ctx.guestCount} guests.`,
+      `A dietary preparation milestone and catering guide checks were added to safeguard menu standards for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -40,7 +40,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
       ctx.flags.includes('elderly_guests') ||
       ctx.flags.includes('sensory_friendly'),
     explain: (ctx) =>
-      `Venue layout reviews were modified to include step-free access routes, priority seating, and accessible facilities for ${ctx.guestCount} guests.`,
+      `A step-free access milestone, vendor checks, and 10-minute transition buffers on all day-of schedule slots were added for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -52,7 +52,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
       ctx.eventType === 'wedding' &&
       (ctx.subFormat === 'indian_multiday' || ctx.flags.includes('multi_ceremony')),
     explain: (ctx) =>
-      `Timeline schedules were expanded into segmented ceremonial sub-runs and stage turnaround buffers across ${ctx.guestCount} guests over multiple event segments.`,
+      `A transition logistics milestone was added to the timeline to coordinate ritual staging across multiple ceremonies for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -62,7 +62,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
     signalLabel: 'Surprise event logistics and secrecy',
     trigger: (ctx) => ctx.subFormat === 'surprise',
     explain: (ctx) =>
-      `Guest arrival timelines and guest-of-honor diversion schedules were synchronized 30 minutes before reveal time for ${ctx.guestCount} attendees.`,
+      `Secret arrival, hiding, and reveal slots were added to the day-of schedule alongside a covert coordination milestone for ${ctx.guestCount} attendees.`,
     contingencyDelta: 0,
   },
   {
@@ -72,7 +72,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
     signalLabel: 'Public community event management',
     trigger: (ctx) => ctx.eventType === 'community',
     explain: (ctx) =>
-      `Municipal liaison checkpoints, volunteer marshalling, and general public safety protocols were scheduled to coordinate ${ctx.guestCount} attendees.`,
+      `A municipal permits milestone and a pre-opening safety briefing slot were added to coordinate logistics for ${ctx.guestCount} attendees.`,
     contingencyDelta: 0,
   },
   {
@@ -82,7 +82,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
     signalLabel: 'Sponsorship deliverables and offset',
     trigger: (ctx) => ctx.flags.includes('sponsorship_needed'),
     explain: (ctx) =>
-      `Revenue milestones and sponsor deliverable tracking were added to the budget framework supporting ${formatCurrency(ctx.totalBudget, ctx.currency)} in overall planned commitments.`,
+      `A sponsor banner placement and booth setup milestone was added to the timeline supporting ${formatCurrency(ctx.totalBudget, ctx.currency)} in overall planned commitments.`,
     contingencyDelta: 0,
   },
   {
@@ -92,7 +92,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
     signalLabel: 'Open bar liquor service and liability',
     trigger: (ctx) => ctx.flags.includes('open_bar') && ctx.guestCount >= 50,
     explain: (ctx) =>
-      `Licensed bartending vendor verifications, liquor liability insurance reviews, and safe transit provisions were added for ${ctx.guestCount} guests.`,
+      `Vendor liquor liability checks, a safe transit planning milestone, and a day-of bar last-call slot were added for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -103,7 +103,7 @@ export const DECISION_RULES_CONTEXT: readonly DecisionRule[] = [
     trigger: (ctx) =>
       ctx.flags.includes('amplified_music') && ctx.flags.includes('residential_venue'),
     explain: (ctx) =>
-      `Sound curfew cutoffs and neighbor notification milestones were scheduled into the timeline for ${ctx.guestCount} guests to comply with local residential noise standards.`,
+      `A volume curfew planning milestone and a 21:30 acoustic wind-down were scheduled into the timeline and run-of-show for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
 ];

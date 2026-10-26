@@ -21,7 +21,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'Event date is in the past',
     trigger: (_ctx, s) => s.isPast,
     explain: (ctx, s) =>
-      `Schedule milestones were locked as overdue because scheduled date ${ctx.eventDate} was ${Math.abs(s.daysUntilEvent)} day(s) ago.`,
+      `Milestone target dates were set to today because scheduled date ${ctx.eventDate} was ${Math.abs(s.daysUntilEvent)} day(s) ago. Retrospective budget auditing is enabled.`,
     contingencyDelta: 0,
   },
   {
@@ -41,7 +41,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'Per-guest budget below floor',
     trigger: (_ctx, s) => s.isBelowFloor,
     explain: (ctx, s) =>
-      `Budget allocations prioritized core hospitality items because estimated ${formatCurrency(s.perGuestBudget, ctx.currency)} per head is below the heuristic floor of ${formatCurrency(s.floorPerGuest, ctx.currency)} across ${ctx.guestCount} guests.`,
+      `A feasibility alert was flagged because estimated ${formatCurrency(s.perGuestBudget, ctx.currency)} per head is below the baseline planning floor of ${formatCurrency(s.floorPerGuest, ctx.currency)} across ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
   {
@@ -61,7 +61,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'Large crowd attendance',
     trigger: (_ctx, s) => s.isLargeCrowd,
     explain: (ctx) =>
-      `Crowd management checklists and safety exit protocols were added with a 2% contingency buffer because managing ${ctx.guestCount} guests requires structured ingress and egress controls.`,
+      `A perimeter crowd flow milestone and a 2% contingency reserve were added because managing ${ctx.guestCount} guests requires dedicated egress and first aid planning.`,
     contingencyDelta: 0.02,
   },
   {
@@ -71,7 +71,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'Toddlers and young children present',
     trigger: (_ctx, s) => s.hasYoungKids,
     explain: (ctx) =>
-      `Childproofing safety checkpoints and quiet rest zones were introduced because this event for ${ctx.guestCount} guests accommodates young children aged 1-3.`,
+      `A childproofing milestone was added and the day-of schedule was customized for toddler sensory play and early departure because this event accommodates children aged 1-3 (${ctx.guestCount} guests).`,
     contingencyDelta: 0,
   },
   {
@@ -81,7 +81,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'School-age children present',
     trigger: (_ctx, s) => s.hasSchoolKids,
     explain: (ctx) =>
-      `Structured activity rotations and adult supervision checkpoints were established because entertaining ${ctx.guestCount} guests includes active school-age children (4-12).`,
+      `A timeline milestone for group games and activity rotations was added because entertaining ${ctx.guestCount} guests includes school-age children aged 4-12.`,
     contingencyDelta: 0,
   },
   {
@@ -91,7 +91,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     signalLabel: 'Outdoor venue exposure',
     trigger: (_ctx, s) => s.isOutdoorExposed,
     explain: (ctx) =>
-      `Weather contingency plans and shelter backup provisions were activated with a 3% reserve delta because this ${ctx.setting} venue setup exposes ${ctx.guestCount} guests to outdoor elements.`,
+      `A weather backup milestone, vendor guide checks, a run-of-show briefing, and a 3% contingency reserve were added because this ${ctx.setting} venue exposes ${ctx.guestCount} guests to outdoor elements.`,
     contingencyDelta: 0.03,
   },
   {
@@ -102,7 +102,7 @@ export const DECISION_RULES_CORE: readonly DecisionRule[] = [
     trigger: (ctx, s) =>
       s.isOutdoorExposed && (ctx.season === 'summer' || ctx.season === 'monsoon'),
     explain: (ctx) =>
-      `Hydration stations and rapid rain shelter measures were scheduled because an exposed outdoor or hybrid setting during ${ctx.season} poses climate risks for ${ctx.guestCount} guests.`,
+      `A timeline milestone for guest cooling amenities and rain shelters was added because an outdoor or hybrid setting during ${ctx.season} poses weather risks for ${ctx.guestCount} guests.`,
     contingencyDelta: 0,
   },
 ];
