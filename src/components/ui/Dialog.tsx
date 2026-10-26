@@ -69,7 +69,7 @@ export function Dialog({
   }, [onClose]);
 
   const dialogClass = [
-    'backdrop:bg-ink/40 bg-surface text-ink rounded-card p-6 max-w-lg w-full border border-line shadow-[0_24px_64px_-24px_rgba(28,25,23,0.25)] animate-rise m-auto focus-visible:outline-none',
+    'backdrop:bg-ink/40 bg-surface text-ink rounded-card p-6 max-w-lg w-full border border-line shadow-[0_24px_64px_-24px_rgba(28,25,23,0.25)] animate-rise m-auto focus-visible:outline-none print:hidden',
     className,
   ].filter(Boolean).join(' ');
 

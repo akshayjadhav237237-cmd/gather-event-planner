@@ -97,6 +97,10 @@ h6 {
     font-size: 11pt;
   }
 
+  dialog {
+    display: none !important;
+  }
+
   table {
     width: 100%;
     border-collapse: collapse;
