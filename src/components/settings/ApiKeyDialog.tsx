@@ -94,9 +94,10 @@ export const ApiKeyDialog: FC<ApiKeyDialogProps> = ({
             discarded when the tab closes.
           </p>
           <p>
-            When enabled, event parameters (format, guests, budget tier, setting, season,
-            adaptations, and your notes) are sent to Google&apos;s Gemini API. Vendor quotes
-            and spending never leave your device.
+            When enabled, event parameters (format, guest count, season, setting, days remaining,
+            total budget, currency, budget tier, feature flags, active adaptation rules, and your
+            optional notes) are sent to Google&apos;s Gemini API to generate ideas. Your event title,
+            calendar date, vendor quotes, actual spend, task progress, and previous ideas never leave your device.
           </p>
         </div>
 
