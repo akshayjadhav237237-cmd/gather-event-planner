@@ -54,4 +54,19 @@ describe('Content Security Policy', () => {
     expect(scriptSrc).not.toContain("'unsafe-eval'");
     expect(scriptSrc).not.toContain("'unsafe-inline'");
   });
+
+  it("style-src has no 'unsafe-inline'", () => {
+    const match = /style-src\s+([^;]+)/.exec(CSP);
+    expect(match).not.toBeNull();
+    const styleSrc = match?.[1] ?? '';
+    expect(styleSrc).not.toContain("'unsafe-inline'");
+    expect(styleSrc.trim()).toBe("'self'");
+  });
+
+  it("style-src-attr is exactly 'unsafe-inline'", () => {
+    const match = /style-src-attr\s+([^;]+)/.exec(CSP);
+    expect(match).not.toBeNull();
+    const styleSrcAttr = (match?.[1] ?? '').trim();
+    expect(styleSrcAttr).toBe("'unsafe-inline'");
+  });
 });

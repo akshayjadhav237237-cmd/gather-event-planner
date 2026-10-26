@@ -4,8 +4,8 @@
  * Directive rationale:
  *   default-src 'none'       – deny all unlisted resource types by default
  *   script-src 'self'        – only scripts from the same origin
- *   style-src 'self' 'unsafe-inline' – Tailwind inlines styles; React sets style= attributes
- *                              (ThemeCard uses style={{ backgroundColor: hex }} for palette swatches)
+ *   style-src 'self'         – only external/embedded stylesheets from the same origin
+ *   style-src-attr 'unsafe-inline' – allows inline style attributes (ThemeCard uses style={{ backgroundColor: hex }})
  *   font-src 'self'          – only fonts from the same origin (bundled via Vite)
  *   img-src 'self' data:     – SVG favicon and any base64 images
  *   connect-src 'self' https://generativelanguage.googleapis.com – optional live Gemini API calls
@@ -23,7 +23,8 @@
 export const CSP =
   "default-src 'none'; " +
   "script-src 'self'; " +
-  "style-src 'self' 'unsafe-inline'; " +
+  "style-src 'self'; " +
+  "style-src-attr 'unsafe-inline'; " +
   "font-src 'self'; " +
   "img-src 'self' data:; " +
   "connect-src 'self' https://generativelanguage.googleapis.com; " +
