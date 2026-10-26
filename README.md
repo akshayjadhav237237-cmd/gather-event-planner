@@ -40,7 +40,7 @@ Gather requires zero API keys, login credentials, or external network connection
 The flagship vertical addressed by Gather is the coordinator of cross-cultural, interfaith, and multi-day weddings. Families planning celebrations in this category face logistical challenges that conventional single-day wedding tools cannot handle:
 - Multi-day milestone coordination spanning distinct ceremonies (such as Haldi, Mehndi, Sangeet, Main Ceremony, and Reception), planned through dedicated milestone tasks (`WEDDING_MULTIDAY_TASKS`) alongside a synchronized minute-by-minute run-of-show schedule for the primary celebration day (`INDIAN_MULTIDAY_WEDDING_TEMPLATE`). Pre-wedding rituals are organized through sequential planning milestones rather than separate day-of run-of-show schedules.
 - Strict cultural and dietary requirements (including Jain, vegetarian, Halal, and vegan diets) requiring dedicated catering isolation and vendor compliance checklists.
-- Intergenerational guest accommodations, accounting for elderly mobility needs (step-free access, shaded seating, low-decibel breakout spaces) and multi-age schedules.
+- Intergenerational guest accommodations, accounting for elderly mobility needs (step-free access, shaded seating, sensory-calm rest lounges and quiet retreat spaces) and multi-age schedules.
 - Seasonal weather vulnerabilities, specifically outdoor monsoon rains or extreme summer heat in regional climates, requiring reserve buffers and contingency shelters.
 - Multi-currency budgeting, natively supporting Indian Rupee (INR) formatting alongside USD, EUR, and GBP with localized integer arithmetic.
 
@@ -77,7 +77,7 @@ Event parameters are derived into signals via `deriveSignals()` in `src/domain/s
 | :--- | :--- | :--- | :--- |
 | `PAST_DATE` | Event date is in the past (`daysUntilEvent < 0`) | Clamps all task due dates to `today` (`task.dueDate = today`), marks optional tasks as skipped (`skippedInCompression = true`), appends compressed rationale suffix, and emits feasibility alert `DATE_IN_PAST`. | +0% |
 | `SHORT_NOTICE` | Planning runway under 21 days (`daysUntilEvent < 21`) | Scales task lead times proportionally, marks optional tasks as skipped (`skippedInCompression = true`), appends compressed rationale suffix, and injects 1 timeline task: `inj-short-notice` ("Fast-track priority vendor agreements and consolidate planning milestones", Foundations phase, 14 days before). | +2% |
-| `TIGHT_PER_HEAD` | Per-guest spend below heuristic floor (`perGuestBudget < floorPerGuest`) | Emits budget feasibility alert `UNREALISTIC_PER_HEAD` with core hospitality prioritization rationale and guest capacity calculations. | +0% |
+| `TIGHT_PER_HEAD` | Per-guest spend below heuristic floor (`perGuestBudget < floorPerGuest`) | Emits budget feasibility alert `UNREALISTIC_PER_HEAD` with guest capacity calculations and spending remedies. | +0% |
 | `MICRO_EVENT` | Intimate guest count under 50 (`guestCount < 50`) | Multiplies fixed-cost category weights by 1.15 (`MICRO_EVENT_FIXED_COST_MULTIPLIER`) in `buildBudget` and emits feasibility alert `MICRO_EVENT_FIXED_COSTS`. | +0% |
 | `LARGE_CROWD` | Guest count 1000 or more (`guestCount >= 1000`) | Injects 1 timeline task: `inj-large-crowd` ("Plan wide egress routes, perimeter crowd flow, and first aid stations", Details phase, 60 days before). | +2% |
 | `YOUNG_KIDS` | Sub-format is `kids_1_3` | Injects 1 timeline task: `inj-young-kids` ("Review child supervision protocols and remove choking hazard decorations", Details phase, 14 days before) and replaces run-of-show with a 4-slot early-day schedule (`buildYoungKidsSchedule`). | +0% |
@@ -106,7 +106,7 @@ Event parameters are derived into signals via `deriveSignals()` in `src/domain/s
 1. **Backwards Planning**: Due dates are calculated backwards from `eventDate` using task template day offsets (`daysBefore`).
 2. **Short-Notice Runway Scaling**: When available runway is less than the baseline planning horizon, task offsets are scaled proportionally. If `daysUntilEvent < COMPRESSED_THRESHOLD_DAYS` (21) or if the date has passed, optional tasks are flagged as `skippedInCompression`, allowing users to focus on critical-path milestones.
 3. **Topological Dependency Propagation**: Task dependencies are resolved via dependency ordering in `computeTopologicalOrder()` (calculating in-degrees and propagating maximum prerequisite due dates), ensuring dependent task due dates are scheduled on or after their prerequisite due dates (`task.dueDate = max(task.dueDate, maxDepDate)`). Tasks are then sorted by `dueDate` ascending.
-4. **Day-of Run-of-Show**: Generates a synchronized minute-by-minute schedule for the primary celebration day with contextual buffers and cue checkpoints.
+4. **Day-of Run-of-Show**: Generates a synchronized minute-by-minute schedule for the primary celebration day with contextual buffers.
 
 ### Vendor Evaluation Methodology
 
