@@ -27,9 +27,9 @@ export function Header({
 
   return (
     <header className="border-b border-line bg-surface print:hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <div className="flex flex-col">
-          <span className="text-xs uppercase tracking-widest text-muted font-semibold leading-tight">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+        <div className="flex flex-col shrink-0">
+          <span className="hidden sm:inline text-xs uppercase tracking-widest text-muted font-semibold leading-tight">
             Celebration & Event Planner
           </span>
           <span className="font-serif text-2xl tracking-tight text-ink leading-none">
@@ -38,10 +38,12 @@ export function Header({
         </div>
 
         {isWorkspace && (
-          <div className="flex items-center gap-2 sm:gap-3">
-            <Badge tone={hasKey ? 'accent' : 'neutral'}>
-              {hasKey ? 'Live ideas ready' : 'Offline ideas'}
-            </Badge>
+          <div className="flex items-center gap-1.5 sm:gap-3">
+            <span className="hidden md:inline-flex">
+              <Badge tone={hasKey ? 'accent' : 'neutral'}>
+                {hasKey ? 'Live ideas ready' : 'Offline ideas'}
+              </Badge>
+            </span>
 
             {onOpenExport && (
               <Button
@@ -50,6 +52,7 @@ export function Header({
                 icon={<Download className="w-4 h-4" aria-hidden="true" />}
                 onClick={onOpenExport}
                 aria-label="Export"
+                className="px-2 sm:px-3 text-xs sm:text-sm"
               >
                 Export
               </Button>
@@ -61,6 +64,7 @@ export function Header({
                 size="sm"
                 onClick={onOpenApiKey}
                 aria-label="AI settings"
+                className="px-2 sm:px-3 text-xs sm:text-sm"
               >
                 AI settings
               </Button>
@@ -72,6 +76,7 @@ export function Header({
                 size="sm"
                 onClick={onOpenReset}
                 aria-label="Start over"
+                className="px-2 sm:px-3 text-xs sm:text-sm"
               >
                 Start over
               </Button>
