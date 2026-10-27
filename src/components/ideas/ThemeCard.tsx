@@ -20,11 +20,21 @@ export const ThemeCard: FC<ThemeCardProps> = ({ theme }) => {
       <div className="mt-4 pt-3 border-t border-line flex flex-wrap items-center gap-3">
         {theme.colorPalette.map((hex, idx) => (
           <div key={idx} className="flex items-center gap-1.5">
-            <span
-              className="w-6 h-6 rounded-full border border-line shrink-0"
-              style={{ backgroundColor: hex }}
+            <svg
+              className="w-6 h-6 shrink-0 rounded-full"
+              viewBox="0 0 24 24"
               aria-hidden="true"
-            />
+            >
+              <circle
+                cx="12"
+                cy="12"
+                r="11"
+                fill={hex}
+                stroke="currentColor"
+                className="text-line"
+                strokeWidth="1"
+              />
+            </svg>
             <span className="tabular-nums font-mono text-xs text-muted">{hex}</span>
           </div>
         ))}

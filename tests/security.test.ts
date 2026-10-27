@@ -68,11 +68,8 @@ describe('Content Security Policy', () => {
     expect(styleSrc.trim()).toBe("'self'");
   });
 
-  it("style-src-attr is exactly 'unsafe-inline'", () => {
-    const match = /style-src-attr\s+([^;]+)/.exec(CSP);
-    expect(match).not.toBeNull();
-    const styleSrcAttr = (match?.[1] ?? '').trim();
-    expect(styleSrcAttr).toBe("'unsafe-inline'");
+  it("does not contain 'unsafe-inline' in style policy", () => {
+    expect(CSP).not.toContain("'unsafe-inline'");
   });
 });
 

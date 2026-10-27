@@ -197,4 +197,11 @@ describe('buildIcs', () => {
     };
     expect(buildIcs(input)).toBe(buildIcs(input));
   });
+
+  it('sanitizes UIDs against CRLF and special punctuation characters', () => {
+    const context = createMockContext({ id: 'bad\r\nUID:injected!@#$' });
+    const ics = buildIcs({ context, timeline: emptyTimeline, taskCompletion: {}, stamp });
+    expect(ics).toContain('UID:badUIDinjected-event@gather.local');
+    expect(ics).not.toContain('\r\nUID:injected');
+  });
 });

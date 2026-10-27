@@ -58,6 +58,7 @@ export function buildIcs(input: {
   stamp: string;
 }): string {
   const { context, timeline, taskCompletion, stamp } = input;
+  const safeContextId = context.id.replace(/[^a-zA-Z0-9_-]/g, '');
 
   const rawLines: string[] = [
     'BEGIN:VCALENDAR',
@@ -65,7 +66,7 @@ export function buildIcs(input: {
     'PRODID:-//Gather//Celebration Planner//EN',
     'CALSCALE:GREGORIAN',
     'BEGIN:VEVENT',
-    `UID:${context.id}-event@gather.local`,
+    `UID:${safeContextId}-event@gather.local`,
     `DTSTAMP:${stamp}`,
     `DTSTART;VALUE=DATE:${context.eventDate.replace(/-/g, '')}`,
     `DTEND;VALUE=DATE:${addDays(context.eventDate, 1).replace(/-/g, '')}`,
@@ -79,9 +80,10 @@ export function buildIcs(input: {
       continue;
     }
 
+    const safeTaskId = task.id.replace(/[^a-zA-Z0-9_-]/g, '');
     rawLines.push(
       'BEGIN:VEVENT',
-      `UID:${context.id}-${task.id}@gather.local`,
+      `UID:${safeContextId}-${safeTaskId}@gather.local`,
       `DTSTAMP:${stamp}`,
       `DTSTART;VALUE=DATE:${task.dueDate.replace(/-/g, '')}`,
       `DTEND;VALUE=DATE:${addDays(task.dueDate, 1).replace(/-/g, '')}`,
