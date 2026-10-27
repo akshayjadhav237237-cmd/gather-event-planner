@@ -14,6 +14,7 @@
 - `src/ai/`: Offline-first AI services (deterministic generator, live LLM adapter). **MUST NOT import React!**
 - `src/export/`: Pure export formatters (CSV, ICS, Markdown, Backup). **MUST NOT import React or touch DOM!**
 - `src/store/`: Zustand state store for client application state.
+- `src/hooks/`: React state and lifecycle hooks.
 - `src/components/`: Modular, accessible UI components.
 - `src/ui/`: Pure view derivation helpers, labels, and browser effect adapters.
 - `src/utils/`: Pure utilities (e.g., dateMath, currency formatting, debounce).
@@ -44,4 +45,4 @@
 - **Print Layout**: `PrintBrief` is styled for `@media print` with black-on-white text, semantic captions, `<h2>` document title (zero `<h1>`), and page-break controls.
 - **Backup & Restore**: Enforces 1 MB payload limits, prototype pollution rejection (`__proto__`, `constructor`, `prototype`), and strict Zod schema validation.
 - **Interaction Testing**: UI interaction tests in `tests/ui/*.test.tsx` opt in to `jsdom` via `// @vitest-environment jsdom` and use `@testing-library/react` and `@testing-library/user-event`.
-- **Continuous Integration**: `.github/workflows/ci.yml` runs full validation (`npm ci`, `typecheck`, `lint`, `test`, `build`) on Node 20 for push and PR on `master`.
+- **Continuous Integration**: `.github/workflows/ci.yml` runs full validation (`npm ci`, `typecheck`, `lint`, `test`, `build`) on Node 20 and automatically deploys build artifacts to GitHub Pages on push to `master`.
