@@ -35,6 +35,7 @@ describe('formatCurrency', () => {
 
     expect(formatCurrency(Number.NaN, 'INR')).toBe('₹0');
     expect(formatCurrency(Number.POSITIVE_INFINITY, 'USD')).toBe('$0');
+    expect(normalizeSpace(formatCurrency(Number.NEGATIVE_INFINITY, 'EUR'))).toBe('0 €');
   });
 });
 

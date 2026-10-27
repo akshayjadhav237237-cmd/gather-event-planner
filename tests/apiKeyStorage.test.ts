@@ -115,6 +115,8 @@ describe('apiKeyStorage', () => {
     expect(hasApiKey()).toBe(false);
     expect(setApiKey(validKey)).toBe(false);
     expect(() => clearApiKey()).not.toThrow();
+    expect(getApiKey()).toBeNull();
+    expect(hasApiKey()).toBe(false);
   });
 
   it('survives throwing sessionStorage without uncaught errors', () => {
@@ -123,5 +125,7 @@ describe('apiKeyStorage', () => {
     expect(hasApiKey()).toBe(false);
     expect(setApiKey(validKey)).toBe(false);
     expect(() => clearApiKey()).not.toThrow();
+    expect(getApiKey()).toBeNull();
+    expect(hasApiKey()).toBe(false);
   });
 });

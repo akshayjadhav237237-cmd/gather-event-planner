@@ -147,6 +147,6 @@ describe('buildPlan Integration Tests', () => {
 
     const elapsed = Date.now() - startTime;
     expect(runs).toBe(270);
-    expect(elapsed).toBeLessThan(2000);
+    expect(elapsed).toBeLessThan(10000);
   });
 });

@@ -51,7 +51,7 @@ describe('daysBetween', () => {
     expect(daysBetween('2025-12-31', '2026-01-01')).toBe(1);
   });
 
-  it('throws on invalid ISO date inputs', () => {
+  it('throws on invalid ISO date inputs for daysBetween', () => {
     expect(() => daysBetween('invalid', '2026-01-01')).toThrow();
     expect(() => daysBetween('2026-01-01', '2026-02-30')).toThrow();
   });
@@ -69,7 +69,7 @@ describe('addDays', () => {
     expect(addDays('2026-01-01', -1)).toBe('2025-12-31');
   });
 
-  it('throws on invalid ISO date inputs', () => {
+  it('throws on invalid ISO date inputs for addDays', () => {
     expect(() => addDays('2026-02-30', 1)).toThrow();
   });
 });

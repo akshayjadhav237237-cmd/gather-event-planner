@@ -108,4 +108,20 @@ describe('buildPlanBrief', () => {
     expect(md).toContain('- [x]');
     expect(md).toContain('- [ ]');
   });
+
+  it('renders baseline note when no decision adaptations are triggered', () => {
+    const bundle = buildPlan(scenarios[0]!.context, today);
+    const bundleWithoutAdaptations = {
+      ...bundle,
+      decision: { ...bundle.decision, adaptations: [] },
+    };
+    const md = buildPlanBrief({
+      bundle: bundleWithoutAdaptations,
+      taskCompletion: {},
+      actualSpend: {},
+      vendorQuotes: [],
+      ideas: null,
+    });
+    expect(md).toContain('Standard baseline planning rules applied.');
+  });
 });

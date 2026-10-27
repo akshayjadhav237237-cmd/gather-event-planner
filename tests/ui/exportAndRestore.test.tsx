@@ -99,7 +99,7 @@ describe('Export and Restore Interaction Tests', () => {
       vendorQuotes: [],
       ideas: null,
     };
-    const validJson = buildBackupJson(validPayload, new Date().toISOString());
+    const validJson = buildBackupJson(validPayload, '2026-10-21T12:00:00.000Z');
     const validFile = new File([validJson], 'backup.json', { type: 'application/json' });
 
     const fileInput = screen.getByLabelText(/select backup file/i);
