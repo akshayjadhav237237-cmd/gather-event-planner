@@ -58,9 +58,11 @@ export function ContextForm({
   if (mode === 'edit') {
     return (
       <form onSubmit={handleSubmit} className={formClass} noValidate>
-        <VisuallyHidden role="status" aria-live="polite">
-          {errorSummary}
-        </VisuallyHidden>
+        {errorSummary ? (
+          <VisuallyHidden role="status" aria-live="polite">
+            {errorSummary}
+          </VisuallyHidden>
+        ) : null}
 
         <EssentialsFields
           draft={draft}
@@ -94,7 +96,7 @@ export function ContextForm({
           </div>
         </Disclosure>
 
-        <p role="status" className="text-xs text-muted">
+        <p className="text-xs text-muted">
           All changes are saved on this device.
         </p>
       </form>
@@ -103,9 +105,11 @@ export function ContextForm({
 
   return (
     <form onSubmit={handleSubmit} className={formClass} noValidate>
-      <VisuallyHidden role="status" aria-live="polite">
-        {errorSummary}
-      </VisuallyHidden>
+      {errorSummary ? (
+        <VisuallyHidden role="status" aria-live="polite">
+          {errorSummary}
+        </VisuallyHidden>
+      ) : null}
 
       <Card as="section">
         <h2 className="text-xl font-medium text-ink mb-1">

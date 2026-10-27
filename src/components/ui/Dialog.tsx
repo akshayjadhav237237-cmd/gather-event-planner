@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react';
 import { X } from 'lucide-react';
 
 export interface DialogProps {
+  id?: string;
   open: boolean;
   onClose: () => void;
   title: string;
@@ -12,6 +13,7 @@ export interface DialogProps {
 }
 
 export function Dialog({
+  id = 'dialog',
   open,
   onClose,
   title,
@@ -21,6 +23,8 @@ export function Dialog({
   className = '',
 }: DialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = `${id}-title`;
+  const descId = `${id}-desc`;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -76,20 +80,20 @@ export function Dialog({
   return (
     <dialog
       ref={dialogRef}
-      aria-labelledby="dialog-title"
-      aria-describedby={description ? 'dialog-desc' : undefined}
+      aria-labelledby={titleId}
+      aria-describedby={description ? descId : undefined}
       className={dialogClass}
     >
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex flex-col">
           <h2
-            id="dialog-title"
+            id={titleId}
             className="font-serif text-2xl text-ink font-normal"
           >
             {title}
           </h2>
           {description && (
-            <p id="dialog-desc" className="text-sm text-muted mt-1">
+            <p id={descId} className="text-sm text-muted mt-1">
               {description}
             </p>
           )}

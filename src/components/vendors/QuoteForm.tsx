@@ -145,27 +145,31 @@ export const QuoteForm: FC<QuoteFormProps> = ({
           <div className="flex flex-col justify-end">
             <div className="flex flex-wrap gap-4 py-2">
               <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="quote-contract-signed"
-                  checked={draft.contractSigned}
-                  onChange={(e) => updateField('contractSigned', e.target.checked)}
-                  className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
-                />
-                <label htmlFor="quote-contract-signed" className="text-sm text-ink cursor-pointer select-none">
+                <span className="min-w-[24px] min-h-[24px] flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    id="quote-contract-signed"
+                    checked={draft.contractSigned}
+                    onChange={(e) => updateField('contractSigned', e.target.checked)}
+                    className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+                  />
+                </span>
+                <label htmlFor="quote-contract-signed" className="text-sm text-ink cursor-pointer select-none py-1">
                   Contract signed
                 </label>
               </div>
 
               <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="quote-insurance-verified"
-                  checked={draft.insuranceVerified}
-                  onChange={(e) => updateField('insuranceVerified', e.target.checked)}
-                  className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
-                />
-                <label htmlFor="quote-insurance-verified" className="text-sm text-ink cursor-pointer select-none">
+                <span className="min-w-[24px] min-h-[24px] flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    id="quote-insurance-verified"
+                    checked={draft.insuranceVerified}
+                    onChange={(e) => updateField('insuranceVerified', e.target.checked)}
+                    className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
+                  />
+                </span>
+                <label htmlFor="quote-insurance-verified" className="text-sm text-ink cursor-pointer select-none py-1">
                   Insurance or licences verified
                 </label>
               </div>

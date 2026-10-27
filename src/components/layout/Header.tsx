@@ -27,7 +27,7 @@ export function Header({
 
   return (
     <header className="border-b border-line bg-surface print:hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
+      <div className="max-w-6xl mx-auto px-2.5 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2">
         <div className="flex flex-col shrink-0">
           <span className="hidden sm:inline text-xs uppercase tracking-widest text-muted font-semibold leading-tight">
             Celebration & Event Planner
@@ -48,7 +48,7 @@ export function Header({
                 className={`w-2 h-2 rounded-full ${hasKey ? 'bg-accent' : 'bg-muted'}`}
                 aria-hidden="true"
               />
-              <span className="sr-only sm:not-sr-only sm:inline md:hidden">
+              <span className="inline md:hidden text-[11px] font-medium">
                 {hasKey ? 'Live' : 'Offline'}
               </span>
               <span className="hidden md:inline">

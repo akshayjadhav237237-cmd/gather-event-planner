@@ -33,9 +33,9 @@ export function Launchpad() {
     return (
       <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6">
         <div className="mb-6">
-          <p className="text-xs uppercase tracking-widest text-muted font-semibold mb-1">
+          <h1 className="text-2xl font-serif text-ink mb-1">
             New celebration plan
-          </p>
+          </h1>
           <p className="text-sm text-ink-soft">
             Adjust the baseline numbers or submit to start planning.
           </p>
