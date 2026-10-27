@@ -19,6 +19,7 @@ function parseIsoParts(iso: string): { year: number; month: number; day: number 
   return { year, month, day };
 }
 
+/** Validates whether a string is a strict YYYY-MM-DD calendar date. */
 export function isValidIsoDate(iso: string): boolean {
   const parts = parseIsoParts(iso);
   if (!parts) {
@@ -33,6 +34,7 @@ export function isValidIsoDate(iso: string): boolean {
   );
 }
 
+/** Calculates the signed number of calendar days between two ISO dates. */
 export function daysBetween(fromIso: string, toIso: string): number {
   if (!isValidIsoDate(fromIso)) {
     throw new Error(`Invalid fromIso date string: ${fromIso}`);
@@ -51,6 +53,7 @@ export function daysBetween(fromIso: string, toIso: string): number {
   return Math.round((d2 - d1) / msPerDay);
 }
 
+/** Returns a new ISO date string by adding n days to an input ISO date. */
 export function addDays(iso: string, n: number): string {
   if (!isValidIsoDate(iso)) {
     throw new Error(`Invalid iso date string: ${iso}`);
@@ -64,6 +67,7 @@ export function addDays(iso: string, n: number): string {
   return formatUtc(date);
 }
 
+/** Returns a new ISO date string by adding n months with month-end day clamping. */
 export function addMonths(iso: string, n: number): string {
   if (!isValidIsoDate(iso)) {
     throw new Error(`Invalid iso date string: ${iso}`);
@@ -81,6 +85,7 @@ export function addMonths(iso: string, n: number): string {
   return formatUtc(resultDate);
 }
 
+/** Returns today's UTC calendar date as YYYY-MM-DD. */
 export function todayIso(): string {
   return formatUtc(new Date());
 }

@@ -21,6 +21,9 @@ export const BASE_CONTINGENCY_HEURISTICS: Record<EventType, number> = {
   community: 0.12,
 };
 
+export const DEFAULT_CONTINGENCY_RATE = 0.08;
+export const DECIMAL_PRECISION_FACTOR = 10000;
+
 // Planning heuristic multiplier for user-selected priority categories.
 // Note: This weight boost is an illustrative planning heuristic to tilt resources toward stated priorities.
 export const PRIORITY_WEIGHT_MULTIPLIER = 1.25;
@@ -39,12 +42,12 @@ export function buildBudget(
   signals: ContextSignals,
   decision: DecisionResult,
 ): BudgetBreakdown {
-  const baseContingency = BASE_CONTINGENCY_HEURISTICS[ctx.eventType] ?? 0.08;
+  const baseContingency = BASE_CONTINGENCY_HEURISTICS[ctx.eventType] ?? DEFAULT_CONTINGENCY_RATE;
   const rawContingency = Math.min(
     CONTINGENCY_MAX,
     Math.max(CONTINGENCY_MIN, baseContingency + decision.contingencyDelta),
   );
-  const contingencyPct = Math.round(rawContingency * 10000) / 10000;
+  const contingencyPct = Math.round(rawContingency * DECIMAL_PRECISION_FACTOR) / DECIMAL_PRECISION_FACTOR;
   const contingencyAmount = Math.round(ctx.totalBudget * contingencyPct);
   const allocatableBudget = Math.max(0, ctx.totalBudget - contingencyAmount);
 

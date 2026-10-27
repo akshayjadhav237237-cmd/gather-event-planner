@@ -13,6 +13,7 @@ function formatCompactNumber(value: number): string {
   return rounded.toString();
 }
 
+/** Formats an integer amount as localized currency string without fractional units. */
 export function formatCurrency(amount: number, currency: CurrencyCode): string {
   const safeAmount = Number.isFinite(amount) ? Math.round(amount) : 0;
   const locale = CURRENCY_LOCALE[currency] ?? 'en-US';
@@ -23,6 +24,7 @@ export function formatCurrency(amount: number, currency: CurrencyCode): string {
   }).format(safeAmount);
 }
 
+/** Formats an amount with compact notation (e.g. 1.2M, 50K, 2.5L, 1.5Cr). */
 export function formatCompact(amount: number, currency: CurrencyCode): string {
   const symbol = CURRENCY_SYMBOLS[currency] ?? '$';
   if (!Number.isFinite(amount) || amount === 0) {

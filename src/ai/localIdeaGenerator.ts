@@ -66,7 +66,7 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
 
   for (const s of allSeeds) {
     if (isUniversal(s.tags)) b2.push(s);
-    else if (matchesTags(s.tags!, context, signals)) b1.push(s);
+    else if (s.tags && matchesTags(s.tags, context, signals)) b1.push(s);
     else b3.push(s);
   }
 
@@ -84,9 +84,12 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
 
   for (let i = pool.length - 1; i > 0; i -= 1) {
     const j = Math.floor(rng() * (i + 1));
-    const t = pool[i]!;
-    pool[i] = pool[j]!;
-    pool[j] = t;
+    const itemI = pool[i];
+    const itemJ = pool[j];
+    if (itemI !== undefined && itemJ !== undefined) {
+      pool[i] = itemJ;
+      pool[j] = itemI;
+    }
   }
 
   const noteWords = notes ? (notes.toLowerCase().match(/\b\w+\b/g) || []) : [];

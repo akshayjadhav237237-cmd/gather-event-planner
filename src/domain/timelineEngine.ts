@@ -36,7 +36,8 @@ function computeTopologicalOrder(tasks: TimelineTask[]): string[] {
 
   const order: string[] = [];
   while (queue.length > 0) {
-    const id = queue.shift()!;
+    const id = queue.shift();
+    if (!id) break;
     order.push(id);
     const children = dependents.get(id) ?? [];
     for (const childId of children) {
@@ -123,7 +124,8 @@ export function buildTimeline(
   const topoOrder = computeTopologicalOrder(tasks);
 
   for (const taskId of topoOrder) {
-    const task = taskMap.get(taskId)!;
+    const task = taskMap.get(taskId);
+    if (!task) continue;
     const depDueDates: string[] = [];
     for (const depId of task.dependsOn) {
       const depTask = taskMap.get(depId);

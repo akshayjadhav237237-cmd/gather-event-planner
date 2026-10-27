@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
 import { buildPlanBrief, parseBackup, type BackupPayload } from '../../export';
 import { useExportState } from '../../hooks/useExportState';
 import { usePlanStore } from '../../store/planStore';
@@ -27,15 +27,23 @@ export function ExportDialog({ open, onClose }: ExportDialogProps) {
   const [restoreError, setRestoreError] = useState<string | null>(null);
   const [pendingBackup, setPendingBackup] = useState<BackupPayload | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const announceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (announceTimerRef.current) clearTimeout(announceTimerRef.current);
+    };
+  }, []);
 
   const exportMap = useMemo(() => {
-    if (!exportState) return new Map<string, ExportActionItem>();
+    if (!open || !exportState) return new Map<string, ExportActionItem>();
     return new Map(describeExports(exportState, new Date()).map((item) => [item.id, item]));
-  }, [exportState]);
+  }, [open, exportState]);
 
   const announce = (msg: string) => {
     setStatusMessage('');
-    setTimeout(() => setStatusMessage(msg), 50);
+    if (announceTimerRef.current) clearTimeout(announceTimerRef.current);
+    announceTimerRef.current = setTimeout(() => setStatusMessage(msg), 50);
   };
 
   const handleCopySummary = async () => {
@@ -155,7 +163,7 @@ export function ExportDialog({ open, onClose }: ExportDialogProps) {
           {rows.map((r) => (
             <div key={r.key} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-card bg-surface border border-line">
               <div className="space-y-0.5">
-                <h4 className="text-sm font-medium text-ink">{r.title}</h4>
+                <h3 className="text-sm font-medium text-ink">{r.title}</h3>
                 <p className="text-xs text-muted">{r.description}</p>
                 {r.disabled && r.reason && <p className="text-xs text-warning">{r.reason}</p>}
               </div>
@@ -167,7 +175,7 @@ export function ExportDialog({ open, onClose }: ExportDialogProps) {
         </div>
 
         <section aria-labelledby="restore-section-heading" className="border-t border-line pt-4 space-y-3">
-          <h4 id="restore-section-heading" className="text-sm font-semibold text-ink">Restore from a backup</h4>
+          <h3 id="restore-section-heading" className="text-sm font-semibold text-ink">Restore from a backup</h3>
           <p className="text-xs text-muted">Load a previously exported Gather JSON backup file to replace your current plan.</p>
           <div>
             <label htmlFor="backup-file" className="block text-xs font-medium text-ink-soft mb-1.5">Select backup file</label>

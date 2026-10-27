@@ -17,8 +17,8 @@ import { Select } from '../ui/Select';
 
 export interface WhatIfSimulatorProps {
   context: EventContext;
-  signals: ContextSignals;
-  breakdown: BudgetBreakdown;
+  signals?: ContextSignals;
+  breakdown?: BudgetBreakdown;
 }
 
 export function WhatIfSimulator({ context }: WhatIfSimulatorProps) {

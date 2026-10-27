@@ -10,11 +10,10 @@ import { ApiKeyDialog } from './components/settings/ApiKeyDialog';
 import { ResetDialog } from './components/settings/ResetDialog';
 import { useDocumentTitle } from './hooks/useDocumentTitle';
 import { useFocusOnMount } from './hooks/useFocusOnMount';
-import { usePlan } from './hooks/usePlan';
 import { usePlanStore } from './store/planStore';
 
 export function App() {
-  const { context } = usePlan();
+  const context = usePlanStore((s) => s.context);
   const clearAll = usePlanStore((s) => s.clearAll);
 
   const [isApiKeyOpen, setIsApiKeyOpen] = useState(false);

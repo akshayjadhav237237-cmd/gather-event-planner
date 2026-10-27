@@ -3,6 +3,10 @@ import { getRunOfShowTemplate } from '../data/runOfShowTemplates';
 import type { DecisionResult } from '../types/engine';
 import type { EventContext, RunOfShowSlot } from '../types/event';
 
+export const DAY_END_MINUTES = 1439;
+export const MINUTES_PER_DAY = 1440;
+export const DAY_MAX_START_MINUTES = 1435;
+
 /** Converts a 24-hour HH:MM time string to integer minutes from midnight. */
 export function timeToMinutes(time: string): number {
   const [hStr = '0', mStr = '0'] = time.split(':');
@@ -11,7 +15,7 @@ export function timeToMinutes(time: string): number {
 
 /** Converts integer minutes from midnight to a 24-hour HH:MM string. */
 export function minutesToTime(minutes: number): string {
-  const clamped = Math.max(0, Math.min(1439, Math.floor(minutes)));
+  const clamped = Math.max(0, Math.min(DAY_END_MINUTES, Math.floor(minutes)));
   const h = Math.floor(clamped / 60);
   const m = clamped % 60;
   return `${h < 10 ? '0' : ''}${h}:${m < 10 ? '0' : ''}${m}`;
@@ -35,8 +39,8 @@ export function recalculateSchedule(slots: RunOfShowSlot[]): RunOfShowSlot[] {
       }
     }
     const end = timeToMinutes(cur.startTime) + cur.durationMin + cur.bufferMin;
-    if (end >= 1440) {
-      const available = 1435 - timeToMinutes(cur.startTime);
+    if (end >= MINUTES_PER_DAY) {
+      const available = DAY_MAX_START_MINUTES - timeToMinutes(cur.startTime);
       if (available >= 5) {
         cur.bufferMin = 0;
         cur.durationMin = available;

@@ -5,6 +5,7 @@ import { STORAGE_KEY } from '../config/constants';
 import type { BackupPayload } from '../export/backupTypes';
 import type { EventContext, PersonalizedIdeas, VendorQuote } from '../types/event';
 import { EventContextSchema, PersonalizedIdeasSchema, VendorQuoteSchema } from '../types/schemas';
+import { ignoreExpectedError } from '../utils/errors';
 
 export interface PlanPersistedState {
   context: EventContext | null;
@@ -43,7 +44,7 @@ export const safeLocalStorage: StateStorage = {
         return window.localStorage.getItem(name);
       }
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'localStorage getItem access denied');
     }
     return memoryFallback.get(name) ?? null;
   },
@@ -54,7 +55,7 @@ export const safeLocalStorage: StateStorage = {
         return;
       }
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'localStorage setItem access denied or quota exceeded');
     }
     memoryFallback.set(name, value);
   },
@@ -65,7 +66,7 @@ export const safeLocalStorage: StateStorage = {
         return;
       }
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'localStorage removeItem access denied');
     }
     memoryFallback.delete(name);
   },
@@ -76,7 +77,7 @@ const wrapSafeStorage = (storage: StateStorage): StateStorage => ({
     try {
       return storage.getItem(name);
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'wrapped storage getItem failure');
       return null;
     }
   },
@@ -84,14 +85,14 @@ const wrapSafeStorage = (storage: StateStorage): StateStorage => ({
     try {
       storage.setItem(name, value);
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'wrapped storage setItem failure');
     }
   },
   removeItem: (name) => {
     try {
       storage.removeItem(name);
     } catch (_err) {
-      void _err;
+      ignoreExpectedError(_err, 'wrapped storage removeItem failure');
     }
   },
 });

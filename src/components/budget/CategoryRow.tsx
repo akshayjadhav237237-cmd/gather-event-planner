@@ -105,6 +105,19 @@ export const CategoryRow: FC<CategoryRowProps> = ({
     debouncedUpdate(parsed);
   };
 
+  const handleBlur = () => {
+    debouncedUpdate.cancel();
+    const trimmed = inputValue.trim();
+    if (trimmed === '') {
+      onSpendChange(row.id, 0);
+      return;
+    }
+    const parsed = parseWholeNumber(trimmed);
+    if (Number.isFinite(parsed) && parsed >= 0) {
+      onSpendChange(row.id, parsed);
+    }
+  };
+
   const deltaText =
     row.pctDelta !== 0
       ? row.pctDelta > 0
@@ -162,6 +175,7 @@ export const CategoryRow: FC<CategoryRowProps> = ({
             inputMode="numeric"
             value={inputValue}
             onChange={handleInputChange}
+            onBlur={handleBlur}
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : undefined}
             placeholder="0"

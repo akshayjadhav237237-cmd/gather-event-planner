@@ -1,3 +1,5 @@
+import { ignoreExpectedError } from './errors';
+
 let fallbackCounter = 0;
 
 /**
@@ -17,7 +19,7 @@ export function createId(): string {
       }
     }
   } catch (_err) {
-    void _err;
+    ignoreExpectedError(_err, 'crypto API unavailable or blocked');
   }
 
   fallbackCounter = (fallbackCounter + 1) % 1_000_000;

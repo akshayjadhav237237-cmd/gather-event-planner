@@ -33,6 +33,7 @@ export interface FormDraft {
 export type FieldKey = keyof FormDraft;
 export type FieldErrors = Partial<Record<FieldKey, string>>;
 
+/** Parses a string into a non-negative safe whole number or returns NaN. */
 export function parseWholeNumber(raw: string): number {
   if (typeof raw !== 'string') return NaN;
   const sanitized = raw.replace(/[\s,_]/g, '');
@@ -60,6 +61,7 @@ function getInitialSubFormat(eventType: EventType): SubFormat {
   return EVENT_SUBFORMATS[eventType][0] ?? 'western';
 }
 
+/** Creates a new default form draft for the specified event type and date. */
 export function createDraft(
   eventType: EventType,
   today: string,
@@ -86,6 +88,7 @@ export function createDraft(
   };
 }
 
+/** Converts a persisted event context into editable form draft state. */
 export function draftFromContext(ctx: EventContext): FormDraft {
   return {
     title: ctx.title,
@@ -113,6 +116,7 @@ const ERROR_MESSAGES: Partial<Record<FieldKey, string>> = {
   userNotes: 'Notes cannot exceed 300 characters.',
 };
 
+/** Validates a form draft and returns either the event context or field errors. */
 export function parseDraft(
   draft: FormDraft,
   id: string
@@ -149,6 +153,7 @@ export function parseDraft(
   return { ok: true, value: parsed.data as EventContext };
 }
 
+/** Adapts subformat, priorities, and flags when switching event types. */
 export function applyEventTypeChange(draft: FormDraft, eventType: EventType): FormDraft {
   const nextSubFormat = getInitialSubFormat(eventType);
   const validPriorities = draft.priorities.filter((catId) => isValidCategoryId(eventType, catId));
@@ -163,6 +168,7 @@ export function applyEventTypeChange(draft: FormDraft, eventType: EventType): Fo
   };
 }
 
+/** Toggles selection of a category priority up to the maximum allowance. */
 export function togglePriority(draft: FormDraft, categoryId: string): FormDraft {
   if (!isValidCategoryId(draft.eventType, categoryId)) return draft;
   const exists = draft.priorities.includes(categoryId);
@@ -173,6 +179,7 @@ export function togglePriority(draft: FormDraft, categoryId: string): FormDraft 
   return { ...draft, priorities: [...draft.priorities, categoryId] };
 }
 
+/** Toggles an event context flag on or off. */
 export function toggleFlag(draft: FormDraft, flag: ContextFlag): FormDraft {
   const exists = draft.flags.includes(flag);
   return {
@@ -181,6 +188,7 @@ export function toggleFlag(draft: FormDraft, flag: ContextFlag): FormDraft {
   };
 }
 
+/** Generates an illustrative per-guest budget estimate string. */
 export function describeBudgetHint(draft: FormDraft): string {
   const budget = parseWholeNumber(draft.totalBudget);
   const guests = parseWholeNumber(draft.guestCount);

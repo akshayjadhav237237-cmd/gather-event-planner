@@ -2,6 +2,11 @@
   "name": "gather-event-planner",
   "private": true,
   "version": "1.0.0",
+  "homepage": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/akshayjadhav237237-cmd/gather-event-planner.git"
+  },
   "description": "GenAI-powered planning assistant organizing weddings, birthdays, and community events with budgets, timelines, vendor checklists, and personalized ideas.",
   "type": "module",
   "engines": {
@@ -23,6 +28,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --check .",
+    "format:check": "prettier --check .",
     "test": "vitest run",
     "test:watch": "vitest"
   },
