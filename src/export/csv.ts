@@ -1,5 +1,5 @@
 import { CATEGORY_SETS } from '../data/categories';
-import { quoteAllInTotal } from '../domain/vendorEngine';
+import { quoteAllInTotal } from '../domain/quoteMath';
 import type { BudgetBreakdown, EventType, VendorQuote } from '../types/event';
 import { buildBudgetRows, summarizeSpending } from '../ui/budgetView';
 

@@ -1,7 +1,10 @@
 import { MAX_NOTES_LENGTH } from '../config/constants';
 import type { PersonalizedIdeas } from '../types/event';
 import { PersonalizedIdeasSchema } from '../types/schemas';
+import { isPlausibleApiKey } from './apiKeyStorage';
 import { LlmError } from './llmError';
+
+export { isPlausibleApiKey };
 
 const INJECTION_PATTERNS: readonly RegExp[] = [
   /(?:ignore|disregard|forget)\s+(?:all\s+)?(?:previous|prior|above)\s+(?:instructions?|rules?|prompts?)/i,
@@ -15,7 +18,6 @@ const INJECTION_PATTERNS: readonly RegExp[] = [
 
 const MAX_RAW_RESPONSE_CHARS = 20000;
 const CODE_FENCE_REGEX = /^```(?:json)?\s*\n?([\s\S]*?)\n?```$/i;
-const API_KEY_REGEX = /^[A-Za-z0-9_-]{20,200}$/;
 
 function stripControlChars(text: string): string {
   let result = '';
@@ -104,13 +106,4 @@ export function validateIdeas(
     return { ok: true, value: result.data };
   }
   return { ok: false };
-}
-
-/** Validates whether a candidate string is a plausible API key format. */
-export function isPlausibleApiKey(value: string): boolean {
-  if (typeof value !== 'string') {
-    return false;
-  }
-  const trimmed = value.trim();
-  return API_KEY_REGEX.test(trimmed);
 }

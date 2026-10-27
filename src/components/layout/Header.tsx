@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Download } from 'lucide-react';
-import { hasApiKey } from '../../ai';
+import { hasApiKey } from '../../ai/apiKeyStorage';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 

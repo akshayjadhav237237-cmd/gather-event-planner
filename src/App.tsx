@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
-import { clearApiKey, hasApiKey } from './ai';
+import { clearApiKey, hasApiKey } from './ai/apiKeyStorage';
 import { ExportDialog } from './components/export';
 import { Launchpad } from './components/launchpad/Launchpad';
 import { Footer } from './components/layout/Footer';

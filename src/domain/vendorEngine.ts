@@ -3,6 +3,9 @@ import type { EventContext, VendorCategoryGuide, VendorQuote } from '../types/ev
 import { WEDDING_VENDOR_GUIDES, type VendorGuideTemplate } from '../data/vendors/weddingVendors';
 import { BIRTHDAY_VENDOR_GUIDES } from '../data/vendors/birthdayVendors';
 import { COMMUNITY_VENDOR_GUIDES } from '../data/vendors/communityVendors';
+import { quoteAllInTotal } from './quoteMath';
+
+export { quoteAllInTotal };
 
 const CATALOG_BY_EVENT_TYPE: Record<string, readonly VendorGuideTemplate[]> = {
   wedding: WEDDING_VENDOR_GUIDES,
@@ -48,13 +51,6 @@ export function buildVendorGuides(
       contractWatchouts,
     };
   });
-}
-
-/** Calculates the all-in total for a vendor quote including base quote and service/tax percentages. */
-export function quoteAllInTotal(q: VendorQuote): number {
-  const base = Number.isFinite(q.baseQuote) ? Math.max(0, q.baseQuote) : 0;
-  const taxPct = Number.isFinite(q.serviceAndTaxPct) ? Math.max(0, q.serviceAndTaxPct) : 0;
-  return Math.round(base * (1 + taxPct / 100));
 }
 
 /** Compares vendor quotes for a category, ranking by all-in price and flagging missing compliance checks. */

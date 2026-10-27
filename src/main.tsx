@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import '@fontsource/instrument-serif/400.css';
 import '@fontsource-variable/dm-sans';
-import { clearApiKey } from './ai';
+import { clearApiKey } from './ai/apiKeyStorage';
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import './index.css';

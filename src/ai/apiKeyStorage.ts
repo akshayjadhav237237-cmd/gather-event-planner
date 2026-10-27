@@ -1,5 +1,15 @@
 import { API_KEY_SESSION_KEY } from '../config/constants';
-import { isPlausibleApiKey } from './securityGuard';
+
+const API_KEY_REGEX = /^[A-Za-z0-9_-]{20,200}$/;
+
+/** Validates whether a candidate string is a plausible API key format. */
+export function isPlausibleApiKey(value: string): boolean {
+  if (typeof value !== 'string') {
+    return false;
+  }
+  const trimmed = value.trim();
+  return API_KEY_REGEX.test(trimmed);
+}
 
 /** Retrieves the active Gemini API key from session storage, or null if unset or inaccessible. */
 export function getApiKey(): string | null {

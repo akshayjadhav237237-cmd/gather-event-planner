@@ -4,7 +4,7 @@ import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { formatCurrency } from '../../utils/currency';
-import { quoteAllInTotal } from '../../domain/vendorEngine';
+import { quoteAllInTotal } from '../../domain/quoteMath';
 
 export interface QuoteCardProps {
   quote: VendorQuote;
