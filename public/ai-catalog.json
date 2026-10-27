@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "specVersion": "1.0",
   "host": {
     "displayName": "Gather Event Planner",
@@ -10,23 +9,38 @@
     {
       "identifier": "urn:air:gather:web-app",
       "displayName": "Gather Celebration Planner Application",
-      "type": "text/html",
+      "type": "application/ai-catalog+json",
       "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
-      "description": "Offline-first single-page web application for celebration planning."
+      "description": "Offline-first single-page web application for celebration planning: budget allocation, backward-scheduled timelines, vendor checklists, and personalized ideas.",
+      "representativeQueries": [
+        "plan a wedding budget",
+        "event planning timeline",
+        "vendor checklist for birthday party",
+        "community event organizer",
+        "celebration planning assistant"
+      ]
     },
     {
       "identifier": "urn:air:gather:llms-txt",
       "displayName": "LLM Guidance and Agent Resource Index",
-      "type": "text/markdown",
+      "type": "text/markdown; profile=\"urn:ietf:params:mime-profile:llms-txt\"",
       "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/llms.txt",
-      "description": "Machine-readable documentation and navigation guidance for large language models."
+      "description": "Machine-readable documentation and navigation guidance for large language models and AI agents.",
+      "representativeQueries": [
+        "Gather API documentation for agents",
+        "LLM integration guide event planner"
+      ]
     },
     {
       "identifier": "urn:air:gather:repo",
       "displayName": "GitHub Source Repository",
-      "type": "text/html",
+      "type": "application/ai-catalog+json",
       "url": "https://github.com/akshayjadhav237237-cmd/gather-event-planner",
-      "description": "Open-source codebase, domain logic, calculation engines, and test suites."
+      "description": "Open-source codebase with domain logic, calculation engines, and test suites for the Gather event planner.",
+      "representativeQueries": [
+        "Gather event planner source code",
+        "open source event planning React app"
+      ]
     }
   ]
 }

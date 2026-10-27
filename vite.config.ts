@@ -20,6 +20,30 @@ export default defineConfig({
   plugins: [react(), cspPlugin],
   build: {
     assetsInlineLimit: 0,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor-react';
+          }
+          if (id.includes('node_modules/zustand')) {
+            return 'vendor-zustand';
+          }
+          if (id.includes('node_modules/zod')) {
+            return 'vendor-zod';
+          }
+          if (id.includes('/src/data/')) {
+            return 'data-catalogs';
+          }
+          if (id.includes('/src/domain/')) {
+            return 'domain-engines';
+          }
+          if (id.includes('/src/export/')) {
+            return 'export-formatters';
+          }
+        },
+      },
+    },
   },
   test: {
     globals: true,
