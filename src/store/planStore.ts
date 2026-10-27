@@ -6,6 +6,9 @@ import type { BackupPayload } from '../export/backupTypes';
 import type { EventContext, PersonalizedIdeas, VendorQuote } from '../types/event';
 import { EventContextSchema, PersonalizedIdeasSchema, VendorQuoteSchema } from '../types/schemas';
 import { ignoreExpectedError } from '../utils/errors';
+import { safeLocalStorage } from '../utils/safeStorage';
+
+export { safeLocalStorage };
 
 export interface PlanPersistedState {
   context: EventContext | null;
@@ -33,43 +36,6 @@ const INITIAL_DATA: PlanPersistedState = {
   actualSpend: {},
   vendorQuotes: [],
   ideas: null,
-};
-
-const memoryFallback = new Map<string, string>();
-
-export const safeLocalStorage: StateStorage = {
-  getItem: (name: string): string | null => {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        return window.localStorage.getItem(name);
-      }
-    } catch (_err) {
-      ignoreExpectedError(_err, 'localStorage getItem access denied');
-    }
-    return memoryFallback.get(name) ?? null;
-  },
-  setItem: (name: string, value: string): void => {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(name, value);
-        return;
-      }
-    } catch (_err) {
-      ignoreExpectedError(_err, 'localStorage setItem access denied or quota exceeded');
-    }
-    memoryFallback.set(name, value);
-  },
-  removeItem: (name: string): void => {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.removeItem(name);
-        return;
-      }
-    } catch (_err) {
-      ignoreExpectedError(_err, 'localStorage removeItem access denied');
-    }
-    memoryFallback.delete(name);
-  },
 };
 
 const wrapSafeStorage = (storage: StateStorage): StateStorage => ({

@@ -162,6 +162,32 @@ export function generateLocalIdeas(
   };
 }
 
+const SECTION_UPDATERS: Record<
+  IdeaSection,
+  (bank: ReturnType<typeof getIdeaBank>, input: AiPlanInput, variant: number, active: string | null) => Partial<PersonalizedIdeas>
+> = {
+  themeConcepts: (bank, input, variant, active) => ({
+    themeConcepts: pickSeeds(bank.themes, input, variant, active, 'themeConcepts', 3).map((s) =>
+      mapTheme(s, input.context, input.signals),
+    ),
+  }),
+  cateringIdeas: (bank, input, variant, active) => ({
+    cateringIdeas: pickSeeds(bank.catering, input, variant, active, 'cateringIdeas', 3).map((s) =>
+      mapCatering(s, input.context, input.signals),
+    ),
+  }),
+  activityIdeas: (bank, input, variant, active) => ({
+    activityIdeas: pickSeeds(bank.activities, input, variant, active, 'activityIdeas', 3).map((s) =>
+      mapActivity(s, input.context, input.signals),
+    ),
+  }),
+  bespokeTasks: (bank, input, variant, active) => ({
+    bespokeTasks: pickSeeds(bank.bespoke, input, variant, active, 'bespokeTasks', 4).map((s) =>
+      mapBespoke(s, input.context, input.signals),
+    ),
+  }),
+};
+
 /** Re-rolls and replaces a single section of personalized ideas with different matching concepts. */
 export function regenerateLocalSection(
   current: PersonalizedIdeas,
@@ -170,25 +196,9 @@ export function regenerateLocalSection(
   variant: number,
   notes: string | null = null,
 ): PersonalizedIdeas {
-  const { context: ctx, signals: sig } = input;
-  const bank = getIdeaBank(ctx.eventType);
-  const active = notes ?? (ctx.userNotes.trim().length > 0 ? ctx.userNotes : null);
-  const clone: PersonalizedIdeas = {
-    ...current,
-    themeConcepts: [...current.themeConcepts],
-    cateringIdeas: [...current.cateringIdeas],
-    activityIdeas: [...current.activityIdeas],
-    bespokeTasks: [...current.bespokeTasks],
-  };
-
-  if (section === 'themeConcepts') {
-    clone.themeConcepts = pickSeeds(bank.themes, input, variant, active, section, 3).map((s) => mapTheme(s, ctx, sig));
-  } else if (section === 'cateringIdeas') {
-    clone.cateringIdeas = pickSeeds(bank.catering, input, variant, active, section, 3).map((s) => mapCatering(s, ctx, sig));
-  } else if (section === 'activityIdeas') {
-    clone.activityIdeas = pickSeeds(bank.activities, input, variant, active, section, 3).map((s) => mapActivity(s, ctx, sig));
-  } else if (section === 'bespokeTasks') {
-    clone.bespokeTasks = pickSeeds(bank.bespoke, input, variant, active, section, 4).map((s) => mapBespoke(s, ctx, sig));
-  }
-  return clone;
+  const bank = getIdeaBank(input.context.eventType);
+  const active = notes ?? (input.context.userNotes.trim().length > 0 ? input.context.userNotes : null);
+  const updater = SECTION_UPDATERS[section];
+  if (!updater) return current;
+  return { ...current, ...updater(bank, input, variant, active) };
 }

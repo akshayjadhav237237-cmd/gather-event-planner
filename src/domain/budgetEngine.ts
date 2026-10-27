@@ -1,7 +1,7 @@
 import { CONTINGENCY_MAX, CONTINGENCY_MIN, MAX_PRIORITIES } from '../config/constants';
 import { getBudgetPreset } from '../data/budgetPresets';
 import { getCostSavingSwap } from '../data/budgetSwaps';
-import { CATEGORY_SETS } from '../data/categories';
+import { CATEGORY_SETS, type CategoryDef } from '../data/categories';
 import type { ContextSignals, DecisionResult } from '../types/engine';
 import type {
   BudgetBreakdown,
@@ -13,8 +13,6 @@ import type {
 import { allocateByWeights } from '../utils/allocate';
 import { formatCurrency } from '../utils/currency';
 
-// Baseline planning heuristic contingency reserve percentages by event type.
-// Note: These figures represent illustrative planning heuristics for unexpected variance.
 export const BASE_CONTINGENCY_HEURISTICS: Record<EventType, number> = {
   wedding: 0.08,
   birthday: 0.07,
@@ -23,47 +21,45 @@ export const BASE_CONTINGENCY_HEURISTICS: Record<EventType, number> = {
 
 export const DEFAULT_CONTINGENCY_RATE = 0.08;
 export const DECIMAL_PRECISION_FACTOR = 10000;
-
-// Planning heuristic multiplier for user-selected priority categories.
-// Note: This weight boost is an illustrative planning heuristic to tilt resources toward stated priorities.
 export const PRIORITY_WEIGHT_MULTIPLIER = 1.25;
-
-// Planning heuristic multiplier for fixed-cost categories in micro-events.
-// Note: Intimate events carry proportionately higher fixed overheads; this is an illustrative planning heuristic.
 export const MICRO_EVENT_FIXED_COST_MULTIPLIER = 1.15;
-
-// Illustrative planning heuristic add-on percentage for taxes and service charges.
-// Note: This figure provides an illustrative exposure scenario for hidden costs in hospitality quotes.
 export const ILLUSTRATIVE_ADDON_PCT = 0.2;
 
-/** Computes a deterministic integer budget breakdown with category allocations and feasibility alerts. */
-export function buildBudget(
-  ctx: EventContext,
-  signals: ContextSignals,
-  decision: DecisionResult,
-): BudgetBreakdown {
-  const baseContingency = BASE_CONTINGENCY_HEURISTICS[ctx.eventType] ?? DEFAULT_CONTINGENCY_RATE;
-  const rawContingency = Math.min(
-    CONTINGENCY_MAX,
-    Math.max(CONTINGENCY_MIN, baseContingency + decision.contingencyDelta),
-  );
-  const contingencyPct = Math.round(rawContingency * DECIMAL_PRECISION_FACTOR) / DECIMAL_PRECISION_FACTOR;
-  const contingencyAmount = Math.round(ctx.totalBudget * contingencyPct);
-  const allocatableBudget = Math.max(0, ctx.totalBudget - contingencyAmount);
+function calculateContingency(
+  eventType: EventType,
+  totalBudget: number,
+  contingencyDelta: number,
+): { contingencyPct: number; contingencyAmount: number; allocatableBudget: number } {
+  const baseRate = BASE_CONTINGENCY_HEURISTICS[eventType] ?? DEFAULT_CONTINGENCY_RATE;
+  const clamped = Math.min(CONTINGENCY_MAX, Math.max(CONTINGENCY_MIN, baseRate + contingencyDelta));
+  const contingencyPct = Math.round(clamped * DECIMAL_PRECISION_FACTOR) / DECIMAL_PRECISION_FACTOR;
+  const contingencyAmount = Math.round(totalBudget * contingencyPct);
+  const allocatableBudget = Math.max(0, totalBudget - contingencyAmount);
+  return { contingencyPct, contingencyAmount, allocatableBudget };
+}
 
-  const preset = getBudgetPreset(ctx.eventType, ctx.subFormat);
-  const categoryDefs = CATEGORY_SETS[ctx.eventType] ?? [];
-  const prioritySet = new Set(ctx.priorities.slice(0, MAX_PRIORITIES));
-
-  const weights = categoryDefs.map((cat) => {
+function calculateCategoryWeights(
+  categoryDefs: readonly CategoryDef[],
+  preset: Record<string, number>,
+  prioritySet: Set<string>,
+  isMicroEvent: boolean,
+): number[] {
+  return categoryDefs.map((cat) => {
     let weight = preset[cat.id] ?? 0;
     if (prioritySet.has(cat.id)) weight *= PRIORITY_WEIGHT_MULTIPLIER;
-    if (signals.isMicroEvent && cat.isFixedCost) weight *= MICRO_EVENT_FIXED_COST_MULTIPLIER;
+    if (isMicroEvent && cat.isFixedCost) weight *= MICRO_EVENT_FIXED_COST_MULTIPLIER;
     return weight;
   });
+}
 
-  const allocatedAmounts = allocateByWeights(weights, allocatableBudget);
-  const categories: BudgetCategoryRow[] = categoryDefs.map((cat, idx) => {
+function buildCategoryRows(
+  categoryDefs: readonly CategoryDef[],
+  preset: Record<string, number>,
+  allocatedAmounts: number[],
+  allocatableBudget: number,
+  prioritySet: Set<string>,
+): BudgetCategoryRow[] {
+  return categoryDefs.map((cat, idx) => {
     const allocatedAmount = allocatedAmounts[idx] ?? 0;
     const allocatedPct =
       allocatableBudget > 0 ? Math.round((allocatedAmount / allocatableBudget) * 1000) / 10 : 0;
@@ -79,17 +75,20 @@ export function buildBudget(
       costSavingSwap: getCostSavingSwap(cat.id),
     };
   });
+}
 
-  const perGuestAllocatable =
-    ctx.guestCount > 0 ? Math.floor(allocatableBudget / ctx.guestCount) : 0;
+function buildBudgetAlerts(
+  ctx: EventContext,
+  signals: ContextSignals,
+  categories: BudgetCategoryRow[],
+): { alerts: FeasibilityAlert[]; allInExposureNote: string } {
   const alerts: FeasibilityAlert[] = [];
 
   if (signals.isPast) {
     alerts.push({
       code: 'DATE_IN_PAST',
       severity: 'warning',
-      message:
-        'The selected event date has already passed. Allocations reflect retrospective planning.',
+      message: 'The selected event date has already passed. Allocations reflect retrospective planning.',
       remedies: [
         'Update the target date to a future calendar date to generate forward-looking timeline milestones.',
         'Utilize this budget breakdown to audit or reconcile past expenditures.',
@@ -117,8 +116,7 @@ export function buildBudget(
     alerts.push({
       code: 'MICRO_EVENT_FIXED_COSTS',
       severity: 'info',
-      message:
-        'For micro-events (fewer than 50 guests), fixed costs for venue, photography, and setup absorb a larger share of the budget than per-guest variables.',
+      message: 'For micro-events (fewer than 50 guests), fixed costs for venue, photography, and setup absorb a larger share of the budget than per-guest variables.',
       remedies: [
         'Inquire with venues regarding hourly rental packages or off-peak slots suited for intimate groups.',
         'Prioritize direct experiential elements over high fixed staging investments.',
@@ -147,6 +145,31 @@ export function buildBudget(
       'Clarify delivery, setup, and teardown charges prior to contract execution.',
     ],
   });
+
+  return { alerts, allInExposureNote };
+}
+
+/** Computes a deterministic integer budget breakdown with category allocations and feasibility alerts. */
+export function buildBudget(
+  ctx: EventContext,
+  signals: ContextSignals,
+  decision: DecisionResult,
+): BudgetBreakdown {
+  const { contingencyPct, contingencyAmount, allocatableBudget } = calculateContingency(
+    ctx.eventType,
+    ctx.totalBudget,
+    decision.contingencyDelta,
+  );
+  const preset = getBudgetPreset(ctx.eventType, ctx.subFormat);
+  const categoryDefs = CATEGORY_SETS[ctx.eventType] ?? [];
+  const prioritySet = new Set(ctx.priorities.slice(0, MAX_PRIORITIES));
+
+  const weights = calculateCategoryWeights(categoryDefs, preset, prioritySet, signals.isMicroEvent);
+  const allocatedAmounts = allocateByWeights(weights, allocatableBudget);
+  const categories = buildCategoryRows(categoryDefs, preset, allocatedAmounts, allocatableBudget, prioritySet);
+
+  const perGuestAllocatable = ctx.guestCount > 0 ? Math.floor(allocatableBudget / ctx.guestCount) : 0;
+  const { alerts, allInExposureNote } = buildBudgetAlerts(ctx, signals, categories);
 
   return {
     currency: ctx.currency,

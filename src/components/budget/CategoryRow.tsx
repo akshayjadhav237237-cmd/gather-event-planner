@@ -5,9 +5,9 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { AlertCircle, AlertTriangle, Check } from 'lucide-react';
+import { AlertCircle } from 'lucide-react';
 import type { CurrencyCode } from '../../types/event';
-import type { BudgetRowStatus, BudgetRowView } from '../../ui/budgetView';
+import type { BudgetRowView } from '../../ui/budgetView';
 import { parseWholeNumber } from '../../ui/formModel';
 import { formatCurrency } from '../../utils/currency';
 import { debounce } from '../../utils/debounce';
@@ -16,41 +16,12 @@ import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { Disclosure } from '../ui/Disclosure';
 import { Input } from '../ui/Input';
+import { CategoryStatusBadge } from './CategoryStatusBadge';
 
 export interface CategoryRowProps {
   row: BudgetRowView;
   currency: CurrencyCode;
   onSpendChange: (categoryId: string, amount: number) => void;
-}
-
-function renderStatusBadge(
-  status: BudgetRowStatus,
-  remaining: number,
-  currency: CurrencyCode,
-) {
-  switch (status) {
-    case 'ok':
-      return (
-        <Badge tone="success" icon={<Check size={14} aria-hidden="true" />}>
-          On track
-        </Badge>
-      );
-    case 'near':
-      return (
-        <Badge tone="warning" icon={<AlertTriangle size={14} aria-hidden="true" />}>
-          Nearly used
-        </Badge>
-      );
-    case 'over':
-      return (
-        <Badge tone="critical" icon={<AlertCircle size={14} aria-hidden="true" />}>
-          {`Over by ${formatCurrency(Math.abs(remaining), currency)}`}
-        </Badge>
-      );
-    case 'none':
-    default:
-      return null;
-  }
 }
 
 export const CategoryRow: FC<CategoryRowProps> = ({
@@ -137,7 +108,7 @@ export const CategoryRow: FC<CategoryRowProps> = ({
             {row.isPriority && <Badge tone="accent">Priority</Badge>}
             {row.isFixedCost && <Badge tone="neutral">Fixed cost</Badge>}
           </div>
-          {renderStatusBadge(row.status, row.remaining, currency)}
+          <CategoryStatusBadge status={row.status} remaining={row.remaining} currency={currency} />
         </div>
 
         <div className="flex flex-wrap items-baseline gap-2 text-sm text-ink">

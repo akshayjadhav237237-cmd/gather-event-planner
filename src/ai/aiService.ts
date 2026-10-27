@@ -65,12 +65,16 @@ function resolveConfig(opts: AiOptions) {
   };
 }
 
-function mergeSection(current: PersonalizedIdeas, section: IdeaSection, fresh: PersonalizedIdeas): PersonalizedIdeas {
-  const merged: PersonalizedIdeas = { ...current, source: 'live' };
-  if (section === 'themeConcepts') return { ...merged, themeConcepts: fresh.themeConcepts };
-  if (section === 'cateringIdeas') return { ...merged, cateringIdeas: fresh.cateringIdeas };
-  if (section === 'activityIdeas') return { ...merged, activityIdeas: fresh.activityIdeas };
-  return { ...merged, bespokeTasks: fresh.bespokeTasks };
+function mergeSection(
+  current: PersonalizedIdeas,
+  section: IdeaSection,
+  fresh: PersonalizedIdeas,
+): PersonalizedIdeas {
+  return {
+    ...current,
+    source: 'live',
+    [section]: fresh[section],
+  };
 }
 
 async function requestLiveIdeas(
