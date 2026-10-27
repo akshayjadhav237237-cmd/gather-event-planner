@@ -1,11 +1,5 @@
-import { AI_COOLDOWN_MS, AI_TIMEOUT_MS } from '../config/constants';
-import type {
-  ActivityIdea,
-  BespokeTask,
-  CateringIdea,
-  PersonalizedIdeas,
-  ThemeConcept,
-} from '../types/event';
+import { AI_COOLDOWN_MS, AI_TIMEOUT_MS, RESPONSE_CACHE_MAX_ENTRIES } from '../config/constants';
+import type { PersonalizedIdeas } from '../types/event';
 import type {
   AiFallbackReason,
   AiPlanInput,
@@ -39,7 +33,7 @@ export interface AiOptions {
 }
 
 let lastLiveRequestTime = 0;
-const defaultCache = createResponseCache(20);
+const defaultCache = createResponseCache(RESPONSE_CACHE_MAX_ENTRIES);
 
 interface ProcessedNotes {
   sanitizedNotes: string | null;
@@ -72,11 +66,11 @@ function resolveConfig(opts: AiOptions) {
 }
 
 function mergeSection(current: PersonalizedIdeas, section: IdeaSection, fresh: PersonalizedIdeas): PersonalizedIdeas {
-  const merged = { ...current, source: 'live' as const };
-  if (section === 'themeConcepts') return { ...merged, themeConcepts: fresh.themeConcepts as ThemeConcept[] };
-  if (section === 'cateringIdeas') return { ...merged, cateringIdeas: fresh.cateringIdeas as CateringIdea[] };
-  if (section === 'activityIdeas') return { ...merged, activityIdeas: fresh.activityIdeas as ActivityIdea[] };
-  return { ...merged, bespokeTasks: fresh.bespokeTasks as BespokeTask[] };
+  const merged: PersonalizedIdeas = { ...current, source: 'live' };
+  if (section === 'themeConcepts') return { ...merged, themeConcepts: fresh.themeConcepts };
+  if (section === 'cateringIdeas') return { ...merged, cateringIdeas: fresh.cateringIdeas };
+  if (section === 'activityIdeas') return { ...merged, activityIdeas: fresh.activityIdeas };
+  return { ...merged, bespokeTasks: fresh.bespokeTasks };
 }
 
 async function requestLiveIdeas(
@@ -97,8 +91,8 @@ async function requestLiveIdeas(
     clearTimeout(timer);
     const parsed = parseJsonSafely(rawText);
     if (typeof parsed !== 'object' || parsed === null) throw new LlmError('invalid_response');
-    (parsed as Record<string, unknown>).source = 'live';
-    const validation = validateIdeas(parsed);
+    const withSource = { ...parsed, source: 'live' };
+    const validation = validateIdeas(withSource);
     if (!validation.ok) throw new LlmError('invalid_response');
     return { ok: true, ideas: validation.value };
   } catch (err: unknown) {

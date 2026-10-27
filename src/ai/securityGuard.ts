@@ -88,7 +88,8 @@ export function parseJsonSafely(raw: string): unknown | null {
     payload = fenceMatch[1].trim();
   }
   try {
-    return JSON.parse(payload) as unknown;
+    const parsed: unknown = JSON.parse(payload);
+    return parsed;
   } catch {
     return null;
   }

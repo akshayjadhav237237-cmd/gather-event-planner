@@ -18,14 +18,22 @@ interface GeminiResponse {
   candidates?: GeminiCandidate[];
 }
 
+function hasNameProperty(err: object): err is { name: unknown } {
+  return 'name' in err;
+}
+
 function isAbortError(err: unknown): boolean {
   if (err instanceof Error && err.name === 'AbortError') {
     return true;
   }
-  if (typeof err === 'object' && err !== null && 'name' in err) {
-    return (err as { name: unknown }).name === 'AbortError';
+  if (typeof err === 'object' && err !== null && hasNameProperty(err)) {
+    return err.name === 'AbortError';
   }
   return false;
+}
+
+function isGeminiResponse(obj: unknown): obj is GeminiResponse {
+  return typeof obj === 'object' && obj !== null;
 }
 
 /** Creates a Gemini API client communicating via fetch and the x-goog-api-key header. */
@@ -77,14 +85,18 @@ export function createGeminiClient(): LlmClient {
         throw new LlmError('http_error');
       }
 
-      let jsonPayload: GeminiResponse;
+      let rawJson: unknown;
       try {
-        jsonPayload = (await response.json()) as GeminiResponse;
+        rawJson = await response.json();
       } catch {
         throw new LlmError('invalid_response');
       }
 
-      const candidate = jsonPayload.candidates?.[0];
+      if (!isGeminiResponse(rawJson)) {
+        throw new LlmError('invalid_response');
+      }
+
+      const candidate = rawJson.candidates?.[0];
       const part = candidate?.content?.parts?.[0];
       const text = part?.text;
 

@@ -13,6 +13,21 @@ export interface QuoteDraft {
   backupPlan: string;
 }
 
+const QUOTE_DRAFT_KEYS = new Set<string>([
+  'categoryId',
+  'vendorName',
+  'baseQuote',
+  'serviceAndTaxPct',
+  'depositPaid',
+  'contractSigned',
+  'insuranceVerified',
+  'backupPlan',
+]);
+
+function isQuoteDraftKey(key: string): key is keyof QuoteDraft {
+  return QUOTE_DRAFT_KEYS.has(key);
+}
+
 export function emptyQuoteDraft(categoryId: string = ''): QuoteDraft {
   return {
     categoryId,
@@ -115,16 +130,18 @@ export function parseQuoteDraft(
   const schemaResult = VendorQuoteSchema.safeParse(candidate);
   if (!schemaResult.success) {
     for (const issue of schemaResult.error.issues) {
-      const field = issue.path[0] as keyof QuoteDraft | undefined;
+      const seg = issue.path[0];
+      const field = typeof seg === 'string' && isQuoteDraftKey(seg) ? seg : undefined;
       if (field && !errors[field]) {
         errors[field] = issue.message;
       }
     }
+    return { ok: false, errors };
   }
 
   if (Object.keys(errors).length > 0) {
     return { ok: false, errors };
   }
 
-  return { ok: true, value: schemaResult.data as VendorQuote };
+  return { ok: true, value: schemaResult.data };
 }

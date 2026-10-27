@@ -33,6 +33,16 @@ export interface FormDraft {
 export type FieldKey = keyof FormDraft;
 export type FieldErrors = Partial<Record<FieldKey, string>>;
 
+const FIELD_KEYS = new Set<string>([
+  'title', 'eventType', 'subFormat', 'eventDate', 'currency',
+  'totalBudget', 'guestCount', 'setting', 'season', 'priorities',
+  'flags', 'userNotes',
+]);
+
+function isFieldKey(key: string): key is FieldKey {
+  return FIELD_KEYS.has(key);
+}
+
 /** Parses a string into a non-negative safe whole number or returns NaN. */
 export function parseWholeNumber(raw: string): number {
   if (typeof raw !== 'string') return NaN;
@@ -143,14 +153,16 @@ export function parseDraft(
   const parsed = EventContextSchema.safeParse(rawCandidate);
   if (!parsed.success) {
     for (const issue of parsed.error.issues) {
-      const field = issue.path[0] as FieldKey | undefined;
+      const seg = issue.path[0];
+      const field = typeof seg === 'string' && isFieldKey(seg) ? seg : undefined;
       if (!field || errors[field]) continue;
       errors[field] = ERROR_MESSAGES[field] ?? issue.message;
     }
+    return { ok: false, errors };
   }
 
   if (Object.keys(errors).length > 0) return { ok: false, errors };
-  return { ok: true, value: parsed.data as EventContext };
+  return { ok: true, value: parsed.data };
 }
 
 /** Adapts subformat, priorities, and flags when switching event types. */

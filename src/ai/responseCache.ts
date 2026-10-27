@@ -1,3 +1,4 @@
+import { RESPONSE_CACHE_MAX_ENTRIES } from '../config/constants';
 import type { PersonalizedIdeas } from '../types/event';
 
 export interface ResponseCache {
@@ -8,7 +9,9 @@ export interface ResponseCache {
 }
 
 /** Creates an in-memory LRU response cache storing up to 20 validated idea bundles. */
-export function createResponseCache(maxEntries: number = 20): ResponseCache {
+export function createResponseCache(
+  maxEntries: number = RESPONSE_CACHE_MAX_ENTRIES,
+): ResponseCache {
   const capacity = Math.max(1, maxEntries);
   const cache = new Map<string, PersonalizedIdeas>();
 

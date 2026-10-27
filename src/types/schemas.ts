@@ -161,6 +161,35 @@ export const PersonalizedIdeasSchema = z
   })
   .strict();
 
+export const IdeasSessionSchema = z
+  .object({
+    fingerprint: z.string().min(1),
+    variant: z.number().int().nonnegative(),
+  })
+  .strict();
+
+export function safeValidateIdeas(candidate: unknown): PersonalizedIdeas | null {
+  const result = PersonalizedIdeasSchema.safeParse(candidate);
+  return result.success ? result.data : null;
+}
+
+export function safeValidateEventContext(candidate: unknown): EventContext | null {
+  const result = EventContextSchema.safeParse(candidate);
+  return result.success ? result.data : null;
+}
+
+export function safeValidateVendorQuote(candidate: unknown): VendorQuote | null {
+  const result = VendorQuoteSchema.safeParse(candidate);
+  return result.success ? result.data : null;
+}
+
+export function safeValidateIdeasSession(
+  candidate: unknown,
+): { fingerprint: string; variant: number } | null {
+  const result = IdeasSessionSchema.safeParse(candidate);
+  return result.success ? result.data : null;
+}
+
 export type InferredEventContext = z.infer<typeof EventContextSchema>;
 export type InferredVendorQuote = z.infer<typeof VendorQuoteSchema>;
 export type InferredThemeConcept = z.infer<typeof ThemeConceptSchema>;

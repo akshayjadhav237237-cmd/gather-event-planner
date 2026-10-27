@@ -36,6 +36,12 @@ export const AI_COOLDOWN_MS = 2000;
 // Debounce delay in milliseconds before persisting application state to storage.
 export const AUTOSAVE_DEBOUNCE_MS = 300;
 
+// Default debounce duration in milliseconds for form and input adjustments.
+export const DEFAULT_DEBOUNCE_MS = 250;
+
+// Maximum number of entries stored in the in-memory response cache.
+export const RESPONSE_CACHE_MAX_ENTRIES = 20;
+
 // LocalStorage key namespace for persisting event planner application state.
 export const STORAGE_KEY = 'event-planner:v1';
 

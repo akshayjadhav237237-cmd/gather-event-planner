@@ -9,6 +9,10 @@ import type { BackupPayload } from './backupTypes';
 const MAX_BACKUP_CHARS = 1_000_000;
 const FORBIDDEN_KEYS = new Set(['__proto__', 'constructor', 'prototype']);
 
+function isRecord(val: unknown): val is Record<string, unknown> {
+  return typeof val === 'object' && val !== null && !Array.isArray(val);
+}
+
 function hasForbiddenKeys(obj: unknown): boolean {
   if (obj === null || typeof obj !== 'object') {
     return false;
@@ -19,12 +23,14 @@ function hasForbiddenKeys(obj: unknown): boolean {
   if (Object.prototype.hasOwnProperty.call(obj, '__proto__')) {
     return true;
   }
-  for (const key of Object.keys(obj)) {
-    if (FORBIDDEN_KEYS.has(key)) {
-      return true;
-    }
-    if (hasForbiddenKeys((obj as Record<string, unknown>)[key])) {
-      return true;
+  if (isRecord(obj)) {
+    for (const key of Object.keys(obj)) {
+      if (FORBIDDEN_KEYS.has(key)) {
+        return true;
+      }
+      if (hasForbiddenKeys(obj[key])) {
+        return true;
+      }
     }
   }
   return false;
