@@ -174,4 +174,22 @@ describe('aiService', () => {
     expect(res.ideas.activityIdeas).toEqual(current.activityIdeas);
     expect(res.ideas.bespokeTasks).toEqual(current.bespokeTasks);
   });
+
+  it('aborts request when external signal is aborted', async () => {
+    const controller = new AbortController();
+    controller.abort();
+    const client: LlmClient = {
+      generate: async () => {
+        throw new Error('AbortError');
+      },
+    };
+    const res = await generateIdeas(makeInput({ id: 'evt-abort' }), {
+      apiKey: TEST_KEY,
+      client,
+      signal: controller.signal,
+      now: () => 130000,
+    });
+    expect(res.mode).toBe('fallback');
+    expect(res.reason).toBe('timeout');
+  });
 });

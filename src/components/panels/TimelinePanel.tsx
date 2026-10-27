@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { CURRENCY_LOCALE } from '../../config/constants';
 import { usePlanStore } from '../../store/planStore';
 import { groupTasksByPhase, overallProgress } from '../../ui/timelineView';
@@ -29,11 +29,17 @@ export function TimelinePanel({ bundle, today }: PanelProps) {
   const [showReasons, setShowReasons] = useState<boolean>(false);
 
   const locale = CURRENCY_LOCALE[bundle.context.currency] ?? 'en-US';
-  const progress = overallProgress(bundle.timeline.tasks, taskCompletion);
+  const progress = useMemo(
+    () => overallProgress(bundle.timeline.tasks, taskCompletion),
+    [bundle.timeline.tasks, taskCompletion],
+  );
   const progressTone = progress.pct === 100 ? 'success' : 'accent';
   const progressLabel = `${progress.done} of ${progress.total} tasks completed (${progress.pct}%)`;
 
-  const groups = groupTasksByPhase(bundle.timeline.tasks, taskCompletion, filter, today);
+  const groups = useMemo(
+    () => groupTasksByPhase(bundle.timeline.tasks, taskCompletion, filter, today),
+    [bundle.timeline.tasks, taskCompletion, filter, today],
+  );
 
   return (
     <div className="space-y-6">

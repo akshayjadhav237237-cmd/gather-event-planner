@@ -1,6 +1,7 @@
 import {
   type ChangeEvent,
   type FC,
+  memo,
   useEffect,
   useMemo,
   useState,
@@ -24,7 +25,7 @@ export interface CategoryRowProps {
   onSpendChange: (categoryId: string, amount: number) => void;
 }
 
-export const CategoryRow: FC<CategoryRowProps> = ({
+export const CategoryRow: FC<CategoryRowProps> = memo(({
   row,
   currency,
   onSpendChange,
@@ -173,4 +174,6 @@ export const CategoryRow: FC<CategoryRowProps> = ({
       )}
     </Card>
   );
-};
+});
+
+CategoryRow.displayName = 'CategoryRow';

@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC, memo } from 'react';
 import { AlertCircle, Clock } from 'lucide-react';
 import type { TimelineTask } from '../../types/event';
 import { formatDateShort } from '../../ui/formatDate';
@@ -15,7 +15,7 @@ export interface TaskItemProps {
   onToggle: (taskId: string) => void;
 }
 
-export const TaskItem: FC<TaskItemProps> = ({
+export const TaskItem: FC<TaskItemProps> = memo(({
   task,
   done,
   status,
@@ -66,4 +66,6 @@ export const TaskItem: FC<TaskItemProps> = ({
       </div>
     </div>
   );
-};
+});
+
+TaskItem.displayName = 'TaskItem';

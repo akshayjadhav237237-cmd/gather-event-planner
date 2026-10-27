@@ -39,6 +39,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
   );
 
   const requestIdRef = useRef(0);
+  const abortControllerRef = useRef<AbortController | null>(null);
   const currentFingerprint = ideasFingerprint(bundle.context, bundle.signals);
 
   useEffect(() => {
@@ -74,6 +75,9 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
     }
 
     if (action === 'generate' || action === 'regenerate_local') {
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
       const currentReq = ++requestIdRef.current;
       setStatus('loading');
       const variant = session?.variant ?? 0;
@@ -81,6 +85,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
       void generateIdeas(bundle, {
         notes: bundle.context.userNotes,
         variant,
+        signal: controller.signal,
       })
         .then((result) => {
           if (!isMounted || currentReq !== requestIdRef.current) return;
@@ -100,6 +105,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
 
     return () => {
       isMounted = false;
+      abortControllerRef.current?.abort();
     };
   }, [
     bundle,
@@ -112,6 +118,9 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
   ]);
 
   const refreshAll = useCallback(async () => {
+    abortControllerRef.current?.abort();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
     const session = getSession(bundle.context.id);
     const nextVariant = (session?.variant ?? 0) + 1;
     const currentReq = ++requestIdRef.current;
@@ -121,6 +130,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
       const result = await generateIdeas(bundle, {
         notes: bundle.context.userNotes,
         variant: nextVariant,
+        signal: controller.signal,
       });
       if (currentReq !== requestIdRef.current) return;
       setIdeas(result.ideas);
@@ -142,6 +152,9 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
   const regenerate = useCallback(
     async (section: IdeaSection) => {
       if (!ideas) return;
+      abortControllerRef.current?.abort();
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
       const session = getSession(bundle.context.id);
       const nextVariant = (session?.variant ?? 0) + 1;
       const currentReq = ++requestIdRef.current;
@@ -151,6 +164,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
         const result = await regenerateIdeaSection(ideas, section, bundle, {
           notes: bundle.context.userNotes,
           variant: nextVariant,
+          signal: controller.signal,
         });
         if (currentReq !== requestIdRef.current) return;
         setIdeas(result.ideas);

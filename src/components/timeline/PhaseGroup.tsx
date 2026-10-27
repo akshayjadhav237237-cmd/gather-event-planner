@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC, memo } from 'react';
 import type { TimelineTask } from '../../types/event';
 import type { TaskStatus } from '../../ui/timelineView';
 import { TaskItem } from './TaskItem';
@@ -18,7 +18,7 @@ export interface PhaseGroupProps {
   onToggle: (taskId: string) => void;
 }
 
-export const PhaseGroup: FC<PhaseGroupProps> = ({
+export const PhaseGroup: FC<PhaseGroupProps> = memo(({
   phase,
   items,
   doneCount,
@@ -57,4 +57,6 @@ export const PhaseGroup: FC<PhaseGroupProps> = ({
       </ul>
     </section>
   );
-};
+});
+
+PhaseGroup.displayName = 'PhaseGroup';

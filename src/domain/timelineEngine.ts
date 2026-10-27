@@ -50,9 +50,11 @@ function computeTopologicalOrder(tasks: TimelineTask[]): string[] {
   }
 
   if (order.length < tasks.length) {
+    const orderSet = new Set(order);
     for (const task of tasks) {
-      if (!order.includes(task.id)) {
+      if (!orderSet.has(task.id)) {
         order.push(task.id);
+        orderSet.add(task.id);
       }
     }
   }

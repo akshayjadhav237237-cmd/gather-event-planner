@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import type { PlanBundle } from '../../types/engine';
 import { computeVitals } from '../../ui/vitals';
 import { Card } from '../ui/Card';
@@ -23,7 +24,7 @@ export function VitalsStrip({
     tasksTotal,
     completionPct,
     nextTask,
-  } = computeVitals(bundle, taskCompletion);
+  } = useMemo(() => computeVitals(bundle, taskCompletion), [bundle, taskCompletion]);
 
   return (
     <Card padding="md" className={className} aria-labelledby="vitals-heading">

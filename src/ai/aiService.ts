@@ -30,6 +30,7 @@ export interface AiOptions {
   fetchImpl?: typeof fetch;
   now?: () => number;
   cache?: ResponseCache;
+  signal?: AbortSignal;
 }
 
 let lastLiveRequestTime = 0;
@@ -84,15 +85,25 @@ async function requestLiveIdeas(
   client: LlmClient,
   fetchImpl: typeof fetch,
   section?: IdeaSection,
+  externalSignal?: AbortSignal,
 ): Promise<{ ok: true; ideas: PersonalizedIdeas } | { ok: false; reason: AiFallbackReason }> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), AI_TIMEOUT_MS);
+  const onAbort = () => controller.abort();
+  if (externalSignal) {
+    if (externalSignal.aborted) {
+      controller.abort();
+    } else {
+      externalSignal.addEventListener('abort', onAbort, { once: true });
+    }
+  }
   try {
     const nonce = createNonce();
     const system = buildSystemPrompt();
     const user = buildUserPrompt(input, notes, nonce, section);
     const rawText = await client.generate(system, user, { apiKey, signal: controller.signal, fetchImpl });
     clearTimeout(timer);
+    if (externalSignal) externalSignal.removeEventListener('abort', onAbort);
     const parsed = parseJsonSafely(rawText);
     if (typeof parsed !== 'object' || parsed === null) throw new LlmError('invalid_response');
     const withSource = { ...parsed, source: 'live' };
@@ -101,6 +112,7 @@ async function requestLiveIdeas(
     return { ok: true, ideas: validation.value };
   } catch (err: unknown) {
     clearTimeout(timer);
+    if (externalSignal) externalSignal.removeEventListener('abort', onAbort);
     return { ok: false, reason: resolveReason(err, controller) };
   }
 }
@@ -124,7 +136,7 @@ export async function generateIdeas(input: AiPlanInput, opts: AiOptions = {}): P
   }
 
   lastLiveRequestTime = currentTime;
-  const live = await requestLiveIdeas(input, sanitizedNotes, apiKey, client, fetchImpl);
+  const live = await requestLiveIdeas(input, sanitizedNotes, apiKey, client, fetchImpl, undefined, opts.signal);
   if (live.ok) {
     cache.set(cacheKey, live.ideas);
     return { ideas: live.ideas, mode: 'live', reason: null, notesDropped, fromCache: false };
@@ -152,7 +164,7 @@ export async function regenerateIdeaSection(
   }
 
   lastLiveRequestTime = currentTime;
-  const live = await requestLiveIdeas(input, sanitizedNotes, apiKey, client, fetchImpl, section);
+  const live = await requestLiveIdeas(input, sanitizedNotes, apiKey, client, fetchImpl, section, opts.signal);
   if (live.ok) {
     const merged = mergeSection(current, section, live.ideas);
     const valid = validateIdeas(merged);

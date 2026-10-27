@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { type FC, memo } from 'react';
 import type { CurrencyCode, VendorQuote } from '../../types/event';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
@@ -15,7 +15,7 @@ export interface QuoteCardProps {
   onRemove: (quote: VendorQuote) => void;
 }
 
-export const QuoteCard: FC<QuoteCardProps> = ({
+export const QuoteCard: FC<QuoteCardProps> = memo(({
   quote,
   currency,
   isLowest = false,
@@ -104,4 +104,6 @@ export const QuoteCard: FC<QuoteCardProps> = ({
       )}
     </Card>
   );
-};
+});
+
+QuoteCard.displayName = 'QuoteCard';
