@@ -1,0 +1,64 @@
+{
+  "name": "Gather Event Planner",
+  "description": "Offline-first celebration and event planning assistant for cross-cultural weddings, milestone birthdays, and community gatherings.",
+  "version": "1.0.0",
+  "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
+  "documentationUrl": "https://github.com/akshayjadhav237237-cmd/gather-event-planner#readme",
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "defaultInputModes": [
+    "text/plain",
+    "application/json"
+  ],
+  "defaultOutputModes": [
+    "text/plain",
+    "application/json",
+    "text/calendar",
+    "text/csv"
+  ],
+  "skills": [
+    {
+      "id": "budget-allocation",
+      "name": "Integer Budget Allocation",
+      "description": "Computes exact integer category budgets using largest-remainder rounding with contingency reserves.",
+      "tags": ["budget", "finance", "allocation", "calculator"],
+      "examples": [
+        "Allocate a 500000 INR budget for an Indian wedding",
+        "Split a 5000 USD budget for a 40th birthday"
+      ]
+    },
+    {
+      "id": "milestone-timeline",
+      "name": "Milestone Timeline Scheduling",
+      "description": "Backward-schedules planning milestones from event date with compression warnings for short horizons.",
+      "tags": ["timeline", "milestones", "schedule", "tasks"],
+      "examples": [
+        "Generate a timeline for a wedding in 6 months",
+        "Create milestone schedule for a community block party"
+      ]
+    },
+    {
+      "id": "vendor-evaluation",
+      "name": "Vendor Comparison and Scoring",
+      "description": "Structured vendor interview guides and all-in quote calculators with tax and deposit breakdown.",
+      "tags": ["vendors", "quotes", "checklists", "comparison"],
+      "examples": [
+        "Compare catering quotes with service tax and deposits",
+        "Vendor interview checklist for wedding venue"
+      ]
+    },
+    {
+      "id": "celebration-ideation",
+      "name": "Deterministic Celebration Ideation",
+      "description": "Offline-first personalized themes, decor concepts, and run-of-show schedules tailored to event scale.",
+      "tags": ["ideas", "themes", "run-of-show", "traditions"],
+      "examples": [
+        "Generate theme ideas for a golden anniversary",
+        "Create day-of run-of-show for a multi-day wedding"
+      ]
+    }
+  ]
+}

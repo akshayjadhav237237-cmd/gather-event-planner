@@ -7,11 +7,11 @@
   },
   "entries": [
     {
-      "identifier": "urn:air:gather:web-app",
-      "displayName": "Gather Celebration Planner Application",
-      "type": "application/ai-catalog+json",
-      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
-      "description": "Offline-first single-page web application for celebration planning: budget allocation, backward-scheduled timelines, vendor checklists, and personalized ideas.",
+      "identifier": "urn:air:gather:agent-card",
+      "displayName": "Gather Celebration Planner Agent Card",
+      "type": "application/agent-card+json",
+      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/agent-card.json",
+      "description": "Machine-readable agent card describing Gather's celebration planning capabilities, decision rules, and event models.",
       "representativeQueries": [
         "plan a wedding budget",
         "event planning timeline",
@@ -21,25 +21,16 @@
       ]
     },
     {
-      "identifier": "urn:air:gather:llms-txt",
-      "displayName": "LLM Guidance and Agent Resource Index",
-      "type": "text/markdown; profile=\"urn:ietf:params:mime-profile:llms-txt\"",
-      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/llms.txt",
-      "description": "Machine-readable documentation and navigation guidance for large language models and AI agents.",
+      "identifier": "urn:air:gather:agent-skills",
+      "displayName": "Gather Celebration Planning Skills",
+      "type": "text/markdown; profile=\"urn:air:agent-skills\"",
+      "url": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/skills.md",
+      "description": "Agent skills specification for budget allocation, milestone scheduling, vendor checklists, and celebration ideation.",
       "representativeQueries": [
-        "Gather API documentation for agents",
-        "LLM integration guide event planner"
-      ]
-    },
-    {
-      "identifier": "urn:air:gather:repo",
-      "displayName": "GitHub Source Repository",
-      "type": "application/ai-catalog+json",
-      "url": "https://github.com/akshayjadhav237237-cmd/gather-event-planner",
-      "description": "Open-source codebase with domain logic, calculation engines, and test suites for the Gather event planner.",
-      "representativeQueries": [
-        "Gather event planner source code",
-        "open source event planning React app"
+        "integer budget allocation",
+        "backward milestone scheduling",
+        "vendor evaluation checklist",
+        "celebration run of show"
       ]
     }
   ]

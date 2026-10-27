@@ -15,9 +15,34 @@ const cspPlugin: Plugin = {
   },
 };
 
+const fontPreloadPlugin: Plugin = {
+  name: 'font-preload-transform',
+  apply: 'build',
+  enforce: 'post',
+  transformIndexHtml(html, ctx) {
+    if (!ctx.bundle) return html;
+    const fontLinks: string[] = [];
+    for (const fileName of Object.keys(ctx.bundle)) {
+      if (
+        fileName.endsWith('.woff2') &&
+        (fileName.includes('instrument-serif-latin-400-normal') ||
+          fileName.includes('dm-sans-latin-wght-normal'))
+      ) {
+        fontLinks.push(
+          `<link rel="preload" href="./${fileName}" as="font" type="font/woff2" crossorigin="anonymous" />`
+        );
+      }
+    }
+    if (fontLinks.length > 0) {
+      return html.replace('</head>', `  ${fontLinks.join('\n    ')}\n  </head>`);
+    }
+    return html;
+  },
+};
+
 export default defineConfig({
   base: './',
-  plugins: [react(), cspPlugin],
+  plugins: [react(), cspPlugin, fontPreloadPlugin],
   build: {
     assetsInlineLimit: 0,
     rollupOptions: {
@@ -32,14 +57,12 @@ export default defineConfig({
           if (id.includes('node_modules/zod')) {
             return 'vendor-zod';
           }
-          if (id.includes('/src/data/')) {
-            return 'data-catalogs';
-          }
-          if (id.includes('/src/domain/')) {
-            return 'domain-engines';
-          }
-          if (id.includes('/src/export/')) {
-            return 'export-formatters';
+          if (
+            id.includes('/src/data/') ||
+            id.includes('/src/domain/') ||
+            id.includes('/src/export/')
+          ) {
+            return 'planner-core';
           }
         },
       },
