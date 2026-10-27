@@ -22,12 +22,8 @@ const fontPreloadPlugin: Plugin = {
   transformIndexHtml(html, ctx) {
     if (!ctx.bundle) return html;
     const fontLinks: string[] = [];
-    for (const fileName of Object.keys(ctx.bundle)) {
-      if (
-        fileName.endsWith('.woff2') &&
-        (fileName.includes('instrument-serif-latin-400-normal') ||
-          fileName.includes('dm-sans-latin-wght-normal'))
-      ) {
+    for (const fileName of Object.keys(ctx.bundle).sort()) {
+      if (fileName.endsWith('.woff2')) {
         fontLinks.push(
           `<link rel="preload" href="./${fileName}" as="font" type="font/woff2" crossorigin="anonymous" />`
         );
@@ -57,12 +53,26 @@ export default defineConfig({
           if (id.includes('node_modules/zod')) {
             return 'vendor-zod';
           }
+          if (id.includes('node_modules/lucide-react')) {
+            return 'vendor-icons';
+          }
           if (
             id.includes('/src/data/') ||
             id.includes('/src/domain/') ||
             id.includes('/src/export/')
           ) {
             return 'planner-core';
+          }
+          if (
+            id.includes('/src/components/budget/') ||
+            id.includes('/src/components/timeline/') ||
+            id.includes('/src/components/vendors/') ||
+            id.includes('/src/components/ideas/') ||
+            id.includes('/src/components/print/') ||
+            id.includes('/src/components/panels/') ||
+            id.includes('/src/components/layout/Workspace')
+          ) {
+            return 'workspace-ui';
           }
         },
       },
