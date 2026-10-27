@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from '../../src/App';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
 import { buildPlan } from '../../src/domain/buildPlan';
@@ -55,16 +55,19 @@ function verifyNoHeadingSkips(element: HTMLElement) {
 }
 
 describe('Accessibility and Spec Verification (Subagent D)', () => {
+  beforeAll(async () => {
+    await import('../../src/components/layout/Workspace');
+  });
   beforeEach(() => { resetTestStore(); });
   afterEach(() => { cleanup(); resetTestStore(); });
 
-  it('verifies progress indicators use role="progressbar" with ARIA attributes and labels', () => {
+  it('verifies progress indicators use role="progressbar" with ARIA attributes and labels', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario missing');
     usePlanStore.getState().loadScenario(scenario.context);
 
     render(<App />);
-    const progressBars = screen.getAllByRole('progressbar');
+    const progressBars = await screen.findAllByRole('progressbar');
     expect(progressBars.length).toBeGreaterThanOrEqual(1);
 
     for (const bar of progressBars) {
@@ -133,12 +136,13 @@ describe('Accessibility and Spec Verification (Subagent D)', () => {
     expect(screen.getByText('Due soon')).toBeDefined();
   });
 
-  it('verifies controls have visible matching labels and buttons have accessible names', () => {
+  it('verifies controls have visible matching labels and buttons have accessible names', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario missing');
     usePlanStore.getState().loadScenario(scenario.context);
 
     render(<App />);
+    await screen.findByRole('tab', { name: /budget/i });
 
     screen.getAllByRole('button').forEach((btn) => {
       const accessibleName = btn.getAttribute('aria-label') || btn.textContent?.trim();
@@ -151,12 +155,13 @@ describe('Accessibility and Spec Verification (Subagent D)', () => {
     });
   });
 
-  it('verifies workspace has exactly one h1 and panels start at h2 without skips', () => {
+  it('verifies workspace has exactly one h1 and panels start at h2 without skips', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario missing');
     usePlanStore.getState().loadScenario(scenario.context);
 
     const { container } = render(<App />);
+    await screen.findByRole('heading', { level: 1 });
     expect(screen.getAllByRole('heading', { level: 1 }).length).toBe(1);
 
     // Verify budget panel

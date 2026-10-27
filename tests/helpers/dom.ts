@@ -1,6 +1,9 @@
+import { configure } from '@testing-library/react';
 import { vi } from 'vitest';
 import { clearApiKey } from '../../src/ai/apiKeyStorage';
 import { usePlanStore } from '../../src/store/planStore';
+
+configure({ asyncUtilTimeout: 5000 });
 
 // Polyfill HTMLDialogElement modal methods in jsdom if missing
 if (typeof window !== 'undefined' && typeof HTMLDialogElement !== 'undefined') {

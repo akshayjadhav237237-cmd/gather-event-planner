@@ -63,17 +63,6 @@ export default defineConfig({
           ) {
             return 'planner-core';
           }
-          if (
-            id.includes('/src/components/budget/') ||
-            id.includes('/src/components/timeline/') ||
-            id.includes('/src/components/vendors/') ||
-            id.includes('/src/components/ideas/') ||
-            id.includes('/src/components/print/') ||
-            id.includes('/src/components/panels/') ||
-            id.includes('/src/components/layout/Workspace')
-          ) {
-            return 'workspace-ui';
-          }
         },
       },
     },

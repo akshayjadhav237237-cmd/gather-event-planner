@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { App } from '../../src/App';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
 import { buildPlan } from '../../src/domain/buildPlan';
@@ -10,6 +10,10 @@ import { resetTestStore } from '../helpers/dom';
 const TODAY = '2026-10-20';
 
 describe('Timeline and Budget Interaction Tests', () => {
+  beforeAll(async () => {
+    await import('../../src/components/layout/Workspace');
+  });
+
   beforeEach(() => {
     resetTestStore();
   });
@@ -21,7 +25,7 @@ describe('Timeline and Budget Interaction Tests', () => {
   });
 
   // Test 3: Timeline: Ticking a task checkbox increases "tasks done" count in vitals; unticking decreases it
-  it('updates completed task counts in vitals strip when checkboxes are toggled in timeline', () => {
+  it('updates completed task counts in vitals strip when checkboxes are toggled in timeline', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     const bundle = buildPlan(scenario.context, TODAY);
@@ -30,7 +34,7 @@ describe('Timeline and Budget Interaction Tests', () => {
     render(<App />);
 
     // Switch to Timeline tab
-    const timelineTab = screen.getByRole('tab', { name: /timeline/i });
+    const timelineTab = await screen.findByRole('tab', { name: /timeline/i });
     fireEvent.click(timelineTab);
 
     const firstTask = bundle.timeline.tasks.find((t) => !t.skippedInCompression);
@@ -52,12 +56,13 @@ describe('Timeline and Budget Interaction Tests', () => {
   });
 
   // Test 4: Edit form: Editing guest count to valid value updates calculation; '0' displays inline error
-  it('updates per-guest budget calculation on valid guest count, and displays inline error on invalid 0', () => {
+  it('updates per-guest budget calculation on valid guest count, and displays inline error on invalid 0', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
 
     render(<App />);
+    await screen.findByLabelText(/estimated guest count/i);
 
     // Initial guest count is 300, 3,500,000 / 300 = 11,666 / guest
     expect(screen.getAllByText(/11.*666.*guest/i).length).toBeGreaterThanOrEqual(1);
@@ -90,12 +95,13 @@ describe('Timeline and Budget Interaction Tests', () => {
   });
 
   // Test 5: Budget: Spend larger than allocation shows over-allocation badge; clearing removes badge
-  it('displays over-allocation badge when spend exceeds allocation and clears it when input is reset', () => {
+  it('displays over-allocation badge when spend exceeds allocation and clears it when input is reset', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
     if (!scenario) throw new Error('Scenario not found');
     usePlanStore.getState().loadScenario(scenario.context);
 
     render(<App />);
+    await screen.findByRole('tab', { name: /budget/i });
 
     // In budget tab by default
     const spendInputs = screen.getAllByLabelText(/spent so far on/i);

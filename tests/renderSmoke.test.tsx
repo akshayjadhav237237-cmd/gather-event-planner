@@ -5,6 +5,7 @@ import { BudgetPanel } from '../src/components/panels/BudgetPanel';
 import { IdeasPanel } from '../src/components/panels/IdeasPanel';
 import { TimelinePanel } from '../src/components/panels/TimelinePanel';
 import { VendorsPanel } from '../src/components/panels/VendorsPanel';
+import { Workspace } from '../src/components/layout/Workspace';
 import { getDemoScenarios } from '../src/data/demoScenarios';
 import { buildPlan } from '../src/domain/buildPlan';
 import { usePlanStore } from '../src/store/planStore';
@@ -75,10 +76,10 @@ describe('Render Smoke Tests', () => {
         assertCleanMarkup(html);
       });
 
-      it('renders full App with active context having exactly one h1', () => {
-        usePlanStore.getState().loadScenario(scenario.context);
-        const html = renderToStaticMarkup(<App />);
-
+      it('renders full Workspace with active context having exactly one h1', () => {
+        const html = renderToStaticMarkup(
+          <Workspace bundle={bundle} hasLiveKey={false} onOpenAiSettings={() => {}} />
+        );
         expect(html).toContain(scenario.context.title);
         expect(countH1Tags(html)).toBe(1);
         assertCleanMarkup(html);

@@ -1,11 +1,15 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
 import { App } from '../../src/App';
 import { resetTestStore } from '../helpers/dom';
 
 describe('Launchpad and Tabs Interaction Tests', () => {
+  beforeAll(async () => {
+    await import('../../src/components/layout/Workspace');
+  });
+
   beforeEach(() => {
     resetTestStore();
   });
@@ -16,7 +20,7 @@ describe('Launchpad and Tabs Interaction Tests', () => {
   });
 
   // Test 1: Launchpad shows single h1; clicking sample scenario card loads scenario workspace with title as h1
-  it('renders Launchpad with single h1, loads sample scenario on card click, and presents workspace h1', () => {
+  it('renders Launchpad with single h1, loads sample scenario on card click, and presents workspace h1', async () => {
     render(<App />);
 
     const headings = screen.getAllByRole('heading', { level: 1 });
@@ -28,6 +32,12 @@ describe('Launchpad and Tabs Interaction Tests', () => {
     });
     fireEvent.click(scenarioCard);
 
+    const h1 = await screen.findByRole(
+      'heading',
+      { level: 1, name: /Multiday Traditional Wedding/i },
+      { timeout: 5000 }
+    );
+    expect(h1).toBeDefined();
     const workspaceHeadings = screen.getAllByRole('heading', { level: 1 });
     expect(workspaceHeadings).toHaveLength(1);
     expect(workspaceHeadings[0]?.textContent).toContain('Multiday Traditional Wedding');
@@ -41,7 +51,7 @@ describe('Launchpad and Tabs Interaction Tests', () => {
     // Load scenario to reach workspace
     fireEvent.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
 
-    const budgetTab = screen.getByRole('tab', { name: /budget/i });
+    const budgetTab = await screen.findByRole('tab', { name: /budget/i });
     const timelineTab = screen.getByRole('tab', { name: /timeline/i });
     const vendorsTab = screen.getByRole('tab', { name: /vendors/i });
     const ideasTab = screen.getByRole('tab', { name: /ideas/i });
@@ -87,11 +97,12 @@ describe('Launchpad and Tabs Interaction Tests', () => {
   });
 
   // Test 10: Start over button opens reset confirmation dialog; confirming clears store and returns to launchpad
-  it('opens reset confirmation dialog from header and returns to launchpad when confirmed', () => {
+  it('opens reset confirmation dialog from header and returns to launchpad when confirmed', async () => {
     render(<App />);
 
     // Enter workspace via scenario
     fireEvent.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
+    await screen.findByRole('heading', { level: 1, name: /Multiday Traditional Wedding/i });
     expect(screen.getByRole('heading', { level: 1 }).textContent).toContain('Multiday Traditional Wedding');
 
     // Click Start over in header

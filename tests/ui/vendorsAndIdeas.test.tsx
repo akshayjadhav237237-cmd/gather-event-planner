@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { setApiKey } from '../../src/ai/apiKeyStorage';
 import { App } from '../../src/App';
 import { getDemoScenarios } from '../../src/data/demoScenarios';
@@ -12,6 +12,10 @@ import { FAKE_KEY_A } from '../helpers/fakeKeys';
 const TODAY = '2026-10-20';
 
 describe('Vendors and Ideas Interaction Tests', () => {
+  beforeAll(async () => {
+    await import('../../src/components/layout/Workspace');
+  });
+
   beforeEach(() => {
     resetTestStore();
   });
@@ -32,7 +36,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
     render(<App />);
 
     // Switch to Vendors tab
-    const vendorsTab = screen.getByRole('tab', { name: /vendors/i });
+    const vendorsTab = await screen.findByRole('tab', { name: /vendors/i });
     await user.click(vendorsTab);
 
     // Click Save quote with empty form
@@ -78,7 +82,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
     render(<App />);
 
     // Switch to Ideas tab
-    const ideasTab = screen.getByRole('tab', { name: /ideas/i });
+    const ideasTab = await screen.findByRole('tab', { name: /ideas/i });
     fireEvent.click(ideasTab);
 
     // Verify sections render
@@ -123,7 +127,7 @@ describe('Vendors and Ideas Interaction Tests', () => {
     render(<App />);
 
     // Switch to Ideas tab
-    const ideasTab = screen.getByRole('tab', { name: /ideas/i });
+    const ideasTab = await screen.findByRole('tab', { name: /ideas/i });
     fireEvent.click(ideasTab);
 
     // Click Refresh all ideas

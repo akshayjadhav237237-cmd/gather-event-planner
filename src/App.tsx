@@ -1,16 +1,19 @@
-import { useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { clearApiKey, hasApiKey } from './ai';
 import { ExportDialog } from './components/export';
 import { Launchpad } from './components/launchpad/Launchpad';
 import { Footer } from './components/layout/Footer';
 import { Header } from './components/layout/Header';
 import { SkipLink } from './components/layout/SkipLink';
-import { Workspace } from './components/layout/Workspace';
 import { ApiKeyDialog } from './components/settings/ApiKeyDialog';
 import { ResetDialog } from './components/settings/ResetDialog';
 import { useDocumentTitle } from './hooks/useDocumentTitle';
 import { useFocusOnMount } from './hooks/useFocusOnMount';
 import { usePlanStore } from './store/planStore';
+
+const Workspace = lazy(() =>
+  import('./components/layout/Workspace').then((m) => ({ default: m.Workspace }))
+);
 
 export function App() {
   const context = usePlanStore((s) => s.context);
@@ -66,10 +69,12 @@ export function App() {
 
       <main id="main" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 flex-1 w-full">
         {isWorkspace ? (
-          <Workspace
-            hasLiveKey={hasLiveKey}
-            onOpenAiSettings={handleOpenApiKey}
-          />
+          <Suspense fallback={null}>
+            <Workspace
+              hasLiveKey={hasLiveKey}
+              onOpenAiSettings={handleOpenApiKey}
+            />
+          </Suspense>
         ) : (
           <Launchpad />
         )}
