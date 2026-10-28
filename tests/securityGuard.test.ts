@@ -63,12 +63,12 @@ describe('sanitizeUserText', () => {
   it('normalizes unicode and strips control characters', () => {
     expect(sanitizeUserText('\uFF1Ctag\uFF1E')).toBe('tag');
     expect(sanitizeUserText('Clean\x00\x08Text\x1FWith\x7FControl\x9FChars')).toBe(
-      'CleanTextWithControlChars',
+      'CleanTextWithControlChars'
     );
   });
 
   it('preserves unicode surrogate pairs and truncates cleanly', () => {
-    const rocket = String.fromCodePoint(0x1F680);
+    const rocket = String.fromCodePoint(0x1f680);
     expect(sanitizeUserText(`AB${rocket}`, 4)).toBe(`AB${rocket}`);
     expect(sanitizeUserText(`AB${rocket}`, 3)).toBe('AB');
   });
@@ -156,7 +156,7 @@ describe('createNonce & wrapUntrusted', () => {
   it('wraps untrusted user notes in nonce-delimited tags', () => {
     const wrapped = wrapUntrusted('garden wedding ideas', 'deadbeef01234567');
     expect(wrapped).toBe(
-      '<user_notes_deadbeef01234567>garden wedding ideas</user_notes_deadbeef01234567>',
+      '<user_notes_deadbeef01234567>garden wedding ideas</user_notes_deadbeef01234567>'
     );
   });
 });

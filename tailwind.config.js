@@ -27,7 +27,13 @@ export default {
         'success-soft': 'var(--color-success-soft)',
       },
       fontFamily: {
-        serif: ['"Instrument Serif"', '"Iowan Old Style"', '"Palatino Linotype"', 'Georgia', 'serif'],
+        serif: [
+          '"Instrument Serif"',
+          '"Iowan Old Style"',
+          '"Palatino Linotype"',
+          'Georgia',
+          'serif',
+        ],
         sans: ['"DM Sans Variable"', '"DM Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       borderRadius: {

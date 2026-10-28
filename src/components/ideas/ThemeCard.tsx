@@ -20,11 +20,7 @@ export const ThemeCard: FC<ThemeCardProps> = ({ theme }) => {
       <div className="mt-4 pt-3 border-t border-line flex flex-wrap items-center gap-3">
         {theme.colorPalette.map((hex, idx) => (
           <div key={idx} className="flex items-center gap-1.5">
-            <svg
-              className="w-6 h-6 shrink-0 rounded-full"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
+            <svg className="w-6 h-6 shrink-0 rounded-full" viewBox="0 0 24 24" aria-hidden="true">
               <circle
                 cx="12"
                 cy="12"

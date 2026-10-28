@@ -10,7 +10,8 @@ export const BIRTHDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'critical',
     dependsOn: [],
     optional: false,
-    rationale: 'Establishes spending ceilings and aesthetic theme before purchasing party materials.',
+    rationale:
+      'Establishes spending ceilings and aesthetic theme before purchasing party materials.',
     eventTypes: ['birthday'],
   },
   {
@@ -21,7 +22,8 @@ export const BIRTHDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'critical',
     dependsOn: ['bday-concept-budget'],
     optional: false,
-    rationale: 'Secures hosting location before booking activity performers and sending invitations.',
+    rationale:
+      'Secures hosting location before booking activity performers and sending invitations.',
     eventTypes: ['birthday'],
   },
   {

@@ -1,10 +1,7 @@
 import { type ReactNode } from 'react';
 import { CalendarHeart, PartyPopper, Users } from 'lucide-react';
 import { Badge } from '../ui/Badge';
-import {
-  EVENT_TYPE_BLURBS,
-  EVENT_TYPE_LABELS,
-} from '../../ui/labels';
+import { EVENT_TYPE_BLURBS, EVENT_TYPE_LABELS } from '../../ui/labels';
 import type { EventType } from '../../types/event';
 
 export interface VerticalChoiceButtonProps {
@@ -41,13 +38,9 @@ export function VerticalChoiceButton({
         {isFlagship && <Badge tone="accent">Flagship</Badge>}
       </div>
 
-      <span className="font-serif text-2xl text-ink font-normal mb-1">
-        {label}
-      </span>
+      <span className="font-serif text-2xl text-ink font-normal mb-1">{label}</span>
 
-      <span className="text-sm text-muted leading-relaxed">
-        {blurb}
-      </span>
+      <span className="text-sm text-muted leading-relaxed">{blurb}</span>
     </button>
   );
 }

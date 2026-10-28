@@ -45,7 +45,9 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
     // Validation errors displayed
     expect(await screen.findByText('Vendor name is required.')).toBeDefined();
-    expect(await screen.findByText('Base quote must be a whole number 0 or greater.')).toBeDefined();
+    expect(
+      await screen.findByText('Base quote must be a whole number 0 or greater.')
+    ).toBeDefined();
 
     // Enter valid quote details
     const nameInput = screen.getByLabelText(/vendor name/i);
@@ -178,7 +180,9 @@ describe('Vendors and Ideas Interaction Tests', () => {
 
     // Dialog is closed
     const dialogs = document.querySelectorAll('dialog');
-    const aiDialog = Array.from(dialogs).find((d) => d.textContent?.includes('Configure optional live intelligence'));
+    const aiDialog = Array.from(dialogs).find((d) =>
+      d.textContent?.includes('Configure optional live intelligence')
+    );
     expect(aiDialog?.getAttribute('open')).toBeNull();
   });
 });

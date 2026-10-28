@@ -34,9 +34,18 @@ export type FieldKey = keyof FormDraft;
 export type FieldErrors = Partial<Record<FieldKey, string>>;
 
 const FIELD_KEYS = new Set<string>([
-  'title', 'eventType', 'subFormat', 'eventDate', 'currency',
-  'totalBudget', 'guestCount', 'setting', 'season', 'priorities',
-  'flags', 'userNotes',
+  'title',
+  'eventType',
+  'subFormat',
+  'eventDate',
+  'currency',
+  'totalBudget',
+  'guestCount',
+  'setting',
+  'season',
+  'priorities',
+  'flags',
+  'userNotes',
 ]);
 
 function isFieldKey(key: string): key is FieldKey {
@@ -59,7 +68,11 @@ function roundToTwoSignificantDigits(value: number): number {
   return Math.round(value / factor) * factor;
 }
 
-const DEFAULT_GUESTS: Record<EventType, string> = { wedding: '150', birthday: '25', community: '300' };
+const DEFAULT_GUESTS: Record<EventType, string> = {
+  wedding: '150',
+  birthday: '25',
+  community: '300',
+};
 const DEFAULT_DAYS: Record<EventType, number> = { wedding: 300, birthday: 30, community: 120 };
 const DEFAULT_TITLES: Record<EventType, string> = {
   wedding: 'Our wedding',

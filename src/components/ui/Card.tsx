@@ -20,17 +20,12 @@ export function Card({
     lg: 'p-8',
   }[padding];
 
-  const cardClass = [
-    'bg-surface border border-line rounded-card',
-    paddingStyles,
-    className,
-  ].filter(Boolean).join(' ');
+  const cardClass = ['bg-surface border border-line rounded-card', paddingStyles, className]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <Component
-      className={cardClass}
-      {...props}
-    >
+    <Component className={cardClass} {...props}>
       {children}
     </Component>
   );

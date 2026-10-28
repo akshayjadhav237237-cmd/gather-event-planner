@@ -39,7 +39,7 @@ function normalizeSpend(raw: number | undefined): number {
 
 export function buildBudgetRows(
   breakdown: BudgetBreakdown,
-  actualSpend: Record<string, number>,
+  actualSpend: Record<string, number>
 ): BudgetRowView[] {
   return breakdown.categories.map((cat) => {
     const spent = normalizeSpend(actualSpend[cat.id]);
@@ -85,7 +85,7 @@ export function buildBudgetRows(
 
 export function summarizeSpending(
   breakdown: BudgetBreakdown,
-  actualSpend: Record<string, number>,
+  actualSpend: Record<string, number>
 ): SpendingSummaryView {
   let totalSpent = 0;
   for (const cat of breakdown.categories) {

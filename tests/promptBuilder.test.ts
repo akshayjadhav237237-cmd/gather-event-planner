@@ -68,7 +68,9 @@ describe('buildSystemPrompt', () => {
 
   it('strictly prohibits vendor, pricing, contact, and URL fabrication', () => {
     const prompt = buildSystemPrompt();
-    expect(prompt).toContain('NEVER invent vendor names, prices, phone numbers, email addresses, or website URLs');
+    expect(prompt).toContain(
+      'NEVER invent vendor names, prices, phone numbers, email addresses, or website URLs'
+    );
   });
 
   it('enforces untrusted treatment of notes and system prompt secrecy', () => {
@@ -110,8 +112,12 @@ describe('buildUserPrompt', () => {
     const prompt = buildUserPrompt(input, null, nonce);
 
     expect(prompt).toContain('Active Decision Adaptations (hard constraints):');
-    expect(prompt).toContain('[RULE_WEATHER_OUTDOOR]: Arrange marquee backup and shaded hydration stations.');
-    expect(prompt).toContain('[RULE_ALLERGY_GLUTEN]: Require dedicated gluten-free prep area and labeling.');
+    expect(prompt).toContain(
+      '[RULE_WEATHER_OUTDOOR]: Arrange marquee backup and shaded hydration stations.'
+    );
+    expect(prompt).toContain(
+      '[RULE_ALLERGY_GLUTEN]: Require dedicated gluten-free prep area and labeling.'
+    );
   });
 
   it('handles empty adaptations cleanly with none', () => {
@@ -145,14 +151,16 @@ describe('buildUserPrompt', () => {
     const prompt = buildUserPrompt(input, null, nonce, 'cateringIdeas');
 
     expect(prompt).toContain(
-      'Focus on providing the freshest, most distinctive ideas specifically for the cateringIdeas section while still generating the complete object.',
+      'Focus on providing the freshest, most distinctive ideas specifically for the cateringIdeas section while still generating the complete object.'
     );
   });
 
   it('omits section specialization note when section is omitted', () => {
     const input = createSampleInput();
     const prompt = buildUserPrompt(input, null, nonce);
-    expect(prompt).not.toContain('Focus on providing the freshest, most distinctive ideas specifically');
+    expect(prompt).not.toContain(
+      'Focus on providing the freshest, most distinctive ideas specifically'
+    );
   });
 
   it('includes concrete JSON output schema specification without mentioning source', () => {

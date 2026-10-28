@@ -11,11 +11,7 @@ export interface ApiKeyDialogProps {
   onKeyChange: () => void;
 }
 
-export const ApiKeyDialog: FC<ApiKeyDialogProps> = ({
-  open,
-  onClose,
-  onKeyChange,
-}) => {
+export const ApiKeyDialog: FC<ApiKeyDialogProps> = ({ open, onClose, onKeyChange }) => {
   const [keyInput, setKeyInput] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [statusMsg, setStatusMsg] = useState<string | null>(null);
@@ -84,20 +80,21 @@ export const ApiKeyDialog: FC<ApiKeyDialogProps> = ({
     >
       <div className="flex flex-col gap-4 text-sm text-ink-soft">
         <p>
-          Live ideas are completely optional. Without a key, Gather generates
-          personalized celebration ideas offline using our curated local banks.
+          Live ideas are completely optional. Without a key, Gather generates personalized
+          celebration ideas offline using our curated local banks.
         </p>
 
         <div className="rounded-control bg-sunken p-3 text-xs text-muted flex flex-col gap-2">
           <p>
-            Your API key is stored only in this temporary browser session and is
-            discarded when the tab closes.
+            Your API key is stored only in this temporary browser session and is discarded when the
+            tab closes.
           </p>
           <p>
             When enabled, event parameters (format, guest count, season, setting, days remaining,
             total budget, currency, budget tier, feature flags, active adaptation rules, and your
-            optional notes) are sent to Google&apos;s Gemini API to generate ideas. Your event title,
-            calendar date, vendor quotes, actual spend, task progress, and previous ideas never leave your device.
+            optional notes) are sent to Google&apos;s Gemini API to generate ideas. Your event
+            title, calendar date, vendor quotes, actual spend, task progress, and previous ideas
+            never leave your device.
           </p>
         </div>
 

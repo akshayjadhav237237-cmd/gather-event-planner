@@ -1,10 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  buildBudgetCsv,
-  buildVendorCsv,
-  escapeCsvCell,
-  toCsv,
-} from '../../src/export/csv';
+import { buildBudgetCsv, buildVendorCsv, escapeCsvCell, toCsv } from '../../src/export/csv';
 import type { BudgetBreakdown, VendorQuote } from '../../src/types/event';
 
 describe('escapeCsvCell', () => {
@@ -29,7 +24,7 @@ describe('escapeCsvCell', () => {
   });
 
   it('quotes cells that contain both injection prefix and comma', () => {
-    expect(escapeCsvCell('=SUM(A1, B1)')).toBe("\"'=SUM(A1, B1)\"");
+    expect(escapeCsvCell('=SUM(A1, B1)')).toBe('"\'=SUM(A1, B1)"');
   });
 
   it('formats finite numbers as strings without apostrophe', () => {
@@ -141,9 +136,7 @@ describe('buildVendorCsv', () => {
     expect(csv).toContain(
       'Venue,Grand Hall,5000,20,6000,1500,4500,Yes,Yes,Outdoor pavilion backup'
     );
-    expect(csv).toContain(
-      'Catering,Gourmet Kitchen,3000,10,3300,3300,0,No,No,None'
-    );
+    expect(csv).toContain('Catering,Gourmet Kitchen,3000,10,3300,3300,0,No,No,None');
     expect(csv.endsWith('\r\n')).toBe(true);
   });
 });

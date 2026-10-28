@@ -26,7 +26,11 @@ function makeContext(overrides: Partial<EventContext> = {}): EventContext {
   };
 }
 
-function makeSignals(ctx: EventContext, today: string, overrides: Partial<ContextSignals> = {}): ContextSignals {
+function makeSignals(
+  ctx: EventContext,
+  today: string,
+  overrides: Partial<ContextSignals> = {}
+): ContextSignals {
   const days = daysBetween(today, ctx.eventDate);
   return {
     daysUntilEvent: days,
@@ -180,7 +184,7 @@ describe('Timeline Engine and Task Scheduling', () => {
       ctx,
       signals,
       makeDecision([RULE_IDS.OUTDOOR, RULE_IDS.ALLERGY_ALERT]),
-      today,
+      today
     );
 
     expect(inactivePlan.tasks.some((t) => t.id === 'inj-outdoor')).toBe(false);

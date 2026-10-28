@@ -1,10 +1,4 @@
-import {
-  buildBackupJson,
-  buildBudgetCsv,
-  buildIcs,
-  buildVendorCsv,
-  toFileSlug,
-} from '../export';
+import { buildBackupJson, buildBudgetCsv, buildIcs, buildVendorCsv, toFileSlug } from '../export';
 import type { PlanExportInput } from '../export/markdown';
 import type { VendorQuote } from '../types/event';
 

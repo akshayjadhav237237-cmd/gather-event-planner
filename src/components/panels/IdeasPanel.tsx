@@ -1,32 +1,18 @@
 import type { FC } from 'react';
 import { RefreshCw } from 'lucide-react';
 import { useIdeas } from '../../hooks/useIdeas';
-import {
-  ActivitySection,
-  BespokeSection,
-  CateringSection,
-  ThemeSection,
-} from '../ideas';
+import { ActivitySection, BespokeSection, CateringSection, ThemeSection } from '../ideas';
 import { AlertCard } from '../shared/AlertCard';
 import { SectionHeader } from '../shared/SectionHeader';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
 import type { IdeasPanelProps } from './types';
 
-export const IdeasPanel: FC<IdeasPanelProps> = ({
-  bundle,
-  hasLiveKey,
-  onOpenAiSettings,
-}) => {
-  const {
-    ideas,
-    status,
-    info,
-    notesDropped,
-    isStale,
-    refreshAll,
-    regenerate,
-  } = useIdeas(bundle, hasLiveKey);
+export const IdeasPanel: FC<IdeasPanelProps> = ({ bundle, hasLiveKey, onOpenAiSettings }) => {
+  const { ideas, status, info, notesDropped, isStale, refreshAll, regenerate } = useIdeas(
+    bundle,
+    hasLiveKey
+  );
 
   const isLoading = status === 'loading';
 
@@ -55,17 +41,13 @@ export const IdeasPanel: FC<IdeasPanelProps> = ({
           tone="info"
           title="Your details have changed since these ideas were made"
           actions={
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={refreshAll}
-              disabled={isLoading}
-            >
+            <Button variant="secondary" size="sm" onClick={refreshAll} disabled={isLoading}>
               Refresh ideas
             </Button>
           }
         >
-          Your event details were updated. You can refresh ideas now to incorporate the latest changes.
+          Your event details were updated. You can refresh ideas now to incorporate the latest
+          changes.
         </AlertCard>
       ) : null}
 

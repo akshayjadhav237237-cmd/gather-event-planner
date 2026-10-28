@@ -83,7 +83,9 @@ export function WhatIfSimulator({ context }: WhatIfSimulatorProps) {
           >
             {ADD_ON_OPTIONS.map((pct) => (
               <option key={pct} value={pct}>
-                {pct === 0 ? '0% (Standard base food allocation)' : `+${pct}% service charge & tax buffer`}
+                {pct === 0
+                  ? '0% (Standard base food allocation)'
+                  : `+${pct}% service charge & tax buffer`}
               </option>
             ))}
           </Select>

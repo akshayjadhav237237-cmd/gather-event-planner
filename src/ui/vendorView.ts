@@ -35,9 +35,7 @@ export function categoryAllocationStatus(
   const allocation = cat ? cat.allocatedAmount : null;
   const categoryQuotes = quotes.filter((q) => q.categoryId === categoryId);
   const lowestAllIn =
-    categoryQuotes.length > 0
-      ? Math.min(...categoryQuotes.map((q) => quoteAllInTotal(q)))
-      : null;
+    categoryQuotes.length > 0 ? Math.min(...categoryQuotes.map((q) => quoteAllInTotal(q))) : null;
   const overBy =
     lowestAllIn !== null && allocation !== null && lowestAllIn > allocation
       ? lowestAllIn - allocation

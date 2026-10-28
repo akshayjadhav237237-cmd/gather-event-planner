@@ -25,12 +25,11 @@ export const AdaptationBanner: FC<AdaptationBannerProps> = ({ adaptations }) => 
           Why your plan looks like this
         </h2>
 
-        <div className="flex flex-wrap items-center gap-2" aria-label="Adaptation severity breakdown">
-          {counts.critical > 0 && (
-            <Badge tone="critical">
-              {counts.critical} Critical
-            </Badge>
-          )}
+        <div
+          className="flex flex-wrap items-center gap-2"
+          aria-label="Adaptation severity breakdown"
+        >
+          {counts.critical > 0 && <Badge tone="critical">{counts.critical} Critical</Badge>}
           {counts.warning > 0 && (
             <Badge tone="warning">
               {counts.warning} {counts.warning === 1 ? 'Warning' : 'Warnings'}

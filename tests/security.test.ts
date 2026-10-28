@@ -39,7 +39,7 @@ describe('Content Security Policy', () => {
     expect(sources).toContain('https://generativelanguage.googleapis.com');
     // No other origins
     const others = sources.filter(
-      (s) => s !== "'self'" && s !== 'https://generativelanguage.googleapis.com',
+      (s) => s !== "'self'" && s !== 'https://generativelanguage.googleapis.com'
     );
     expect(others).toHaveLength(0);
   });
@@ -67,4 +67,3 @@ describe('Content Security Policy', () => {
     expect(CSP).not.toContain("'unsafe-inline'");
   });
 });
-

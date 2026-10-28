@@ -25,15 +25,11 @@ export function ChipCheckbox({
     checked
       ? 'bg-accent-soft border-accent text-ink font-medium'
       : 'bg-surface border-line-control text-ink hover:bg-sunken',
-    disabled
-      ? 'opacity-50 cursor-not-allowed pointer-events-none'
-      : 'cursor-pointer',
+    disabled ? 'opacity-50 cursor-not-allowed pointer-events-none' : 'cursor-pointer',
   ].join(' ');
   const boxClass = [
     'w-4 h-4 rounded flex items-center justify-center shrink-0 border',
-    checked
-      ? 'border-accent bg-accent text-accent-ink'
-      : 'border-line-control bg-surface',
+    checked ? 'border-accent bg-accent text-accent-ink' : 'border-line-control bg-surface',
   ].join(' ');
 
   return (
@@ -49,21 +45,12 @@ export function ChipCheckbox({
       <label htmlFor={id} className={labelClass}>
         <span className={boxClass}>
           {checked && (
-            <Check
-              size={16}
-              strokeWidth={2}
-              aria-hidden="true"
-              className="text-accent-ink"
-            />
+            <Check size={16} strokeWidth={2} aria-hidden="true" className="text-accent-ink" />
           )}
         </span>
         <span className="flex flex-col">
           <span>{label}</span>
-          {description && (
-            <span className="text-xs text-muted font-normal">
-              {description}
-            </span>
-          )}
+          {description && <span className="text-xs text-muted font-normal">{description}</span>}
         </span>
       </label>
     </div>

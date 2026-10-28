@@ -51,9 +51,7 @@ export function estimateVolunteers(
       ? Math.max(1, eventHours)
       : DEFAULT_EVENT_HOURS;
 
-  const rosterSize = Math.ceil(
-    (volunteersNeeded * safeHours) / STANDARD_SHIFT_HOURS
-  );
+  const rosterSize = Math.ceil((volunteersNeeded * safeHours) / STANDARD_SHIFT_HOURS);
 
   return {
     volunteersNeeded,

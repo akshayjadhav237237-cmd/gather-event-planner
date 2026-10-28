@@ -32,9 +32,7 @@ export function Header({
           <span className="hidden sm:inline text-xs uppercase tracking-widest text-muted font-semibold leading-tight">
             Celebration & Event Planner
           </span>
-          <span className="font-serif text-2xl tracking-tight text-ink leading-none">
-            Gather
-          </span>
+          <span className="font-serif text-2xl tracking-tight text-ink leading-none">Gather</span>
         </div>
 
         {isWorkspace && (

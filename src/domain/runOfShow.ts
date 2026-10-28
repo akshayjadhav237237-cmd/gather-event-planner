@@ -26,9 +26,7 @@ export function minutesToTime(minutes: number): string {
 
 /** Recalculates slot start times sequentially to ensure non-overlapping execution within the day. */
 export function recalculateSchedule(slots: RunOfShowSlot[]): RunOfShowSlot[] {
-  const sorted = [...slots].sort(
-    (a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime),
-  );
+  const sorted = [...slots].sort((a, b) => timeToMinutes(a.startTime) - timeToMinutes(b.startTime));
   for (let i = 0; i < sorted.length; i++) {
     const cur = sorted[i];
     if (!cur) continue;
@@ -56,25 +54,73 @@ export function recalculateSchedule(slots: RunOfShowSlot[]): RunOfShowSlot[] {
 function buildYoungKidsSchedule(hasAccessibility: boolean): RunOfShowSlot[] {
   const b = hasAccessibility ? 10 : 0;
   return recalculateSchedule([
-    { startTime: '10:00', durationMin: hasAccessibility ? 20 : 30, activity: 'Toddler arrival and sensory play stations', owner: 'Host', bufferMin: b },
-    { startTime: '10:30', durationMin: hasAccessibility ? 25 : 45, activity: 'Interactive circle time and gentle games', owner: 'Entertainer', bufferMin: b },
-    { startTime: '11:15', durationMin: hasAccessibility ? 20 : 30, activity: 'Toddler snack and mini cake celebration', owner: 'Caterer', bufferMin: b },
-    { startTime: '11:45', durationMin: 15, activity: 'Goodie bags and calm departure', owner: 'Host', bufferMin: b },
+    {
+      startTime: '10:00',
+      durationMin: hasAccessibility ? 20 : 30,
+      activity: 'Toddler arrival and sensory play stations',
+      owner: 'Host',
+      bufferMin: b,
+    },
+    {
+      startTime: '10:30',
+      durationMin: hasAccessibility ? 25 : 45,
+      activity: 'Interactive circle time and gentle games',
+      owner: 'Entertainer',
+      bufferMin: b,
+    },
+    {
+      startTime: '11:15',
+      durationMin: hasAccessibility ? 20 : 30,
+      activity: 'Toddler snack and mini cake celebration',
+      owner: 'Caterer',
+      bufferMin: b,
+    },
+    {
+      startTime: '11:45',
+      durationMin: 15,
+      activity: 'Goodie bags and calm departure',
+      owner: 'Host',
+      bufferMin: b,
+    },
   ]);
 }
 
 function injectContextualSlots(slots: RunOfShowSlot[], active: readonly string[]): void {
-  if (active.includes(RULE_IDS.SURPRISE_PARTY) && !slots.some((s) => /staging|hiding/i.test(s.activity))) {
+  if (
+    active.includes(RULE_IDS.SURPRISE_PARTY) &&
+    !slots.some((s) => /staging|hiding/i.test(s.activity))
+  ) {
     const arr = slots.find((s) => /arrival|welcome/i.test(s.activity));
     const t = arr ? timeToMinutes(arr.startTime) : 1080;
     slots.push(
-      { startTime: minutesToTime(t), durationMin: 30, activity: 'Secret guest arrival and coordination briefing', owner: 'Coordinator', bufferMin: 10 },
-      { startTime: minutesToTime(t + 40), durationMin: 15, activity: 'Guest quiet hiding and staging in position', owner: 'Host', bufferMin: 5 },
-      { startTime: minutesToTime(t + 60), durationMin: 15, activity: 'Guest of honor arrival and surprise reveal moment', owner: 'Host', bufferMin: 10 },
+      {
+        startTime: minutesToTime(t),
+        durationMin: 30,
+        activity: 'Secret guest arrival and coordination briefing',
+        owner: 'Coordinator',
+        bufferMin: 10,
+      },
+      {
+        startTime: minutesToTime(t + 40),
+        durationMin: 15,
+        activity: 'Guest quiet hiding and staging in position',
+        owner: 'Host',
+        bufferMin: 5,
+      },
+      {
+        startTime: minutesToTime(t + 60),
+        durationMin: 15,
+        activity: 'Guest of honor arrival and surprise reveal moment',
+        owner: 'Host',
+        bufferMin: 10,
+      }
     );
   }
 
-  if (active.includes(RULE_IDS.COMMUNITY_PUBLIC_EVENT) && !slots.some((s) => /safety inspection/i.test(s.activity))) {
+  if (
+    active.includes(RULE_IDS.COMMUNITY_PUBLIC_EVENT) &&
+    !slots.some((s) => /safety inspection/i.test(s.activity))
+  ) {
     const gates = slots.find((s) => /gates open|attendee arrival|doors open/i.test(s.activity));
     const t = gates ? timeToMinutes(gates.startTime) : 600;
     slots.push({
@@ -145,10 +191,7 @@ function injectContextualSlots(slots: RunOfShowSlot[], active: readonly string[]
 }
 
 /** Generates a minute-by-minute day-of run-of-show schedule tailored by active contextual decision rules. */
-export function buildRunOfShow(
-  ctx: EventContext,
-  decision: DecisionResult,
-): RunOfShowSlot[] {
+export function buildRunOfShow(ctx: EventContext, decision: DecisionResult): RunOfShowSlot[] {
   const active = decision.activeRuleIds;
   const hasAccess = active.includes(RULE_IDS.ACCESSIBILITY);
 

@@ -9,11 +9,7 @@ export interface RemoveQuoteDialogProps {
   onCancel: () => void;
 }
 
-export const RemoveQuoteDialog: FC<RemoveQuoteDialogProps> = ({
-  quote,
-  onConfirm,
-  onCancel,
-}) => {
+export const RemoveQuoteDialog: FC<RemoveQuoteDialogProps> = ({ quote, onConfirm, onCancel }) => {
   const cancelBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -31,9 +27,7 @@ export const RemoveQuoteDialog: FC<RemoveQuoteDialogProps> = ({
       onClose={onCancel}
       title="Remove this quote?"
       description={
-        quote
-          ? `Are you sure you want to remove the quote for ${quote.vendorName}?`
-          : undefined
+        quote ? `Are you sure you want to remove the quote for ${quote.vendorName}?` : undefined
       }
       footer={
         <>
@@ -47,7 +41,8 @@ export const RemoveQuoteDialog: FC<RemoveQuoteDialogProps> = ({
       }
     >
       <p className="text-sm text-ink-soft">
-        This quote will be removed from your shortlisted vendor comparisons and any committed totals.
+        This quote will be removed from your shortlisted vendor comparisons and any committed
+        totals.
       </p>
     </Dialog>
   );

@@ -67,7 +67,7 @@ export function buildTimeline(
   ctx: EventContext,
   signals: ContextSignals,
   decision: DecisionResult,
-  today: string,
+  today: string
 ): TimelinePlan {
   const eligibleTemplates = getTaskTemplates().filter((template) => {
     if (!template.eventTypes.includes(ctx.eventType)) {
@@ -138,7 +138,7 @@ export function buildTimeline(
 
     if (depDueDates.length > 0) {
       const maxDepDate = depDueDates.reduce((latest, current) =>
-        current > latest ? current : latest,
+        current > latest ? current : latest
       );
       if (maxDepDate > task.dueDate) {
         task.dueDate = maxDepDate;

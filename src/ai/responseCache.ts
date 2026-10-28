@@ -10,7 +10,7 @@ export interface ResponseCache {
 
 /** Creates an in-memory LRU response cache storing up to 20 validated idea bundles. */
 export function createResponseCache(
-  maxEntries: number = RESPONSE_CACHE_MAX_ENTRIES,
+  maxEntries: number = RESPONSE_CACHE_MAX_ENTRIES
 ): ResponseCache {
   const capacity = Math.max(1, maxEntries);
   const cache = new Map<string, PersonalizedIdeas>();

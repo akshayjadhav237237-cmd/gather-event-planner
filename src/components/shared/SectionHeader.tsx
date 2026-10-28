@@ -19,9 +19,7 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
     <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 pb-4 border-b border-line">
       <div className="space-y-1">
         {eyebrow && (
-          <p className="text-xs uppercase tracking-widest text-muted font-semibold">
-            {eyebrow}
-          </p>
+          <p className="text-xs uppercase tracking-widest text-muted font-semibold">{eyebrow}</p>
         )}
         <h2
           id={headingId}
@@ -30,9 +28,7 @@ export const SectionHeader: FC<SectionHeaderProps> = ({
           {title}
         </h2>
         {description && (
-          <p className="text-sm text-ink-soft leading-relaxed max-w-2xl">
-            {description}
-          </p>
+          <p className="text-sm text-ink-soft leading-relaxed max-w-2xl">{description}</p>
         )}
       </div>
       {action && <div className="shrink-0">{action}</div>}

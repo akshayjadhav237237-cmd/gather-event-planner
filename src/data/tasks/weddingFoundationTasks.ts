@@ -9,7 +9,8 @@ export const WEDDING_FOUNDATION_TASKS: readonly TaskTemplate[] = [
     priority: 'critical',
     dependsOn: [],
     optional: false,
-    rationale: 'Establishes spending ceilings across categories before committing to vendor agreements.',
+    rationale:
+      'Establishes spending ceilings across categories before committing to vendor agreements.',
     eventTypes: ['wedding'],
   },
   {
@@ -31,7 +32,8 @@ export const WEDDING_FOUNDATION_TASKS: readonly TaskTemplate[] = [
     priority: 'critical',
     dependsOn: ['wed-guest-estimate'],
     optional: false,
-    rationale: 'Evaluates layout feasibility and calendar availability during prime celebration dates.',
+    rationale:
+      'Evaluates layout feasibility and calendar availability during prime celebration dates.',
     eventTypes: ['wedding'],
   },
   {
@@ -53,7 +55,8 @@ export const WEDDING_FOUNDATION_TASKS: readonly TaskTemplate[] = [
     priority: 'high',
     dependsOn: ['wed-venue-book'],
     optional: true,
-    rationale: 'Secures experienced planning guidance to oversee vendor negotiations and logistics.',
+    rationale:
+      'Secures experienced planning guidance to oversee vendor negotiations and logistics.',
     eventTypes: ['wedding'],
   },
   {

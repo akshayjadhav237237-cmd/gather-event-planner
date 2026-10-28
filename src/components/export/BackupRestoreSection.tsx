@@ -44,9 +44,16 @@ export const BackupRestoreSection: FC<BackupRestoreSectionProps> = ({ onRestored
   };
 
   return (
-    <section aria-labelledby="restore-section-heading" className="border-t border-line pt-4 space-y-3">
-      <h3 id="restore-section-heading" className="text-sm font-semibold text-ink">Restore from a backup</h3>
-      <p className="text-xs text-muted">Load a previously exported Gather JSON backup file to replace your current plan.</p>
+    <section
+      aria-labelledby="restore-section-heading"
+      className="border-t border-line pt-4 space-y-3"
+    >
+      <h3 id="restore-section-heading" className="text-sm font-semibold text-ink">
+        Restore from a backup
+      </h3>
+      <p className="text-xs text-muted">
+        Load a previously exported Gather JSON backup file to replace your current plan.
+      </p>
       <div>
         <label htmlFor="backup-file" className="block text-xs font-medium text-ink-soft mb-1.5">
           Select backup file
@@ -60,15 +67,24 @@ export const BackupRestoreSection: FC<BackupRestoreSectionProps> = ({ onRestored
           className="block w-full text-xs text-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-control file:border-0 file:text-xs file:font-medium file:bg-sunken file:text-ink hover:file:bg-line cursor-pointer"
         />
       </div>
-      {restoreError && <AlertCard tone="warning" title="Backup restore failed">{restoreError}</AlertCard>}
+      {restoreError && (
+        <AlertCard tone="warning" title="Backup restore failed">
+          {restoreError}
+        </AlertCard>
+      )}
       {pendingBackup && (
         <div className="p-3 bg-sunken border border-line rounded-card space-y-3">
           <p className="text-xs text-ink font-medium">
-            Replace your current plan with the backup of &ldquo;{pendingBackup.context.title}&rdquo;?
+            Replace your current plan with the backup of &ldquo;{pendingBackup.context.title}
+            &rdquo;?
           </p>
           <div className="flex gap-2">
-            <Button size="sm" variant="ghost" onClick={handleCancel}>Cancel</Button>
-            <Button size="sm" variant="primary" onClick={handleConfirm}>Replace plan</Button>
+            <Button size="sm" variant="ghost" onClick={handleCancel}>
+              Cancel
+            </Button>
+            <Button size="sm" variant="primary" onClick={handleConfirm}>
+              Replace plan
+            </Button>
           </div>
         </div>
       )}

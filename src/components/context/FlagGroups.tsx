@@ -18,18 +18,14 @@ export function FlagGroups({
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <span className="text-sm font-medium text-ink">
-          Special arrangements & constraints
-        </span>
+        <span className="text-sm font-medium text-ink">Special arrangements & constraints</span>
         <p className="text-xs text-muted mt-0.5">
           Flags adapt vendor checklists, dietary planning, and run-of-show logistics.
         </p>
       </div>
 
       {FLAG_GROUPS.map((group) => {
-        const relevantFlags = group.flags.filter((flag) =>
-          isFlagRelevant(flag, eventType)
-        );
+        const relevantFlags = group.flags.filter((flag) => isFlagRelevant(flag, eventType));
 
         if (relevantFlags.length === 0) {
           return null;

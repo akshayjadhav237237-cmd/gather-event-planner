@@ -37,7 +37,7 @@ describe('geminiClient', () => {
 
     expect(result).toBe('{"themeConcepts":[]}');
     expect(capturedUrl).toBe(
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent'
     );
     expect(capturedUrl).not.toContain(TEST_KEY);
     expect(new URL(capturedUrl).search).toBe('');
@@ -62,7 +62,7 @@ describe('geminiClient', () => {
         apiKey: TEST_KEY,
         signal: new AbortController().signal,
         fetchImpl: mockFetch,
-      }),
+      })
     ).rejects.toMatchObject({ code: 'timeout' });
   });
 
@@ -76,7 +76,7 @@ describe('geminiClient', () => {
         apiKey: TEST_KEY,
         signal: new AbortController().signal,
         fetchImpl: mockFetch,
-      }),
+      })
     ).rejects.toMatchObject({ code: 'network' });
   });
 
@@ -90,7 +90,7 @@ describe('geminiClient', () => {
         apiKey: TEST_KEY,
         signal: new AbortController().signal,
         fetchImpl: mockFetch,
-      }),
+      })
     ).rejects.toMatchObject({ code: 'rate_limited' });
   });
 
@@ -122,24 +122,30 @@ describe('geminiClient', () => {
       { body: JSON.stringify({}), status: 200 },
       { body: JSON.stringify({ candidates: [] }), status: 200 },
       { body: JSON.stringify({ candidates: [{ content: { parts: [] } }] }), status: 200 },
-      { body: JSON.stringify({ candidates: [{ content: { parts: [{ text: '   ' }] } }] }), status: 200 },
+      {
+        body: JSON.stringify({ candidates: [{ content: { parts: [{ text: '   ' }] } }] }),
+        status: 200,
+      },
     ];
 
     for (const scenario of scenarios) {
-      const mockFetch: typeof fetch = async () => makeResponse(scenario.body, { status: scenario.status });
+      const mockFetch: typeof fetch = async () =>
+        makeResponse(scenario.body, { status: scenario.status });
       await expect(
         client.generate('sys', 'user', {
           apiKey: TEST_KEY,
           signal: new AbortController().signal,
           fetchImpl: mockFetch,
-        }),
+        })
       ).rejects.toMatchObject({ code: 'invalid_response' });
     }
   });
 
   it('never leaks API key, payload, or provider body under error conditions', async () => {
     const errorFails: Array<() => Promise<Response>> = [
-      async () => { throw new TypeError('Network connection refused'); },
+      async () => {
+        throw new TypeError('Network connection refused');
+      },
       async () => makeResponse(SENSITIVE_BODY, { status: 502 }),
       async () => makeResponse(SENSITIVE_BODY, { status: 429 }),
       async () => makeResponse('{not-json}', { status: 200 }),

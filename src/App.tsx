@@ -67,13 +67,13 @@ export function App() {
         apiKeyVersion={apiKeyVersion}
       />
 
-      <main id="main" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 flex-1 w-full">
+      <main
+        id="main"
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 flex-1 w-full"
+      >
         {isWorkspace ? (
           <Suspense fallback={null}>
-            <Workspace
-              hasLiveKey={hasLiveKey}
-              onOpenAiSettings={handleOpenApiKey}
-            />
+            <Workspace hasLiveKey={hasLiveKey} onOpenAiSettings={handleOpenApiKey} />
           </Suspense>
         ) : (
           <Launchpad />
@@ -84,22 +84,11 @@ export function App() {
         <Footer />
       </div>
 
-      <ApiKeyDialog
-        open={isApiKeyOpen}
-        onClose={handleCloseApiKey}
-        onKeyChange={handleKeyChange}
-      />
+      <ApiKeyDialog open={isApiKeyOpen} onClose={handleCloseApiKey} onKeyChange={handleKeyChange} />
 
-      <ResetDialog
-        open={isResetOpen}
-        onClose={handleCloseReset}
-        onConfirm={handleConfirmReset}
-      />
+      <ResetDialog open={isResetOpen} onClose={handleCloseReset} onConfirm={handleConfirmReset} />
 
-      <ExportDialog
-        open={isExportOpen}
-        onClose={handleCloseExport}
-      />
+      <ExportDialog open={isExportOpen} onClose={handleCloseExport} />
     </div>
   );
 }

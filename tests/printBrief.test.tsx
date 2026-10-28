@@ -32,7 +32,7 @@ describe('PrintBrief component', () => {
           vendorQuotes={[]}
           ideas={null}
           today={TODAY}
-        />,
+        />
       );
 
       expect(countH1Tags(html)).toBe(0);
@@ -60,7 +60,7 @@ describe('PrintBrief component', () => {
         vendorQuotes={[]}
         ideas={ideas}
         today={TODAY}
-      />,
+      />
     );
 
     expect(countH1Tags(html)).toBe(0);
@@ -94,7 +94,7 @@ describe('PrintBrief component', () => {
         vendorQuotes={[mockQuote]}
         ideas={null}
         today={TODAY}
-      />,
+      />
     );
 
     assertCleanMarkup(html);
@@ -122,7 +122,7 @@ describe('PrintBrief component', () => {
         vendorQuotes={[]}
         ideas={null}
         today={TODAY}
-      />,
+      />
     );
 
     assertCleanMarkup(html);

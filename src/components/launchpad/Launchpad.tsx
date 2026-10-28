@@ -33,9 +33,7 @@ export function Launchpad() {
     return (
       <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6">
         <div className="mb-6">
-          <h1 className="text-2xl font-serif text-ink mb-1">
-            New celebration plan
-          </h1>
+          <h1 className="text-2xl font-serif text-ink mb-1">New celebration plan</h1>
           <p className="text-sm text-ink-soft">
             Adjust the baseline numbers or submit to start planning.
           </p>
@@ -58,10 +56,12 @@ export function Launchpad() {
           Plan the celebration, not the spreadsheet.
         </h1>
         <p className="text-lg sm:text-xl text-ink-soft leading-relaxed mb-4">
-          Turn complex budgets, multi-phase timelines, vendor checklists, and personalized ideas into an actionable plan.
+          Turn complex budgets, multi-phase timelines, vendor checklists, and personalized ideas
+          into an actionable plan.
         </p>
         <p className="text-sm text-muted">
-          Designed first for cross-cultural and multi-day weddings, and built on the same engine for birthdays and community events.
+          Designed first for cross-cultural and multi-day weddings, and built on the same engine for
+          birthdays and community events.
         </p>
       </header>
 
@@ -86,11 +86,10 @@ export function Launchpad() {
 
       <section className="pt-8 border-t border-line">
         <div className="mb-6 text-center sm:text-left">
-          <h2 className="text-xl font-medium text-ink mb-1">
-            Or explore a pre-built example
-          </h2>
+          <h2 className="text-xl font-medium text-ink mb-1">Or explore a pre-built example</h2>
           <p className="text-xs text-muted">
-            Jump straight into a complete plan with realistic budgets, timelines, and decision rules.
+            Jump straight into a complete plan with realistic budgets, timelines, and decision
+            rules.
           </p>
         </div>
 

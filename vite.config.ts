@@ -35,7 +35,10 @@ const fontPreloadPlugin: Plugin = {
     }
     let transformed = html;
     if (cssPreload) {
-      transformed = transformed.replace('<meta name="viewport"', `${cssPreload}\n    <meta name="viewport"`);
+      transformed = transformed.replace(
+        '<meta name="viewport"',
+        `${cssPreload}\n    <meta name="viewport"`
+      );
     }
     if (fontLinks.length > 0) {
       transformed = transformed.replace('</head>', `  ${fontLinks.join('\n    ')}\n  </head>`);

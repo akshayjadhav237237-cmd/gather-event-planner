@@ -23,11 +23,7 @@ export function ideasFingerprint(context: EventContext, signals: ContextSignals)
 }
 
 export type IdeasActionDecision =
-  | 'generate'
-  | 'regenerate_local'
-  | 'mark_stale'
-  | 'record_baseline'
-  | 'none';
+  'generate' | 'regenerate_local' | 'mark_stale' | 'record_baseline' | 'none';
 
 export interface DecideIdeasActionInput {
   hasIdeas: boolean;

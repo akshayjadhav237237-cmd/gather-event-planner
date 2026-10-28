@@ -1,8 +1,4 @@
-export function nextTabIndex(
-  current: number,
-  count: number,
-  key: string
-): number | null {
+export function nextTabIndex(current: number, count: number, key: string): number | null {
   if (count <= 0) {
     return null;
   }

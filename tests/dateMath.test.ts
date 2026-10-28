@@ -1,11 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  addDays,
-  addMonths,
-  daysBetween,
-  isValidIsoDate,
-  todayIso,
-} from '../src/utils/dateMath';
+import { addDays, addMonths, daysBetween, isValidIsoDate, todayIso } from '../src/utils/dateMath';
 
 describe('isValidIsoDate', () => {
   it('accepts valid calendar dates', () => {

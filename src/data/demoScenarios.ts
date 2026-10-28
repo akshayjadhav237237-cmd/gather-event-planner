@@ -73,8 +73,7 @@ export function getDemoScenarios(today: string): DemoScenario[] {
         eventDate: addDays(today, 140),
         flags: ['sponsorship_needed', 'wheelchair_access'],
         priorities: ['production_av', 'safety_security'],
-        userNotes:
-          'Public community fair celebrating local art and music with volunteer marshals.',
+        userNotes: 'Public community fair celebrating local art and music with volunteer marshals.',
       },
     },
     {

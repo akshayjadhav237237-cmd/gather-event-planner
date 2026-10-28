@@ -98,12 +98,12 @@ describe('budgetEngine', () => {
     const standard = buildBudget(
       makeCtx({ totalBudget: 50000, priorities: [] }),
       makeSignals(),
-      makeDecision(),
+      makeDecision()
     );
     const prioritized = buildBudget(
       makeCtx({ totalBudget: 50000, priorities: ['venue', 'catering'] }),
       makeSignals(),
-      makeDecision(),
+      makeDecision()
     );
 
     const stdVenue = standard.categories.find((c) => c.id === 'venue');

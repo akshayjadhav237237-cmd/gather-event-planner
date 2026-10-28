@@ -13,7 +13,7 @@ export function formatSlotPrintLine(
   startTime: string,
   durationMin: number,
   activity: string,
-  owner: string,
+  owner: string
 ): string {
   const range = formatSlotRange(startTime, durationMin);
   const cleanOwner = owner.trim();
@@ -30,7 +30,7 @@ export function formatPrintHeaderDetails(
   formatLabel: string,
   date: string,
   guestCount: number,
-  formattedBudget: string,
+  formattedBudget: string
 ): string {
   const safeCount = Number.isFinite(guestCount) && guestCount > 0 ? Math.floor(guestCount) : 0;
   const guestText = safeCount === 1 ? '1 guest' : `${safeCount} guests`;
@@ -41,7 +41,7 @@ export function formatPrintHeaderDetails(
 export function formatPrintSubDetails(
   setting: string,
   season: string,
-  perGuestBudgetFormatted: string,
+  perGuestBudgetFormatted: string
 ): string {
   return `Setting: ${setting} \u00b7 Season: ${season} \u00b7 Per-guest budget: ${perGuestBudgetFormatted}`;
 }
@@ -66,7 +66,7 @@ export function formatContingencySplit(fraction: number): string {
 export function resolveCategoryName(
   categoryId: string,
   categories?: readonly { id: string; name: string }[],
-  eventType?: EventType,
+  eventType?: EventType
 ): string {
   if (categories) {
     const match = categories.find((c) => c.id === categoryId);
@@ -91,7 +91,7 @@ export interface PrintBudgetDisplayRow {
 /** Formats budget rows into printable currency and percentage strings. */
 export function buildPrintBudgetRows(
   rows: readonly BudgetRowView[],
-  currency: CurrencyCode,
+  currency: CurrencyCode
 ): PrintBudgetDisplayRow[] {
   return rows.map((r) => ({
     id: r.id,
@@ -117,7 +117,7 @@ export function buildPrintVendorRows(
   quotes: readonly VendorQuote[],
   categories: readonly { id: string; name: string }[],
   eventType: EventType,
-  currency: CurrencyCode,
+  currency: CurrencyCode
 ): PrintVendorRowView[] {
   return quotes.map((q) => ({
     id: q.id,
@@ -144,7 +144,8 @@ export function buildPrintIdeaGroups(ideas: PersonalizedIdeas): PrintIdeaGroup[]
     {
       title: 'Catering Ideas',
       items: ideas.cateringIdeas.map(
-        (c) => `${c.title}: ${c.summary}${c.allergySafetyNote ? ` (Allergy note: ${c.allergySafetyNote})` : ''}`,
+        (c) =>
+          `${c.title}: ${c.summary}${c.allergySafetyNote ? ` (Allergy note: ${c.allergySafetyNote})` : ''}`
       ),
     },
     {

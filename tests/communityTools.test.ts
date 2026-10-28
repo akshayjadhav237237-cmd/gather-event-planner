@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  estimateVolunteers,
-  projectEventFinance,
-} from '../src/domain/communityTools';
+import { estimateVolunteers, projectEventFinance } from '../src/domain/communityTools';
 
 describe('estimateVolunteers', () => {
   it('returns baseline minimum 4 volunteers for zero attendees', () => {

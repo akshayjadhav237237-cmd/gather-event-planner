@@ -3,30 +3,31 @@
 @tailwind utilities;
 
 :root {
-  --color-bg: #FAF8F5;
-  --color-surface: #FFFFFF;
-  --color-sunken: #F3EFE9;
-  --color-ink: #1C1917;
-  --color-ink-soft: #44403C;
-  --color-muted: #6B645C;
-  --color-line: #E6E0D6;
-  --color-line-control: #8C8478;
-  --color-accent: #A24E2B;
-  --color-accent-ink: #FFFFFF;
-  --color-accent-soft: #F6E7DD;
-  --color-accent-deep: #8A3F1F;
-  --color-focus: #A24E2B;
-  --color-critical: #9B1C1C;
-  --color-critical-soft: #FCEDED;
-  --color-warning: #7A4B00;
-  --color-warning-soft: #FBF1DC;
-  --color-info: #34506F;
-  --color-info-soft: #EAF0F6;
-  --color-success: #2F5D3A;
-  --color-success-soft: #E8F1EA;
+  --color-bg: #faf8f5;
+  --color-surface: #ffffff;
+  --color-sunken: #f3efe9;
+  --color-ink: #1c1917;
+  --color-ink-soft: #44403c;
+  --color-muted: #6b645c;
+  --color-line: #e6e0d6;
+  --color-line-control: #8c8478;
+  --color-accent: #a24e2b;
+  --color-accent-ink: #ffffff;
+  --color-accent-soft: #f6e7dd;
+  --color-accent-deep: #8a3f1f;
+  --color-focus: #a24e2b;
+  --color-critical: #9b1c1c;
+  --color-critical-soft: #fceded;
+  --color-warning: #7a4b00;
+  --color-warning-soft: #fbf1dc;
+  --color-info: #34506f;
+  --color-info-soft: #eaf0f6;
+  --color-success: #2f5d3a;
+  --color-success-soft: #e8f1ea;
 
   --font-serif: 'Instrument Serif', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  --font-body: 'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body:
+    'DM Sans Variable', 'DM Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 }
 
 html {

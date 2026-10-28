@@ -58,8 +58,13 @@ describe('Accessibility and Spec Verification (Subagent D)', () => {
   beforeAll(async () => {
     await import('../../src/components/layout/Workspace');
   });
-  beforeEach(() => { resetTestStore(); });
-  afterEach(() => { cleanup(); resetTestStore(); });
+  beforeEach(() => {
+    resetTestStore();
+  });
+  afterEach(() => {
+    cleanup();
+    resetTestStore();
+  });
 
   it('verifies progress indicators use role="progressbar" with ARIA attributes and labels', async () => {
     const scenario = getDemoScenarios(TODAY)[0];
@@ -150,7 +155,8 @@ describe('Accessibility and Spec Verification (Subagent D)', () => {
     });
 
     screen.getAllByRole('textbox').forEach((box) => {
-      const accessibleName = box.getAttribute('aria-label') || box.getAttribute('placeholder') || '';
+      const accessibleName =
+        box.getAttribute('aria-label') || box.getAttribute('placeholder') || '';
       expect(Boolean(box.getAttribute('id')) || accessibleName.length > 0).toBe(true);
     });
   });

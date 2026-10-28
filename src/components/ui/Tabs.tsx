@@ -24,13 +24,7 @@ const TAB_CLASSES = {
   unselected: `${TAB_BASE_COMMON} border-transparent text-muted hover:text-ink hover:border-line`,
 } as const;
 
-export function Tabs({
-  label,
-  tabs,
-  activeId,
-  onChange,
-  className,
-}: TabsProps) {
+export function Tabs({ label, tabs, activeId, onChange, className }: TabsProps) {
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const activeIndex = tabs.findIndex((tab) => tab.id === activeId);

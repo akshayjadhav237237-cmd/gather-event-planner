@@ -33,26 +33,23 @@ export function useContextDraft({
   const onApplyRef = useRef(onApply);
   onApplyRef.current = onApply;
 
-  const updateField = useCallback(
-    <K extends FieldKey>(key: K, value: FormDraft[K]) => {
-      setDraft((prev) => {
-        if (key === 'eventType') {
-          return applyEventTypeChange(prev, value as EventType);
-        }
-        return { ...prev, [key]: value };
-      });
-      setTouched((prev) => ({ ...prev, [key]: true }));
+  const updateField = useCallback(<K extends FieldKey>(key: K, value: FormDraft[K]) => {
+    setDraft((prev) => {
+      if (key === 'eventType') {
+        return applyEventTypeChange(prev, value as EventType);
+      }
+      return { ...prev, [key]: value };
+    });
+    setTouched((prev) => ({ ...prev, [key]: true }));
 
-      // Clear error for field once edited
-      setErrors((prev) => {
-        if (!prev[key]) return prev;
-        const next = { ...prev };
-        delete next[key];
-        return next;
-      });
-    },
-    []
-  );
+    // Clear error for field once edited
+    setErrors((prev) => {
+      if (!prev[key]) return prev;
+      const next = { ...prev };
+      delete next[key];
+      return next;
+    });
+  }, []);
 
   const togglePriority = useCallback((categoryId: string) => {
     setDraft((prev) => togglePriorityModel(prev, categoryId));

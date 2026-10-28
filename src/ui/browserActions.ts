@@ -1,6 +1,10 @@
 /** Triggers a browser file download of text content with the specified filename and MIME type. */
 export function downloadTextFile(filename: string, mime: string, content: string): void {
-  if (typeof document === 'undefined' || typeof URL === 'undefined' || typeof Blob === 'undefined') {
+  if (
+    typeof document === 'undefined' ||
+    typeof URL === 'undefined' ||
+    typeof Blob === 'undefined'
+  ) {
     return;
   }
   const blob = new Blob([content], { type: mime });
@@ -40,7 +44,7 @@ export function printPage(): void {
 /** Reads the text content of a user-selected File up to maxBytes. */
 export async function readFileText(
   file: File,
-  maxBytes: number,
+  maxBytes: number
 ): Promise<{ ok: true; text: string } | { ok: false; reason: string }> {
   if (file.size > maxBytes) {
     return { ok: false, reason: 'File exceeds maximum allowed size (1 MB).' };

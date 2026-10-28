@@ -36,10 +36,7 @@ export function sanitizeUserText(raw: string, maxLen: number = MAX_NOTES_LENGTH)
   const limit = Math.max(0, maxLen);
   const normalized = raw.normalize('NFKC');
   const withoutControls = stripControlChars(normalized);
-  let cleaned = withoutControls
-    .replace(/[<>]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
+  let cleaned = withoutControls.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
 
   if (cleaned.length > limit) {
     cleaned = cleaned.slice(0, limit);
@@ -99,7 +96,7 @@ export function parseJsonSafely(raw: string): unknown | null {
 
 /** Validates an untrusted parsed object against the strict PersonalizedIdeas schema. */
 export function validateIdeas(
-  candidate: unknown,
+  candidate: unknown
 ): { ok: true; value: PersonalizedIdeas } | { ok: false } {
   const result = PersonalizedIdeasSchema.safeParse(candidate);
   if (result.success) {

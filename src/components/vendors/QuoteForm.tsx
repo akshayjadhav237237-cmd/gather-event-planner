@@ -22,12 +22,7 @@ export interface QuoteFormProps {
   onCancel?: () => void;
 }
 
-export const QuoteForm: FC<QuoteFormProps> = ({
-  guides,
-  editingQuote,
-  onSave,
-  onCancel,
-}) => {
+export const QuoteForm: FC<QuoteFormProps> = ({ guides, editingQuote, onSave, onCancel }) => {
   const [draft, setDraft] = useState<QuoteDraft>(() =>
     editingQuote ? draftFromQuote(editingQuote) : emptyQuoteDraft(guides[0]?.id ?? '')
   );
@@ -83,7 +78,9 @@ export const QuoteForm: FC<QuoteFormProps> = ({
               >
                 <option value="">Select a category</option>
                 {guides.map((g) => (
-                  <option key={g.id} value={g.id}>{g.name}</option>
+                  <option key={g.id} value={g.id}>
+                    {g.name}
+                  </option>
                 ))}
               </Select>
             )}
@@ -154,7 +151,10 @@ export const QuoteForm: FC<QuoteFormProps> = ({
                     className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
                   />
                 </span>
-                <label htmlFor="quote-contract-signed" className="text-sm text-ink cursor-pointer select-none py-1">
+                <label
+                  htmlFor="quote-contract-signed"
+                  className="text-sm text-ink cursor-pointer select-none py-1"
+                >
                   Contract signed
                 </label>
               </div>
@@ -169,7 +169,10 @@ export const QuoteForm: FC<QuoteFormProps> = ({
                     className="h-4 w-4 rounded border-line-control text-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-focus cursor-pointer"
                   />
                 </span>
-                <label htmlFor="quote-insurance-verified" className="text-sm text-ink cursor-pointer select-none py-1">
+                <label
+                  htmlFor="quote-insurance-verified"
+                  className="text-sm text-ink cursor-pointer select-none py-1"
+                >
                   Insurance or licences verified
                 </label>
               </div>

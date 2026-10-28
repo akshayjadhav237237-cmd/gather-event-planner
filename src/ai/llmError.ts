@@ -7,7 +7,8 @@ const ERROR_MESSAGES: Record<AiFallbackReason, string> = {
   http_error: 'The AI service returned an error status.',
   rate_limited: 'The AI service rate limit has been exceeded.',
   invalid_response: 'The AI service returned an invalid or unparseable response.',
-  crypto_unavailable: 'Cryptographic random number generation is not available in this environment.',
+  crypto_unavailable:
+    'Cryptographic random number generation is not available in this environment.',
 };
 
 /** Standardized error wrapper for AI provider and invocation failures. */

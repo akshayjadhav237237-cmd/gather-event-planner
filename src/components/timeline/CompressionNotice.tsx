@@ -29,8 +29,8 @@ export const CompressionNotice: FC<CompressionNoticeProps> = ({ timeline, signal
   return (
     <AlertCard tone="warning" title="Compressed planning timeline">
       <p>
-        Your celebration is {timeline.daysAvailable} {dayWord} away. Optional tasks have
-        been skipped and scheduling has been compressed so you can focus on the critical essentials.
+        Your celebration is {timeline.daysAvailable} {dayWord} away. Optional tasks have been
+        skipped and scheduling has been compressed so you can focus on the critical essentials.
       </p>
     </AlertCard>
   );

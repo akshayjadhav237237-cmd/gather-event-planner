@@ -1,11 +1,4 @@
-import {
-  type ChangeEvent,
-  type FC,
-  memo,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { type ChangeEvent, type FC, memo, useEffect, useMemo, useState } from 'react';
 import { AlertCircle } from 'lucide-react';
 import type { CurrencyCode } from '../../types/event';
 import type { BudgetRowView } from '../../ui/budgetView';
@@ -25,14 +18,8 @@ export interface CategoryRowProps {
   onSpendChange: (categoryId: string, amount: number) => void;
 }
 
-export const CategoryRow: FC<CategoryRowProps> = memo(({
-  row,
-  currency,
-  onSpendChange,
-}) => {
-  const [inputValue, setInputValue] = useState<string>(
-    row.spent === 0 ? '' : String(row.spent),
-  );
+export const CategoryRow: FC<CategoryRowProps> = memo(({ row, currency, onSpendChange }) => {
+  const [inputValue, setInputValue] = useState<string>(row.spent === 0 ? '' : String(row.spent));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -47,7 +34,7 @@ export const CategoryRow: FC<CategoryRowProps> = memo(({
           onSpendChange(row.id, amount);
         }
       }, 300),
-    [onSpendChange, row.id],
+    [onSpendChange, row.id]
   );
 
   useEffect(() => {
@@ -116,12 +103,8 @@ export const CategoryRow: FC<CategoryRowProps> = memo(({
           <span className="font-serif text-lg font-medium tabular-nums">
             {formatCurrency(row.allocatedAmount, currency)}
           </span>
-          <span className="text-xs text-muted">
-            {`Planning split ${row.allocatedPct}%`}
-          </span>
-          {deltaText && (
-            <span className="text-xs text-muted">({deltaText})</span>
-          )}
+          <span className="text-xs text-muted">{`Planning split ${row.allocatedPct}%`}</span>
+          {deltaText && <span className="text-xs text-muted">({deltaText})</span>}
         </div>
 
         <div className="space-y-1">

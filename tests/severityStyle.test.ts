@@ -1,9 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  SEVERITY_BADGE_TONES,
-  SEVERITY_TO_ALERT_TONE,
-  TONE_PREFIX,
-} from '../src/ui/severityStyle';
+import { SEVERITY_BADGE_TONES, SEVERITY_TO_ALERT_TONE, TONE_PREFIX } from '../src/ui/severityStyle';
 
 describe('severityStyle mappings', () => {
   it('maps severity to badge tone correctly', () => {

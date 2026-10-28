@@ -3,13 +3,7 @@ import type { PanelProps } from './types';
 import type { VendorQuote } from '../../types/event';
 import { usePlanStore } from '../../store/planStore';
 import { SectionHeader } from '../shared/SectionHeader';
-import {
-  CommitmentSummary,
-  GuideList,
-  QuoteForm,
-  QuoteList,
-  RemoveQuoteDialog,
-} from '../vendors';
+import { CommitmentSummary, GuideList, QuoteForm, QuoteList, RemoveQuoteDialog } from '../vendors';
 
 export function VendorsPanel({ bundle }: PanelProps) {
   const vendorQuotes = usePlanStore((s) => s.vendorQuotes);
@@ -44,10 +38,7 @@ export function VendorsPanel({ bundle }: PanelProps) {
         headingId="vendors-panel-heading"
       />
 
-      <CommitmentSummary
-        quotes={vendorQuotes}
-        currency={bundle.context.currency}
-      />
+      <CommitmentSummary quotes={vendorQuotes} currency={bundle.context.currency} />
 
       <GuideList guides={bundle.vendorGuides} />
 

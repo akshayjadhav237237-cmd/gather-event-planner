@@ -9,7 +9,8 @@ export const WEDDING_MULTIDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'critical',
     dependsOn: ['wed-budget-align'],
     optional: false,
-    rationale: 'Outlines schedule requirements across mehendi, sangeet, wedding ceremony, and reception.',
+    rationale:
+      'Outlines schedule requirements across mehendi, sangeet, wedding ceremony, and reception.',
     eventTypes: ['wedding'],
     subFormats: ['indian_multiday'],
   },
@@ -21,7 +22,8 @@ export const WEDDING_MULTIDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'high',
     dependsOn: ['wed-attire-order'],
     optional: false,
-    rationale: 'Allows sufficient tailoring runway for distinct ceremony outfits across family members.',
+    rationale:
+      'Allows sufficient tailoring runway for distinct ceremony outfits across family members.',
     eventTypes: ['wedding'],
     subFormats: ['indian_multiday'],
   },
@@ -45,7 +47,8 @@ export const WEDDING_MULTIDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'medium',
     dependsOn: ['wed-guest-estimate'],
     optional: true,
-    rationale: 'Delivers continuous hospitality and nourishment between multi-day ceremonial functions.',
+    rationale:
+      'Delivers continuous hospitality and nourishment between multi-day ceremonial functions.',
     eventTypes: ['wedding'],
     subFormats: ['indian_multiday'],
   },
@@ -57,7 +60,8 @@ export const WEDDING_MULTIDAY_TASKS: readonly TaskTemplate[] = [
     priority: 'medium',
     dependsOn: ['wed-timeline-draft'],
     optional: true,
-    rationale: 'Polishes family dance performances and verifies sound cues before celebration week.',
+    rationale:
+      'Polishes family dance performances and verifies sound cues before celebration week.',
     eventTypes: ['wedding'],
     subFormats: ['indian_multiday'],
   },

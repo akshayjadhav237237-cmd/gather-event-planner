@@ -28,14 +28,7 @@ export function ContextForm({
   onBack,
   className = '',
 }: ContextFormProps) {
-  const {
-    draft,
-    errors,
-    updateField,
-    togglePriority,
-    toggleFlag,
-    submit,
-  } = useContextDraft({
+  const { draft, errors, updateField, togglePriority, toggleFlag, submit } = useContextDraft({
     initialDraft,
     mode,
     existingId,
@@ -96,9 +89,7 @@ export function ContextForm({
           </div>
         </Disclosure>
 
-        <p className="text-xs text-muted">
-          All changes are saved on this device.
-        </p>
+        <p className="text-xs text-muted">All changes are saved on this device.</p>
       </form>
     );
   }
@@ -112,9 +103,7 @@ export function ContextForm({
       ) : null}
 
       <Card as="section">
-        <h2 className="text-xl font-medium text-ink mb-1">
-          The basics
-        </h2>
+        <h2 className="text-xl font-medium text-ink mb-1">The basics</h2>
         <p className="text-xs text-muted mb-5">
           Core parameters that drive realistic vendor pricing and timeline horizons.
         </p>
@@ -127,9 +116,7 @@ export function ContextForm({
       </Card>
 
       <Card as="section">
-        <h2 className="text-xl font-medium text-ink mb-1">
-          Make it yours, optional
-        </h2>
+        <h2 className="text-xl font-medium text-ink mb-1">Make it yours, optional</h2>
         <p className="text-xs text-muted mb-5">
           Tune your focus areas, dietary requirements, and logistical adaptations.
         </p>

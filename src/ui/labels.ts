@@ -14,12 +14,9 @@ export const EVENT_TYPE_LABELS: Record<EventType, string> = {
 };
 
 export const EVENT_TYPE_BLURBS: Record<EventType, string> = {
-  wedding:
-    'Multi-day or single-day ceremonies, guest management, and cultural ritual schedules.',
-  birthday:
-    "Milestone birthdays, children's parties, surprises, and celebratory entertainment.",
-  community:
-    'Festivals, neighborhood gatherings, volunteer rosters, and crowd logistics.',
+  wedding: 'Multi-day or single-day ceremonies, guest management, and cultural ritual schedules.',
+  birthday: "Milestone birthdays, children's parties, surprises, and celebratory entertainment.",
+  community: 'Festivals, neighborhood gatherings, volunteer rosters, and crowd logistics.',
 };
 
 export const SUBFORMAT_LABELS: Record<SubFormat, string> = {
@@ -85,15 +82,7 @@ export interface FlagGroup {
 export const FLAG_GROUPS: FlagGroup[] = [
   {
     title: 'Dietary and allergies',
-    flags: [
-      'nut_allergy',
-      'latex_allergy',
-      'gluten_free',
-      'vegan',
-      'vegetarian',
-      'jain',
-      'halal',
-    ],
+    flags: ['nut_allergy', 'latex_allergy', 'gluten_free', 'vegan', 'vegetarian', 'jain', 'halal'],
   },
   {
     title: 'Access and comfort',

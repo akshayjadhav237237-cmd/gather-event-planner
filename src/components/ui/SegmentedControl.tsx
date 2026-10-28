@@ -29,18 +29,13 @@ export function SegmentedControl<T extends string>({
     'border-0 p-0 m-0',
     disabled ? 'opacity-50 cursor-not-allowed' : '',
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
-    <fieldset
-      disabled={disabled}
-      className={fieldsetClass}
-    >
-      <legend
-        className={
-          hideLegend ? 'sr-only' : 'text-sm font-medium text-ink mb-2'
-        }
-      >
+    <fieldset disabled={disabled} className={fieldsetClass}>
+      <legend className={hideLegend ? 'sr-only' : 'text-sm font-medium text-ink mb-2'}>
         {legend}
       </legend>
 
@@ -51,14 +46,12 @@ export function SegmentedControl<T extends string>({
           const labelClass = [
             'relative cursor-pointer select-none',
             disabled ? 'cursor-not-allowed pointer-events-none' : '',
-          ].filter(Boolean).join(' ');
+          ]
+            .filter(Boolean)
+            .join(' ');
 
           return (
-            <label
-              key={opt.value}
-              htmlFor={inputId}
-              className={labelClass}
-            >
+            <label key={opt.value} htmlFor={inputId} className={labelClass}>
               <input
                 id={inputId}
                 type="radio"
@@ -72,9 +65,7 @@ export function SegmentedControl<T extends string>({
               <span className="min-h-[44px] px-3.5 py-2 inline-flex flex-col items-center justify-center text-sm rounded-control transition-colors duration-150 ease-out border border-transparent text-muted hover:text-ink peer-checked:bg-surface peer-checked:text-ink peer-checked:border-line-control peer-checked:font-medium peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-focus peer-focus-visible:outline-offset-2">
                 <span>{opt.label}</span>
                 {opt.description && (
-                  <span className="text-xs text-muted mt-0.5">
-                    {opt.description}
-                  </span>
+                  <span className="text-xs text-muted mt-0.5">{opt.description}</span>
                 )}
               </span>
             </label>

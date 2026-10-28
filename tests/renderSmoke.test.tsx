@@ -39,26 +39,20 @@ describe('Render Smoke Tests', () => {
       const bundle = buildPlan(scenario.context, TODAY);
 
       it('renders BudgetPanel without errors or corrupt text', () => {
-        const html = renderToStaticMarkup(
-          <BudgetPanel bundle={bundle} today={TODAY} />
-        );
+        const html = renderToStaticMarkup(<BudgetPanel bundle={bundle} today={TODAY} />);
         expect(html).toContain('Where the money goes');
         expect(html).toContain('Category breakdown');
         assertCleanMarkup(html);
       });
 
       it('renders TimelinePanel without errors or corrupt text', () => {
-        const html = renderToStaticMarkup(
-          <TimelinePanel bundle={bundle} today={TODAY} />
-        );
+        const html = renderToStaticMarkup(<TimelinePanel bundle={bundle} today={TODAY} />);
         expect(html).toContain('What to do, and when');
         assertCleanMarkup(html);
       });
 
       it('renders VendorsPanel without errors or corrupt text', () => {
-        const html = renderToStaticMarkup(
-          <VendorsPanel bundle={bundle} today={TODAY} />
-        );
+        const html = renderToStaticMarkup(<VendorsPanel bundle={bundle} today={TODAY} />);
         expect(html).toContain('Choose with confidence');
         assertCleanMarkup(html);
       });

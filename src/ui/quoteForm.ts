@@ -57,7 +57,9 @@ export function draftFromQuote(q: VendorQuote): QuoteDraft {
 export function parseQuoteDraft(
   draft: QuoteDraft,
   id: string
-): { ok: true; value: VendorQuote } | { ok: false; errors: Partial<Record<keyof QuoteDraft, string>> } {
+):
+  | { ok: true; value: VendorQuote }
+  | { ok: false; errors: Partial<Record<keyof QuoteDraft, string>> } {
   const errors: Partial<Record<keyof QuoteDraft, string>> = {};
 
   const categoryId = draft.categoryId.trim();

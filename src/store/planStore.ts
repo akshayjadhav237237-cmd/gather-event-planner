@@ -130,9 +130,7 @@ export const createPlanStore = (customStorage?: StateStorage) => {
             const parsedSpend = raw.actualSpend
               ? z.record(z.string(), z.number()).safeParse(raw.actualSpend)
               : null;
-            const parsedIdeas = raw.ideas
-              ? PersonalizedIdeasSchema.safeParse(raw.ideas)
-              : null;
+            const parsedIdeas = raw.ideas ? PersonalizedIdeasSchema.safeParse(raw.ideas) : null;
             const vendorQuotes = Array.isArray(raw.vendorQuotes)
               ? raw.vendorQuotes
                   .map((q) => VendorQuoteSchema.safeParse(q))

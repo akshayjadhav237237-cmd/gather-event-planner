@@ -51,7 +51,9 @@ describe('Design Tokens & Contrast', () => {
     expect(getContrastRatio(tokens.accent, tokens.bg)).toBeGreaterThanOrEqual(4.5);
     expect(getContrastRatio(tokens.accent, tokens.surface)).toBeGreaterThanOrEqual(4.5);
     expect(getContrastRatio(tokens['accent-ink'], tokens.accent)).toBeGreaterThanOrEqual(4.5);
-    expect(getContrastRatio(tokens['accent-deep'], tokens['accent-soft'])).toBeGreaterThanOrEqual(4.5);
+    expect(getContrastRatio(tokens['accent-deep'], tokens['accent-soft'])).toBeGreaterThanOrEqual(
+      4.5
+    );
   });
 
   it('meets minimum contrast for semantic tones on soft backgrounds (>= 4.5)', () => {

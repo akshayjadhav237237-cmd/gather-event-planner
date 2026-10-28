@@ -30,7 +30,9 @@ describe('Export and Restore Interaction Tests', () => {
 
     const { writeText } = stubClipboard();
     const { createObjectURL } = stubObjectURL();
-    const anchorClickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    const anchorClickSpy = vi
+      .spyOn(HTMLAnchorElement.prototype, 'click')
+      .mockImplementation(() => {});
 
     render(<App />);
 
@@ -58,7 +60,9 @@ describe('Export and Restore Interaction Tests', () => {
       writable: true,
     });
     await user.click(copyBtn);
-    expect(await screen.findByText('Copying is not available here. Use a download instead.')).toBeDefined();
+    expect(
+      await screen.findByText('Copying is not available here. Use a download instead.')
+    ).toBeDefined();
 
     // 3. Calendar download invokes URL.createObjectURL with a Blob
     const calendarHeading = screen.getByText('Calendar file (.ics)');
@@ -121,7 +125,9 @@ describe('Export and Restore Interaction Tests', () => {
     await user.click(screen.getByRole('button', { name: /export/i }));
     const fileInputAfter = screen.getByLabelText(/select backup file/i);
 
-    const invalidFile = new File(['{"corrupted": true}'], 'invalid.json', { type: 'application/json' });
+    const invalidFile = new File(['{"corrupted": true}'], 'invalid.json', {
+      type: 'application/json',
+    });
     await user.upload(fileInputAfter, invalidFile);
 
     // Displays friendly warning alert

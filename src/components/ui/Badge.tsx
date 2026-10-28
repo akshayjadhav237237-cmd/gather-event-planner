@@ -7,13 +7,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   className?: string;
 }
 
-export function Badge({
-  tone = 'neutral',
-  icon,
-  children,
-  className = '',
-  ...props
-}: BadgeProps) {
+export function Badge({ tone = 'neutral', icon, children, className = '', ...props }: BadgeProps) {
   const toneStyles = {
     neutral: 'bg-sunken text-ink-soft',
     accent: 'bg-accent-soft text-accent-deep',
@@ -27,7 +21,9 @@ export function Badge({
     'rounded-full text-xs font-medium px-2.5 py-1 inline-flex items-center gap-1.5',
     toneStyles,
     className,
-  ].filter(Boolean).join(' ');
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   return (
     <span className={badgeClass} {...props}>

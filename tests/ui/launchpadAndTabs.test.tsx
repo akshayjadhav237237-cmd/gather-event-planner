@@ -103,7 +103,9 @@ describe('Launchpad and Tabs Interaction Tests', () => {
     // Enter workspace via scenario
     fireEvent.click(screen.getByRole('button', { name: /Multiday Traditional Wedding/i }));
     await screen.findByRole('heading', { level: 1, name: /Multiday Traditional Wedding/i });
-    expect(screen.getByRole('heading', { level: 1 }).textContent).toContain('Multiday Traditional Wedding');
+    expect(screen.getByRole('heading', { level: 1 }).textContent).toContain(
+      'Multiday Traditional Wedding'
+    );
 
     // Click Start over in header
     const startOverBtn = screen.getByRole('button', { name: /start over/i });

@@ -46,12 +46,10 @@ export function Workspace({
   if (!bundle) {
     return (
       <Card padding="lg" className="text-center space-y-4">
-        <h1 className="font-serif text-3xl text-ink font-normal">
-          Unable to load event plan
-        </h1>
+        <h1 className="font-serif text-3xl text-ink font-normal">Unable to load event plan</h1>
         <p className="text-sm text-muted max-w-md mx-auto">
-          The saved event data appears to be incomplete or could not be processed.
-          You can clear the saved data and start again.
+          The saved event data appears to be incomplete or could not be processed. You can clear the
+          saved data and start again.
         </p>
         <div>
           <Button variant="primary" onClick={clearAll}>
@@ -134,12 +132,7 @@ export function Workspace({
       </div>
 
       <div className="print:hidden">
-        <Tabs
-          label="Event plan views"
-          tabs={tabs}
-          activeId={activeTab}
-          onChange={setActiveTab}
-        />
+        <Tabs label="Event plan views" tabs={tabs} activeId={activeTab} onChange={setActiveTab} />
       </div>
 
       <PrintBrief

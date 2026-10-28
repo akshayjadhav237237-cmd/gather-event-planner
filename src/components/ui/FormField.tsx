@@ -16,14 +16,7 @@ export interface FormFieldProps {
   children: (aria: FormFieldAria) => ReactNode;
 }
 
-export function FormField({
-  id,
-  label,
-  hint,
-  error,
-  className = '',
-  children,
-}: FormFieldProps) {
+export function FormField({ id, label, hint, error, className = '', children }: FormFieldProps) {
   const hintId = hint ? `${id}-hint` : undefined;
   const errorId = error ? `${id}-error` : undefined;
 

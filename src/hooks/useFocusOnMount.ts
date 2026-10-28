@@ -10,7 +10,8 @@ export function useFocusOnMount<T extends HTMLElement>(triggerKey?: unknown): Re
   const ref = useRef<T>(null);
 
   useEffect(() => {
-    const el = ref.current ?? (typeof document !== 'undefined' ? document.querySelector<T>('h1') : null);
+    const el =
+      ref.current ?? (typeof document !== 'undefined' ? document.querySelector<T>('h1') : null);
     if (el) {
       if (!el.hasAttribute('tabindex')) {
         el.setAttribute('tabindex', '-1');

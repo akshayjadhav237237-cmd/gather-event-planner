@@ -86,22 +86,20 @@ describe('Task Catalog Quality and Invariant Checks', () => {
 
   it('satisfies minimum task catalog quantity thresholds across event formats', () => {
     const weddingUniversal = catalog.filter(
-      (t) => t.eventTypes.includes('wedding') && !t.subFormats && !t.injectedBy,
+      (t) => t.eventTypes.includes('wedding') && !t.subFormats && !t.injectedBy
     );
     expect(weddingUniversal.length).toBeGreaterThanOrEqual(22);
 
     const weddingMultiday = catalog.filter(
-      (t) => t.eventTypes.includes('wedding') && t.subFormats?.includes('indian_multiday'),
+      (t) => t.eventTypes.includes('wedding') && t.subFormats?.includes('indian_multiday')
     );
     expect(weddingMultiday.length).toBeGreaterThanOrEqual(6);
 
-    const birthdayCore = catalog.filter(
-      (t) => t.eventTypes.includes('birthday') && !t.injectedBy,
-    );
+    const birthdayCore = catalog.filter((t) => t.eventTypes.includes('birthday') && !t.injectedBy);
     expect(birthdayCore.length).toBeGreaterThanOrEqual(12);
 
     const communityCore = catalog.filter(
-      (t) => t.eventTypes.includes('community') && !t.injectedBy,
+      (t) => t.eventTypes.includes('community') && !t.injectedBy
     );
     expect(communityCore.length).toBeGreaterThanOrEqual(18);
   });

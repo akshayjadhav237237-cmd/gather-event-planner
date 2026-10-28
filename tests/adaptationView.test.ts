@@ -1,10 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { ContextAdaptation } from '../src/types/event';
-import {
-  MODULE_LABELS,
-  SEVERITY_LABELS,
-  summarizeAdaptations,
-} from '../src/ui/adaptationView';
+import { MODULE_LABELS, SEVERITY_LABELS, summarizeAdaptations } from '../src/ui/adaptationView';
 
 function createMockAdaptation(
   id: string,
@@ -101,9 +97,7 @@ describe('summarizeAdaptations', () => {
     ];
     const summary = summarizeAdaptations(list);
     expect(summary.headline).toBe('3 plan adaptations active');
-    expect(summary.announcement).toBe(
-      '3 plan adaptations active: 1 critical, 1 warning, 1 note.'
-    );
+    expect(summary.announcement).toBe('3 plan adaptations active: 1 critical, 1 warning, 1 note.');
   });
 
   it('handles multiple critical items correctly', () => {

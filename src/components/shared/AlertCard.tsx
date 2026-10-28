@@ -47,9 +47,7 @@ export const AlertCard: FC<AlertCardProps> = ({ tone, title, children, actions }
 
   return (
     <aside className={containerClass}>
-      <span className={iconClass}>
-        {renderToneIcon(tone)}
-      </span>
+      <span className={iconClass}>{renderToneIcon(tone)}</span>
       <div className="flex-1 space-y-1.5">
         <h3 className="text-sm font-semibold text-ink leading-snug">
           <VisuallyHidden>{TONE_PREFIX[tone]} </VisuallyHidden>

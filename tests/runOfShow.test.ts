@@ -93,7 +93,8 @@ describe('Run of Show Engine', () => {
     const last = plan[plan.length - 1];
     expect(last).toBeDefined();
     if (last) {
-      const totalMin = timeToMinutes(last.startTime) + last.durationMin + last.bufferMin - timeToMinutes('10:00');
+      const totalMin =
+        timeToMinutes(last.startTime) + last.durationMin + last.bufferMin - timeToMinutes('10:00');
       expect(totalMin).toBeLessThanOrEqual(120);
     }
     expect(plan.some((s) => /snack|cake/i.test(s.activity))).toBe(true);
@@ -116,7 +117,11 @@ describe('Run of Show Engine', () => {
   });
 
   it('inserts OUTDOOR weather review slot 2 hours before guest arrival', () => {
-    const ctx = createMockContext({ eventType: 'wedding', subFormat: 'western', setting: 'outdoor' });
+    const ctx = createMockContext({
+      eventType: 'wedding',
+      subFormat: 'western',
+      setting: 'outdoor',
+    });
     const plan = buildRunOfShow(ctx, createDecision([RULE_IDS.OUTDOOR]));
 
     verifyInvariants(plan);
@@ -127,7 +132,9 @@ describe('Run of Show Engine', () => {
     const arrival = plan.find((s) => /arrival|welcome/i.test(s.activity) && s !== weather);
     expect(arrival).toBeDefined();
     if (arrival && weather) {
-      expect(timeToMinutes(arrival.startTime) - timeToMinutes(weather.startTime)).toBeGreaterThanOrEqual(120);
+      expect(
+        timeToMinutes(arrival.startTime) - timeToMinutes(weather.startTime)
+      ).toBeGreaterThanOrEqual(120);
     }
   });
 
@@ -153,7 +160,9 @@ describe('Run of Show Engine', () => {
     expect(briefing).toBeDefined();
     expect(['Caterer', 'Coordinator']).toContain(briefing?.owner);
 
-    const meal = plan.find((s) => /meal|dinner|lunch|cake|buffet/i.test(s.activity) && s !== briefing);
+    const meal = plan.find(
+      (s) => /meal|dinner|lunch|cake|buffet/i.test(s.activity) && s !== briefing
+    );
     expect(meal).toBeDefined();
     if (briefing && meal) {
       expect(timeToMinutes(briefing.startTime)).toBeLessThanOrEqual(timeToMinutes(meal.startTime));

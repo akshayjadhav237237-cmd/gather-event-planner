@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { projectEventFinance } from '../../domain/communityTools';
 import type { BudgetBreakdown, EventContext } from '../../types/event';
-import {
-  type FinanceFormFields,
-  parseFinanceInputs,
-} from '../../ui/calculatorsView';
+import { type FinanceFormFields, parseFinanceInputs } from '../../ui/calculatorsView';
 import { formatCurrency } from '../../utils/currency';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
@@ -56,11 +53,7 @@ export function CommunityFinance({ context, breakdown }: CommunityFinanceProps) 
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <FormField
-          id="finance-ticket-price"
-          label="Ticket price"
-          error={errors.ticketPrice}
-        >
+        <FormField id="finance-ticket-price" label="Ticket price" error={errors.ticketPrice}>
           {(aria) => (
             <Input
               {...aria}
@@ -116,11 +109,7 @@ export function CommunityFinance({ context, breakdown }: CommunityFinanceProps) 
           )}
         </FormField>
 
-        <FormField
-          id="finance-expenses"
-          label="Expenses"
-          error={errors.expenses}
-        >
+        <FormField id="finance-expenses" label="Expenses" error={errors.expenses}>
           {(aria) => (
             <Input
               {...aria}

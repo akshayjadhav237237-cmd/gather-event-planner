@@ -17,10 +17,7 @@ export const BudgetAlerts: FC<BudgetAlertsProps> = ({ breakdown, actualSpend }) 
     return [...breakdown.alerts, ...actualAlerts];
   }, [breakdown, actualSpend]);
 
-  const { prominent, goodToKnow } = useMemo(
-    () => splitAlerts(allAlerts),
-    [allAlerts],
-  );
+  const { prominent, goodToKnow } = useMemo(() => splitAlerts(allAlerts), [allAlerts]);
 
   return (
     <section aria-label="Budget alerts" className="space-y-3">
@@ -48,10 +45,7 @@ export const BudgetAlerts: FC<BudgetAlertsProps> = ({ breakdown, actualSpend }) 
       ))}
 
       {goodToKnow.length > 0 && (
-        <Disclosure
-          id="budget-good-to-know"
-          title={`Good to know (${goodToKnow.length})`}
-        >
+        <Disclosure id="budget-good-to-know" title={`Good to know (${goodToKnow.length})`}>
           <div className="space-y-3 pt-2">
             {goodToKnow.map((alert, idx) => (
               <div key={`${alert.code}-${idx}`} className="space-y-1">

@@ -32,10 +32,7 @@ function isContextEqual(a: EventContext, b: EventContext): boolean {
   ) {
     return false;
   }
-  if (
-    a.flags.length !== b.flags.length ||
-    !a.flags.every((f, i) => f === b.flags[i])
-  ) {
+  if (a.flags.length !== b.flags.length || !a.flags.every((f, i) => f === b.flags[i])) {
     return false;
   }
   return true;

@@ -19,16 +19,15 @@ export function VolunteerPlanner({ guestCount }: VolunteerPlannerProps) {
   const estimate = estimateVolunteers(guestCount, eventHours);
 
   const error =
-    hoursStr.trim() !== '' && !isValid
-      ? 'Enter a duration between 1 and 24 hours.'
-      : undefined;
+    hoursStr.trim() !== '' && !isValid ? 'Enter a duration between 1 and 24 hours.' : undefined;
 
   return (
     <Card as="section" padding="md" className="space-y-6">
       <div className="space-y-1">
         <h3 className="text-base font-semibold text-ink">Volunteer estimate</h3>
         <p className="text-sm text-muted">
-          Planning heuristic: Estimates reflect 1 volunteer per 25 attendees (minimum 4) with 3-hour shifts.
+          Planning heuristic: Estimates reflect 1 volunteer per 25 attendees (minimum 4) with 3-hour
+          shifts.
         </p>
       </div>
 
@@ -61,11 +60,7 @@ export function VolunteerPlanner({ guestCount }: VolunteerPlannerProps) {
           value={`${estimate.shiftHours} hrs`}
           sub="Standard shift duration"
         />
-        <Stat
-          label="Total roster size"
-          value={estimate.rosterSize}
-          sub="Recommended headcount"
-        />
+        <Stat label="Total roster size" value={estimate.rosterSize} sub="Recommended headcount" />
       </div>
 
       <div aria-live="polite" className="sr-only">

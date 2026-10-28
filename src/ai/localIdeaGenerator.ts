@@ -1,6 +1,11 @@
 import type { ContextSignals } from '../types/engine';
 import type {
-  ActivityIdea, BespokeTask, CateringIdea, EventContext, PersonalizedIdeas, ThemeConcept,
+  ActivityIdea,
+  BespokeTask,
+  CateringIdea,
+  EventContext,
+  PersonalizedIdeas,
+  ThemeConcept,
 } from '../types/event';
 import { getIdeaBank } from '../data/ideas';
 import { formatCurrency } from '../utils/currency';
@@ -8,48 +13,7 @@ import type { AiPlanInput, IdeaSection } from './aiTypes';
 import type { ActivitySeed, BespokeSeed, CateringSeed, SeedTags, ThemeSeed } from './ideaSeedTypes';
 import { createSeededRandom, hashString } from './seededRandom';
 
-function isUniversal(t?: SeedTags): boolean {
-  if (!t) return true;
-  return !t.subFormats?.length && !t.settings?.length && !t.seasons?.length &&
-    !t.budgetTiers?.length && !t.requiresFlags?.length && !t.excludesFlags?.length;
-}
-
-function matchesTags(tags: SeedTags, ctx: EventContext, sig: ContextSignals): boolean {
-  if (tags.subFormats?.length && !tags.subFormats.includes(ctx.subFormat)) return false;
-  if (tags.settings?.length && !tags.settings.includes(ctx.setting)) return false;
-  if (tags.seasons?.length && !tags.seasons.includes(ctx.season)) return false;
-  if (tags.budgetTiers?.length && !tags.budgetTiers.includes(sig.budgetTier)) return false;
-  if (tags.requiresFlags?.length && !tags.requiresFlags.every((f) => ctx.flags.includes(f))) return false;
-  if (tags.excludesFlags?.length && tags.excludesFlags.some((f) => ctx.flags.includes(f))) return false;
-  return true;
-}
-
-function countKeywordMatches(
-  seed: { keywords?: string[]; title?: string; summary?: string },
-  words: string[],
-): number {
-  if (words.length === 0) return 0;
-  const targets = new Set<string>();
-  const add = (text?: string) => {
-    if (text) for (const w of text.toLowerCase().match(/\b\w+\b/g) || []) targets.add(w);
-  };
-  seed.keywords?.forEach(add);
-  add(seed.title);
-  add(seed.summary);
-  return words.reduce((acc, w) => acc + (targets.has(w) ? 1 : 0), 0);
-}
-
-function resolveTokens(template: string, ctx: EventContext, sig: ContextSignals): string {
-  return template
-    .replace(/\{guests\}/g, String(ctx.guestCount))
-    .replace(/\{setting\}/g, ctx.setting)
-    .replace(/\{season\}/g, ctx.season)
-    .replace(/\{tier\}/g, sig.budgetTier)
-    .replace(/\{days\}/g, String(Math.max(0, sig.daysUntilEvent)))
-    .replace(/\{event\}/g, ctx.eventType)
-    .replace(/\{[a-zA-Z0-9_]+\}/g, '')
-    .slice(0, 300);
-}
+import { countKeywordMatches, isUniversal, matchesTags, resolveTokens } from './localIdeaHelpers';
 
 function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags }>(
   allSeeds: T[],
@@ -57,7 +21,7 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
   variant: number,
   notes: string | null,
   sectionKey: string | undefined,
-  quota: number,
+  quota: number
 ): T[] {
   const { context, signals } = input;
   const b1: T[] = [];
@@ -77,8 +41,13 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
   }
 
   const seedParts = [
-    context.id, context.eventDate, context.subFormat,
-    [...context.flags].sort().join(','), signals.budgetTier, variant, sectionKey ?? 'all',
+    context.id,
+    context.eventDate,
+    context.subFormat,
+    [...context.flags].sort().join(','),
+    signals.budgetTier,
+    variant,
+    sectionKey ?? 'all',
   ];
   const rng = createSeededRandom(hashString(seedParts.join('|')));
 
@@ -92,7 +61,7 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
     }
   }
 
-  const noteWords = notes ? (notes.toLowerCase().match(/\b\w+\b/g) || []) : [];
+  const noteWords = notes ? notes.toLowerCase().match(/\b\w+\b/g) || [] : [];
   if (noteWords.length > 0) {
     pool.sort((a, b) => countKeywordMatches(b, noteWords) - countKeywordMatches(a, noteWords));
   }
@@ -101,35 +70,50 @@ function pickSeeds<T extends { id: string; keywords?: string[]; tags?: SeedTags 
 }
 
 const mapTheme = (s: ThemeSeed, c: EventContext, g: ContextSignals): ThemeConcept => ({
-  id: s.id, title: s.title, summary: s.summary,
-  whyItFits: resolveTokens(s.why, c, g), colorPalette: s.colorPalette,
+  id: s.id,
+  title: s.title,
+  summary: s.summary,
+  whyItFits: resolveTokens(s.why, c, g),
+  colorPalette: s.colorPalette,
 });
 
 const mapCatering = (s: CateringSeed, c: EventContext, g: ContextSignals): CateringIdea => ({
-  id: s.id, title: s.title, summary: s.summary,
+  id: s.id,
+  title: s.title,
+  summary: s.summary,
   whyItFits: resolveTokens(s.why, c, g),
-  allergySafetyNote: s.allergySafetyNote, budgetSwapIdea: s.budgetSwapIdea,
+  allergySafetyNote: s.allergySafetyNote,
+  budgetSwapIdea: s.budgetSwapIdea,
 });
 
 const mapActivity = (s: ActivitySeed, c: EventContext, g: ContextSignals): ActivityIdea => ({
-  id: s.id, title: s.title, summary: s.summary,
-  whyItFits: resolveTokens(s.why, c, g), audienceFit: s.audienceFit, safetyNote: s.safetyNote,
+  id: s.id,
+  title: s.title,
+  summary: s.summary,
+  whyItFits: resolveTokens(s.why, c, g),
+  audienceFit: s.audienceFit,
+  safetyNote: s.safetyNote,
 });
 
 const mapBespoke = (s: BespokeSeed, c: EventContext, g: ContextSignals): BespokeTask => ({
-  title: s.title, phase: s.phase, rationale: resolveTokens(s.rationale, c, g),
+  title: s.title,
+  phase: s.phase,
+  rationale: resolveTokens(s.rationale, c, g),
 });
 
 function getContradictionAdvisory(
   sig: ContextSignals,
   ctx: EventContext,
-  notes: string | null,
+  notes: string | null
 ): string | null {
   if (sig.isPast) {
     return 'Event date is in the past. Update the date to see accurate planning timelines.';
   }
   const text = notes ?? ctx.userNotes;
-  if (sig.budgetTier === 'tight' && /\b(luxury|lavish|five-star|5-star|plated|premium|grand)\b/i.test(text)) {
+  if (
+    sig.budgetTier === 'tight' &&
+    /\b(luxury|lavish|five-star|5-star|plated|premium|grand)\b/i.test(text)
+  ) {
     const formatted = formatCurrency(sig.perGuestBudget, ctx.currency);
     const msg = `Per-guest budget (${formatted}) may be tight for premium elements; consider family-style dining or civic venues.`;
     return msg.slice(0, 220);
@@ -141,7 +125,7 @@ function getContradictionAdvisory(
 export function generateLocalIdeas(
   input: AiPlanInput,
   variant: number = 0,
-  notes: string | null = null,
+  notes: string | null = null
 ): PersonalizedIdeas {
   const { context, signals } = input;
   const bank = getIdeaBank(context.eventType);
@@ -164,26 +148,31 @@ export function generateLocalIdeas(
 
 const SECTION_UPDATERS: Record<
   IdeaSection,
-  (bank: ReturnType<typeof getIdeaBank>, input: AiPlanInput, variant: number, active: string | null) => Partial<PersonalizedIdeas>
+  (
+    bank: ReturnType<typeof getIdeaBank>,
+    input: AiPlanInput,
+    variant: number,
+    active: string | null
+  ) => Partial<PersonalizedIdeas>
 > = {
   themeConcepts: (bank, input, variant, active) => ({
     themeConcepts: pickSeeds(bank.themes, input, variant, active, 'themeConcepts', 3).map((s) =>
-      mapTheme(s, input.context, input.signals),
+      mapTheme(s, input.context, input.signals)
     ),
   }),
   cateringIdeas: (bank, input, variant, active) => ({
     cateringIdeas: pickSeeds(bank.catering, input, variant, active, 'cateringIdeas', 3).map((s) =>
-      mapCatering(s, input.context, input.signals),
+      mapCatering(s, input.context, input.signals)
     ),
   }),
   activityIdeas: (bank, input, variant, active) => ({
     activityIdeas: pickSeeds(bank.activities, input, variant, active, 'activityIdeas', 3).map((s) =>
-      mapActivity(s, input.context, input.signals),
+      mapActivity(s, input.context, input.signals)
     ),
   }),
   bespokeTasks: (bank, input, variant, active) => ({
     bespokeTasks: pickSeeds(bank.bespoke, input, variant, active, 'bespokeTasks', 4).map((s) =>
-      mapBespoke(s, input.context, input.signals),
+      mapBespoke(s, input.context, input.signals)
     ),
   }),
 };
@@ -194,10 +183,11 @@ export function regenerateLocalSection(
   section: IdeaSection,
   input: AiPlanInput,
   variant: number,
-  notes: string | null = null,
+  notes: string | null = null
 ): PersonalizedIdeas {
   const bank = getIdeaBank(input.context.eventType);
-  const active = notes ?? (input.context.userNotes.trim().length > 0 ? input.context.userNotes : null);
+  const active =
+    notes ?? (input.context.userNotes.trim().length > 0 ? input.context.userNotes : null);
   const updater = SECTION_UPDATERS[section];
   if (!updater) return current;
   return { ...current, ...updater(bank, input, variant, active) };

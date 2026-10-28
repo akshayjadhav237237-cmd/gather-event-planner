@@ -31,51 +31,33 @@ export function simulateGuestChange(
 } {
   const safeDelta = Number.isFinite(deltaGuests) ? Math.round(deltaGuests) : 0;
   const currentGuests =
-    Number.isFinite(ctx.guestCount) && ctx.guestCount > 0
-      ? Math.floor(ctx.guestCount)
-      : MIN_GUESTS;
+    Number.isFinite(ctx.guestCount) && ctx.guestCount > 0 ? Math.floor(ctx.guestCount) : MIN_GUESTS;
 
   // Planning heuristic: guest count bounded within allowable system capacity limits.
-  const newGuestCount = Math.min(
-    MAX_GUESTS,
-    Math.max(MIN_GUESTS, currentGuests + safeDelta)
-  );
+  const newGuestCount = Math.min(MAX_GUESTS, Math.max(MIN_GUESTS, currentGuests + safeDelta));
 
   const safeTotalBudget =
-    Number.isFinite(ctx.totalBudget) && ctx.totalBudget > 0
-      ? Math.floor(ctx.totalBudget)
-      : 0;
+    Number.isFinite(ctx.totalBudget) && ctx.totalBudget > 0 ? Math.floor(ctx.totalBudget) : 0;
 
   const newPerGuestBudget = Math.floor(safeTotalBudget / newGuestCount);
 
   // Planning heuristic: minimum per-head spend floor determines baseline budget tier.
   const floor = getPerHeadFloor(ctx.eventType, ctx.currency);
   const newTier: BudgetTier =
-    newPerGuestBudget < floor
-      ? 'tight'
-      : newPerGuestBudget < floor * 2
-        ? 'moderate'
-        : 'generous';
+    newPerGuestBudget < floor ? 'tight' : newPerGuestBudget < floor * 2 ? 'moderate' : 'generous';
 
   // Planning heuristic: baseline food expenditure shares derived from archetype presets.
   const preset = getBudgetPreset(ctx.eventType, ctx.subFormat);
   const foodCategoryKey = FOOD_CATEGORY_KEYS[ctx.eventType] ?? 'catering';
   const foodSharePct = preset[foodCategoryKey] ?? 0;
 
-  const baselineFoodAllocation = Math.round(
-    safeTotalBudget * (foodSharePct / 100)
-  );
+  const baselineFoodAllocation = Math.round(safeTotalBudget * (foodSharePct / 100));
   const guestRatio = newGuestCount / currentGuests;
-  const safeAddOnPct =
-    Number.isFinite(addOnPct) && addOnPct > 0 ? addOnPct : 0;
+  const safeAddOnPct = Number.isFinite(addOnPct) && addOnPct > 0 ? addOnPct : 0;
   const costFactor = 1 + safeAddOnPct / 100;
 
-  const simulatedFoodCost = Math.round(
-    baselineFoodAllocation * guestRatio * costFactor
-  );
-  const estimatedFoodCostChange = Math.round(
-    simulatedFoodCost - baselineFoodAllocation
-  );
+  const simulatedFoodCost = Math.round(baselineFoodAllocation * guestRatio * costFactor);
+  const estimatedFoodCostChange = Math.round(simulatedFoodCost - baselineFoodAllocation);
 
   return {
     newGuestCount,

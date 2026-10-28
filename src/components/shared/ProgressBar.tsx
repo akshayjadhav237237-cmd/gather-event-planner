@@ -13,12 +13,7 @@ const FILL_CLASSES: Record<'accent' | 'success' | 'critical', string> = {
   critical: 'fill-critical',
 };
 
-export const ProgressBar: FC<ProgressBarProps> = ({
-  value,
-  max,
-  label,
-  tone = 'accent',
-}) => {
+export const ProgressBar: FC<ProgressBarProps> = ({ value, max, label, tone = 'accent' }) => {
   const safeMax = Number.isFinite(max) && max > 0 ? max : 100;
   const safeVal = Number.isFinite(value) && value >= 0 ? value : 0;
   const clampedVal = Math.min(safeVal, safeMax);
@@ -37,14 +32,7 @@ export const ProgressBar: FC<ProgressBarProps> = ({
         className="w-full h-2 rounded-full overflow-hidden bg-sunken border border-line"
         aria-hidden="true"
       >
-        <rect
-          x="0"
-          y="0"
-          width={`${pct}%`}
-          height="100%"
-          className={FILL_CLASSES[tone]}
-          rx="4"
-        />
+        <rect x="0" y="0" width={`${pct}%`} height="100%" className={FILL_CLASSES[tone]} rx="4" />
       </svg>
     </div>
   );

@@ -42,7 +42,9 @@ export const CommitmentSummary: FC<CommitmentSummaryProps> = ({ quotes, currency
           <Stat
             label="Shortlisted"
             value={shortlistedCount}
-            sub={shortlistedCount === 1 ? '1 quote collected' : `${shortlistedCount} quotes collected`}
+            sub={
+              shortlistedCount === 1 ? '1 quote collected' : `${shortlistedCount} quotes collected`
+            }
           />
         </div>
       </div>

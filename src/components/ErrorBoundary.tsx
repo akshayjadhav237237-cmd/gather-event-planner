@@ -46,18 +46,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               An unexpected error occurred while rendering the workspace.
             </p>
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full mt-4 justify-center">
-              <Button
-                variant="secondary"
-                onClick={this.handleReload}
-                className="w-full sm:w-auto"
-              >
+              <Button variant="secondary" onClick={this.handleReload} className="w-full sm:w-auto">
                 Reload page
               </Button>
-              <Button
-                variant="primary"
-                onClick={this.handleReset}
-                className="w-full sm:w-auto"
-              >
+              <Button variant="primary" onClick={this.handleReset} className="w-full sm:w-auto">
                 Clear saved data and restart
               </Button>
             </div>

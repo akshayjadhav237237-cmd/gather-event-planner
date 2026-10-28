@@ -22,16 +22,15 @@ export function PriorityPicker({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-ink">
-          Top spending priorities
-        </span>
+        <span className="text-sm font-medium text-ink">Top spending priorities</span>
         <span className="text-xs text-muted tabular-nums">
           {priorities.length} of {MAX_PRIORITIES} chosen
         </span>
       </div>
 
       <p className="text-xs text-muted">
-        Select up to 3 areas where you want the budget engine to allocate stronger funding and premium options.
+        Select up to 3 areas where you want the budget engine to allocate stronger funding and
+        premium options.
       </p>
 
       <div className="flex flex-wrap gap-2 pt-1">

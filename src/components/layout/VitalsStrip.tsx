@@ -10,11 +10,7 @@ export interface VitalsStripProps {
   className?: string;
 }
 
-export function VitalsStrip({
-  bundle,
-  taskCompletion,
-  className = '',
-}: VitalsStripProps) {
+export function VitalsStrip({ bundle, taskCompletion, className = '' }: VitalsStripProps) {
   const {
     daysLabel,
     dateLabel,
@@ -32,18 +28,8 @@ export function VitalsStrip({
         Event Vitals
       </h2>
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-0 lg:divide-x lg:divide-line">
-        <Stat
-          label="Countdown"
-          value={daysLabel}
-          sub={dateLabel}
-          className="lg:pr-6"
-        />
-        <Stat
-          label="Budget"
-          value={totalBudgetLabel}
-          sub={perGuestLabel}
-          className="lg:px-6"
-        />
+        <Stat label="Countdown" value={daysLabel} sub={dateLabel} className="lg:pr-6" />
+        <Stat label="Budget" value={totalBudgetLabel} sub={perGuestLabel} className="lg:px-6" />
         <Stat
           label="Tasks"
           value={`${tasksDone}/${tasksTotal}`}

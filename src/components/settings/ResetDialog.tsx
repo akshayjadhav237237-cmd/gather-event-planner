@@ -8,11 +8,7 @@ export interface ResetDialogProps {
   onConfirm: () => void;
 }
 
-export const ResetDialog: FC<ResetDialogProps> = ({
-  open,
-  onClose,
-  onConfirm,
-}) => {
+export const ResetDialog: FC<ResetDialogProps> = ({ open, onClose, onConfirm }) => {
   const cancelBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -46,12 +42,7 @@ export const ResetDialog: FC<ResetDialogProps> = ({
   );
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      title="Clear everything on this device?"
-      footer={footer}
-    >
+    <Dialog open={open} onClose={onClose} title="Clear everything on this device?" footer={footer}>
       <div className="flex flex-col gap-3 text-sm text-ink-soft">
         <p>This will reset all data stored in your browser:</p>
         <ul className="list-disc pl-5 space-y-1.5 text-ink-soft">

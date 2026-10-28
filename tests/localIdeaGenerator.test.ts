@@ -70,7 +70,7 @@ describe('localIdeaGenerator', () => {
     const input = buildAiInput(pastContext, TODAY);
     const ideas = generateLocalIdeas(input);
     expect(ideas.contradictionAdvisory).toBe(
-      'Event date is in the past. Update the date to see accurate planning timelines.',
+      'Event date is in the past. Update the date to see accurate planning timelines.'
     );
   });
 

@@ -33,11 +33,7 @@ export const BespokeSection: FC<BespokeSectionProps> = ({
           disabled={isLoading}
           aria-label={`Regenerate ${label}`}
           icon={
-            <RefreshCw
-              size={14}
-              className={isLoading ? 'animate-spin' : ''}
-              aria-hidden="true"
-            />
+            <RefreshCw size={14} className={isLoading ? 'animate-spin' : ''} aria-hidden="true" />
           }
         >
           Regenerate

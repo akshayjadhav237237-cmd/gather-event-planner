@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  generateIdeas,
-  regenerateIdeaSection,
-  type IdeaSection,
-} from '../ai';
+import { generateIdeas, regenerateIdeaSection, type IdeaSection } from '../ai';
 import { usePlanStore } from '../store/planStore';
 import type { PlanBundle } from '../types/engine';
 import type { PersonalizedIdeas } from '../types/event';
@@ -29,9 +25,7 @@ export function useIdeas(bundle: PlanBundle, hasLiveKey: boolean): UseIdeasRetur
   const ideas = usePlanStore((s) => s.ideas);
   const setIdeas = usePlanStore((s) => s.setIdeas);
 
-  const [status, setStatus] = useState<'idle' | 'loading' | 'ready'>(
-    ideas ? 'ready' : 'loading'
-  );
+  const [status, setStatus] = useState<'idle' | 'loading' | 'ready'>(ideas ? 'ready' : 'loading');
   const [isStale, setIsStale] = useState(false);
   const [notesDropped, setNotesDropped] = useState(false);
   const [info, setInfo] = useState<IdeasResultDescription>(() =>

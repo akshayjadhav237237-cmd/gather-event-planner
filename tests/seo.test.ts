@@ -97,4 +97,3 @@ describe('SEO metadata in index.html', () => {
     expect(headInner).toMatch(/^<meta[\s\S]*?http-equiv=["']Content-Security-Policy["']/i);
   });
 });
-

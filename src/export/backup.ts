@@ -1,9 +1,5 @@
 import { z } from 'zod';
-import {
-  EventContextSchema,
-  PersonalizedIdeasSchema,
-  VendorQuoteSchema,
-} from '../types/schemas';
+import { EventContextSchema, PersonalizedIdeasSchema, VendorQuoteSchema } from '../types/schemas';
 import type { BackupPayload } from './backupTypes';
 
 const MAX_BACKUP_CHARS = 1_000_000;

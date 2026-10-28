@@ -1,11 +1,7 @@
 import type { EventType, SubFormat } from '../types/event';
 
 export type PresetKey =
-  | 'wedding_western'
-  | 'wedding_indian'
-  | 'birthday_kids'
-  | 'birthday_adult'
-  | 'community';
+  'wedding_western' | 'wedding_indian' | 'birthday_kids' | 'birthday_adult' | 'community';
 
 // Baseline planning heuristic category percentage allocations by archetype.
 // Note: These figures represent illustrative planning heuristics for initial budget distribution.
@@ -69,7 +65,10 @@ export const BUDGET_PRESETS: Record<PresetKey, Record<string, number>> = {
 };
 
 /** Retrieves baseline planning heuristic category percentage weights for an event configuration. */
-export function getBudgetPreset(eventType: EventType, subFormat: SubFormat): Record<string, number> {
+export function getBudgetPreset(
+  eventType: EventType,
+  subFormat: SubFormat
+): Record<string, number> {
   if (eventType === 'wedding') {
     return subFormat === 'indian_multiday'
       ? BUDGET_PRESETS.wedding_indian

@@ -86,9 +86,7 @@ describe('labels configuration', () => {
 
   it('ensures every ContextFlag is relevant for at least one event type', () => {
     for (const flag of CONTEXT_FLAGS) {
-      const isRelevantSomewhere = EVENT_TYPES.some((type) =>
-        isFlagRelevant(flag, type)
-      );
+      const isRelevantSomewhere = EVENT_TYPES.some((type) => isFlagRelevant(flag, type));
       expect(isRelevantSomewhere).toBe(true);
     }
   });

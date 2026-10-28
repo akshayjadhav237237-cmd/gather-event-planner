@@ -2,7 +2,10 @@ import type { EventContext, SubFormat } from '../types/event';
 
 // Planning heuristics: baseline runway horizon in days across wedding sub-formats.
 export const WEDDING_HORIZON_DAYS: Record<
-  Extract<SubFormat, 'western' | 'interfaith' | 'indian_multiday' | 'destination' | 'micro_wedding'>,
+  Extract<
+    SubFormat,
+    'western' | 'interfaith' | 'indian_multiday' | 'destination' | 'micro_wedding'
+  >,
   number
 > = {
   western: 390,

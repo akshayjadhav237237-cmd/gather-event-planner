@@ -4,12 +4,7 @@ import type { PlanBundle } from '../types/engine';
 import type { PersonalizedIdeas, VendorQuote } from '../types/event';
 import { buildBudgetRows, summarizeSpending } from '../ui/budgetView';
 import { formatDateShort } from '../ui/formatDate';
-import {
-  EVENT_TYPE_LABELS,
-  SEASON_LABELS,
-  SETTING_LABELS,
-  SUBFORMAT_LABELS,
-} from '../ui/labels';
+import { EVENT_TYPE_LABELS, SEASON_LABELS, SETTING_LABELS, SUBFORMAT_LABELS } from '../ui/labels';
 import { groupTasksByPhase } from '../ui/timelineView';
 import { formatCurrency } from '../utils/currency';
 

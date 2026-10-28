@@ -8,10 +8,7 @@ export interface DemoScenarioButtonProps {
   onClick: () => void;
 }
 
-export function DemoScenarioButton({
-  scenario,
-  onClick,
-}: DemoScenarioButtonProps) {
+export function DemoScenarioButton({ scenario, onClick }: DemoScenarioButtonProps) {
   const { context } = scenario;
   const budgetFormatted = formatCurrency(context.totalBudget, context.currency);
   const typeLabel = EVENT_TYPE_LABELS[context.eventType];
@@ -24,18 +21,12 @@ export function DemoScenarioButton({
     >
       <div className="flex items-center gap-2 mb-2 w-full justify-between">
         <Badge tone="neutral">{typeLabel}</Badge>
-        <span className="text-xs text-muted tabular-nums font-medium">
-          {budgetFormatted}
-        </span>
+        <span className="text-xs text-muted tabular-nums font-medium">{budgetFormatted}</span>
       </div>
 
-      <span className="text-base font-medium text-ink mb-1">
-        {scenario.label}
-      </span>
+      <span className="text-base font-medium text-ink mb-1">{scenario.label}</span>
 
-      <span className="text-xs text-muted leading-relaxed line-clamp-2 mb-3">
-        {scenario.blurb}
-      </span>
+      <span className="text-xs text-muted leading-relaxed line-clamp-2 mb-3">{scenario.blurb}</span>
 
       <div className="mt-auto pt-2 border-t border-line w-full flex items-center justify-between text-xs text-muted">
         <span>{context.guestCount} guests</span>

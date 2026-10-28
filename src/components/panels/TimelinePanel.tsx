@@ -31,14 +31,14 @@ export function TimelinePanel({ bundle, today }: PanelProps) {
   const locale = CURRENCY_LOCALE[bundle.context.currency] ?? 'en-US';
   const progress = useMemo(
     () => overallProgress(bundle.timeline.tasks, taskCompletion),
-    [bundle.timeline.tasks, taskCompletion],
+    [bundle.timeline.tasks, taskCompletion]
   );
   const progressTone = progress.pct === 100 ? 'success' : 'accent';
   const progressLabel = `${progress.done} of ${progress.total} tasks completed (${progress.pct}%)`;
 
   const groups = useMemo(
     () => groupTasksByPhase(bundle.timeline.tasks, taskCompletion, filter, today),
-    [bundle.timeline.tasks, taskCompletion, filter, today],
+    [bundle.timeline.tasks, taskCompletion, filter, today]
   );
 
   return (

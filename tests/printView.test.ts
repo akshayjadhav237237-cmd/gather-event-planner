@@ -29,8 +29,16 @@ describe('printView helpers', () => {
   });
 
   it('formats print header details with multiple guests', () => {
-    const details = formatPrintHeaderDetails('Wedding', 'Classic', 'October 20, 2026', 150, '$50,000');
-    expect(details).toBe('Wedding \u00b7 Classic \u00b7 October 20, 2026 \u00b7 150 guests \u00b7 $50,000');
+    const details = formatPrintHeaderDetails(
+      'Wedding',
+      'Classic',
+      'October 20, 2026',
+      150,
+      '$50,000'
+    );
+    expect(details).toBe(
+      'Wedding \u00b7 Classic \u00b7 October 20, 2026 \u00b7 150 guests \u00b7 $50,000'
+    );
   });
 
   it('formats print header details with 1 guest singular', () => {
@@ -114,13 +122,33 @@ describe('printView helpers', () => {
     const mockIdeas: PersonalizedIdeas = {
       source: 'local',
       themeConcepts: [
-        { id: 't1', title: 'Garden Glow', summary: 'Fairy lights and botanicals', whyItFits: 'Outdoor setting', colorPalette: ['#1', '#2', '#3'] },
+        {
+          id: 't1',
+          title: 'Garden Glow',
+          summary: 'Fairy lights and botanicals',
+          whyItFits: 'Outdoor setting',
+          colorPalette: ['#1', '#2', '#3'],
+        },
       ],
       cateringIdeas: [
-        { id: 'c1', title: 'Farm Table', summary: 'Platters of local produce', whyItFits: 'Seasonal match', allergySafetyNote: 'Nut-free zone', budgetSwapIdea: 'Family-style' },
+        {
+          id: 'c1',
+          title: 'Farm Table',
+          summary: 'Platters of local produce',
+          whyItFits: 'Seasonal match',
+          allergySafetyNote: 'Nut-free zone',
+          budgetSwapIdea: 'Family-style',
+        },
       ],
       activityIdeas: [
-        { id: 'a1', title: 'Lawn Games', summary: 'Bocce and croquet', whyItFits: 'Relaxed afternoon', audienceFit: 'All ages', safetyNote: 'Flat terrain' },
+        {
+          id: 'a1',
+          title: 'Lawn Games',
+          summary: 'Bocce and croquet',
+          whyItFits: 'Relaxed afternoon',
+          audienceFit: 'All ages',
+          safetyNote: 'Flat terrain',
+        },
       ],
       bespokeTasks: [],
       contradictionAdvisory: null,
@@ -128,7 +156,9 @@ describe('printView helpers', () => {
     const groups = buildPrintIdeaGroups(mockIdeas);
     expect(groups).toHaveLength(3);
     expect(groups[0]?.title).toBe('Theme Concepts');
-    expect(groups[0]?.items[0]).toContain('Garden Glow: Fairy lights and botanicals (Outdoor setting)');
+    expect(groups[0]?.items[0]).toContain(
+      'Garden Glow: Fairy lights and botanicals (Outdoor setting)'
+    );
     expect(groups[1]?.items[0]).toContain('(Allergy note: Nut-free zone)');
     expect(PRINT_DISCLAIMER).toContain('illustrative planning heuristics');
   });

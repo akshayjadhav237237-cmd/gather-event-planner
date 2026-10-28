@@ -2,7 +2,9 @@ import { describe, expect, it } from 'vitest';
 import type { BudgetBreakdown, VendorQuote } from '../src/types/event';
 import { categoryAllocationStatus, summarizeCommitments } from '../src/ui/vendorView';
 
-function makeQuote(partial: Partial<VendorQuote> & { id: string; categoryId: string; vendorName: string }): VendorQuote {
+function makeQuote(
+  partial: Partial<VendorQuote> & { id: string; categoryId: string; vendorName: string }
+): VendorQuote {
   return {
     baseQuote: 10000,
     serviceAndTaxPct: 0,
@@ -152,8 +154,18 @@ describe('vendorView', () => {
 
     it('computes status and overBy amount when lowest quote exceeds allocation', () => {
       const quotes: VendorQuote[] = [
-        makeQuote({ id: 'q1', categoryId: 'catering', vendorName: 'Caterer High', baseQuote: 30000 }),
-        makeQuote({ id: 'q2', categoryId: 'catering', vendorName: 'Caterer Higher', baseQuote: 35000 }),
+        makeQuote({
+          id: 'q1',
+          categoryId: 'catering',
+          vendorName: 'Caterer High',
+          baseQuote: 30000,
+        }),
+        makeQuote({
+          id: 'q2',
+          categoryId: 'catering',
+          vendorName: 'Caterer Higher',
+          baseQuote: 35000,
+        }),
       ];
 
       const status = categoryAllocationStatus('catering', quotes, dummyBreakdown);

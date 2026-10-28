@@ -157,10 +157,7 @@ describe('backup serialization and parsing', () => {
   it('rejects payload with an own key constructor inside actualSpend', () => {
     const payload = createMockPayload(0);
     const json = buildBackupJson(payload, '2027-01-01');
-    const tainted = json.replace(
-      '"actualSpend": {',
-      '"actualSpend": {\n      "constructor": 500,'
-    );
+    const tainted = json.replace('"actualSpend": {', '"actualSpend": {\n      "constructor": 500,');
     const result = parseBackup(tainted);
     expect(result.ok).toBe(false);
     if (!result.ok) {

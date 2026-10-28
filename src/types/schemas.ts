@@ -184,7 +184,7 @@ export function safeValidateVendorQuote(candidate: unknown): VendorQuote | null 
 }
 
 export function safeValidateIdeasSession(
-  candidate: unknown,
+  candidate: unknown
 ): { fingerprint: string; variant: number } | null {
   const result = IdeasSessionSchema.safeParse(candidate);
   return result.success ? result.data : null;

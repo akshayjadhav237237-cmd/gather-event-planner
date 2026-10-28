@@ -26,7 +26,8 @@ describe('toFileSlug', () => {
   });
 
   it('truncates to maximum 50 characters without trailing hyphen', () => {
-    const longTitle = 'Super Long Celebration Event Title That Definitely Exceeds Fifty Characters Limit';
+    const longTitle =
+      'Super Long Celebration Event Title That Definitely Exceeds Fifty Characters Limit';
     const slug = toFileSlug(longTitle);
     expect(slug.length).toBeLessThanOrEqual(50);
     expect(slug.endsWith('-')).toBe(false);
