@@ -13,5 +13,4 @@ Thumbs.db
 .vscode/
 !.env.example
 
-.vercel
 .vitest/
