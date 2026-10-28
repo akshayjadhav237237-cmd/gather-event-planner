@@ -2,6 +2,7 @@
   "name": "gather-event-planner",
   "private": true,
   "version": "1.0.0",
+  "license": "MIT",
   "homepage": "https://akshayjadhav237237-cmd.github.io/gather-event-planner/",
   "repository": {
     "type": "git",
